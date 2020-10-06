@@ -1,0 +1,26 @@
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ recipe_full.Name }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label for="ingredientsdiv">Ingredients</label>
+        <div *ngFor="let ingredient of recipe_full.Ingredients" id="ingredientsdiv">
+          <p>{{ ingredient }}</p>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <label for="directionsdiv">Directions</label>
+        <div *ngFor="let direction of recipe_full.Directions" id="directionsdiv">
+          <p>{{ direction }}</p>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>

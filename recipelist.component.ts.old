@@ -1,0 +1,64 @@
+import { Component, OnInit } from '@angular/core';
+import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PantryService } from '../pantry.service'
+import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
+
+
+@Component({
+  selector: 'app-recipelist',
+  templateUrl: './recipelist.component.html',
+  styleUrls: ['./recipelist.component.css']
+})
+export class RecipelistComponent implements OnInit {
+
+    public recipes
+    recipe_full
+
+
+  constructor(
+      private pantryService: PantryService,
+      private modalService: NgbModal
+  ) { }
+
+  ngOnInit(): void {
+      this.recipes = this.pantryService.getRecipes()
+  }
+
+
+
+
+
+  viewRecipeModal(recipe) {
+      // console.log(recipe)
+      var me = this
+      let recipeloader = function(recipe : string) : Promise<{rfull : Object}>{
+          return new Promise((resolve) => {
+              // console.log(recipe, ' <- resolved? and loaded?')
+              me.recipe_full = me.pantryService.loadRecipe(recipe)
+
+              setTimeout(() => {
+                resolve({rfull:me.recipe_full})
+              }, 2000);
+          })
+      }
+
+      recipeloader(recipe).then((rfull) => {
+          this.recipe_full = rfull
+          console.log(rfull)
+          this.openModal()
+          // console.log('yeah?')
+          // return this.openModal()
+      })
+      // this.recipe_full = this.pantryService.loadRecipe(recipe)
+
+  }
+
+  openModal(){
+      const modalRef = this.modalService.open(RecipeModalComponent, { centered: true, size: 'lg'})
+      modalRef.componentInstance.data = this.recipe_full
+
+  }
+
+
+
+}

@@ -1,0 +1,47 @@
+<div class="container mt-3">
+    <h4>Your Recipes</h4>
+  <div class="row">
+
+    <div *ngFor="let recipe of recipes" class="col-lg-4 mb-4 grid-margin">
+      <div class="card h-100">
+          <h4 class="card-header">{{ recipe }}</h4>
+          <div class="card-body">
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
+          </div>
+          <div class="card-footer">
+            <Button class="btn btn-primary" (click)="viewRecipeModal(recipe)" >View</Button>
+          </div>
+      </div>
+    </div>
+
+    <!-- <div class="col-lg-4 mb-4 grid-margin">
+      <div class="card h-100">
+          <h4 class="card-header">Recipe 2</h4>
+          <div class="card-body">
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis ipsam eos, nam perspiciatis natus commodi similique totam consectetur praesentium molestiae atque exercitationem ut consequuntur, sed eveniet, magni nostrum sint fuga.</p>
+          </div>
+          <div class="card-footer">
+            <Button class="btn btn-primary">Learn More</Button>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4 mb-4 grid-margin">
+      <div class="card h-100">
+          <h4 class="card-header">Recipe 3</h4>
+          <div class="card-body">
+            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
+          </div>
+          <div class="card-footer">
+            <Button class="btn btn-primary">Learn More</Button>
+          </div>
+      </div>
+    </div> -->
+
+</div>
+
+
+
+
+<!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
+
