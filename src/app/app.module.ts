@@ -8,6 +8,7 @@ import { RecipelistComponent } from './recipelist/recipelist.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RecipeModalComponent } from './recipe-modal/recipe-modal.component';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import { RecipeModalComponent } from './recipe-modal/recipe-modal.component';
     AutocompleteLibModule,
     NgbModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ CookieService ],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

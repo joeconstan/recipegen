@@ -2,8 +2,8 @@
     <!-- <input type="text" placeholder="Enter ingredient..." [(ngModel)]="added_ingredient"> -->
 
 
-<li *ngFor="let ingredient of my_ingredients" class="horizlist" (click)="remove(ingredient)">
-    {{ ingredient }}
+<li *ngFor="let ingredient of my_ingredients" class="horizlist">
+    <a href="#" (click)="remove(ingredient)">{{ ingredient }}</a>
 </li>
 
 
