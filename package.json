@@ -26,6 +26,7 @@
     "@angular/router": "~10.1.4",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "angular-ng-autocomplete": "^2.0.1",
+    "body-parser": "^1.19.0",
     "bootstrap": "^4.5.2",
     "express": "^4.17.1",
     "jquery": "^3.5.1",

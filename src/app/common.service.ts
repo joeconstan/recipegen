@@ -12,12 +12,14 @@ export class CommonService {
 
 
   newRecipe(recipe){
-      return this.http.post('http://localhost:8080/api/newRecipe', recipe)
+      // return this.http.post('http://localhost:8080/api/newRecipe', recipe)
+      return this.http.post('/api/newRecipe', recipe)
   }
 
   getRecipes(){
       console.log('in get recipes');
-      return this.http.get('http://localhost:8080/api/getRecipes')
+      // return this.http.get('http://localhost:8080/api/getRecipes')
+      return this.http.get('/api/getRecipes')
   }
 
 
