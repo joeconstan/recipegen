@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { CommonService } from './common.service';
 
 import  *  as  recipes  from  './recipes.json';
 import  *  as  recipes_all  from  './recipes_all.json';
@@ -11,11 +12,12 @@ import { Observable } from 'rxjs';
 })
 export class PantryService {
 
-  constructor(private cookieService: CookieService) { }
+  constructor(private cookieService: CookieService,private commonService: CommonService) { }
 
 
       private ingredients = []
       private recipes = []
+      private all_recipes: any
 
       setIngredients(){
 
@@ -68,6 +70,12 @@ export class PantryService {
           return this.recipes;
       }
 
+      getAllRecipes() {
+          // recipes["Recipes"].forEach(element => {
+            // this.all_recipes.push(element["Name"]);
+          // });
+      }
+
       getIngredients(){
           return this.ingredients;
       }
@@ -108,10 +116,11 @@ export class PantryService {
           return this.recipes;
       }
 
-      loadRecipe(rec_name):Promise<any>{
+      loadRecipe(passed_recipe):Promise<any>{
           // find in json file
           // is there a faster way than just iterating linearly?
-
+          var rec_name = passed_recipe.Name
+          // console.log('rec_name: ', rec_name)
           return new Promise((resolve,reject) => {
               recipes_all["Recipes"].forEach(element => {
                   if (element['Name'] == rec_name){

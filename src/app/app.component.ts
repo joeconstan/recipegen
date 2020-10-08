@@ -10,7 +10,7 @@ export class AppComponent implements OnInit{
 
     constructor(private cookieService: CookieService) {}
     title = 'Recipes';
-
+    active = 1
 
     public ngOnInit(): void {
         // this.cookieService.set('cookie-test', 'test-value')

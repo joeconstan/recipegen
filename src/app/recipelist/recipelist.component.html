@@ -1,18 +1,74 @@
 <div class="container mt-3">
-    <h4>Your Recipes</h4>
-  <div class="row">
+    <br>
+    <br>
+    <div id="searchFilterButtons">
+        <div>
+            <div class="bg-white box-shadow">
+                <div class="row">
+                    <div class="col-sm">
+                        <h4>Recipes</h4>
+                    </div>
+                    <div class="col">
+                        <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Meal Type</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                                <button ngbDropdownItem>Breakfast</button>
+                                <button ngbDropdownItem>Lunch</button>
+                                <button ngbDropdownItem>Dinner</button>
+                                <button ngbDropdownItem>Dessert</button>
+                                <button ngbDropdownItem>Snacks</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Time</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                                <button ngbDropdownItem>0-10 min</button>
+                                <button ngbDropdownItem>10-30 min</button>
+                                <button ngbDropdownItem>30-60 min</button>
+                                <button ngbDropdownItem>60+ min</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div ngbDropdown class="d-inline-block">
+                            <button class="btn btn-outline-primary" id="dropdownBasic3" ngbDropdownToggle>Difficulty</button>
+                            <div ngbDropdownMenu aria-labelledby="dropdownBasic3">
+                                <button ngbDropdownItem>0-10 min</button>
+                                <button ngbDropdownItem>10-30 min</button>
+                                <button ngbDropdownItem>30-60 min</button>
+                                <button ngbDropdownItem>60+ min</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+            </div>
+        </div>
+    </div>
 
-    <div *ngFor="let recipe of recipes" class="col-lg-4 mb-4 grid-margin">
+    <hr>
+  <div class="row">
+    <div *ngFor="let recipe of recipes | paginate: { itemsPerPage: 9, currentPage: p }" class="col-lg-4 mb-4 grid-margin">
       <div class="card h-100">
-          <h4 class="card-header">{{ recipe }}</h4>
+          <h4 class="card-header centered"> {{ (recipe.Name.length>25)? (recipe.Name | slice:0:25)+'..':(recipe.Name) }}</h4>
+          <!-- <img class="card-img-top" src="/assets/img/pizzajpgscaled.jpg" alt="image"> -->
+          <img class="card-img-top" src="/assets/img/dneepicone.jpg" alt="image">
           <div class="card-body">
-            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse necessitatibus neque.</p>
+            <p class="card-text">Time:</p>
+            <p class="card-text">Difficulty:</p>
+            <p class="card-text">Meal Type:</p>
           </div>
-          <div class="card-footer">
-            <Button class="btn btn-primary" (click)="viewRecipeModal(recipe)" >View</Button>
-          </div>
+          <!-- <div class="card-footer"> -->
+              <!-- <a href="#" class="btn btn-primary stretched-link">Go somewhere</a> -->
+            <a class="stretched-link" (click)="viewRecipeModal(recipe)"></a>
+          <!-- </div> -->
       </div>
     </div>
+
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+
 
     <!-- <div class="col-lg-4 mb-4 grid-margin">
       <div class="card h-100">

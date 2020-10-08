@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PantryService } from '../pantry.service'
+import { CommonService } from '../common.service'
 import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
+import {NgxPaginationModule} from 'ngx-pagination';
 // import 'rxjs/add/operator/toPromise';
 // import { Observable } from 'rxjs/Observable';
 
@@ -12,18 +14,28 @@ import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
 })
 export class RecipelistComponent implements OnInit {
 
-    public recipes
+    public recipes: any;
     recipe_full
     recipe
+    p: number = 1;
 
 
   constructor(
       private pantryService: PantryService,
-      private modalService: NgbModal
+      private modalService: NgbModal,
+      private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
-      this.recipes = this.pantryService.getRecipes()
+      // this.recipes = this.pantryService.getRecipes()
+      // this.recipes = this.pantryService.getAllRecipes()
+      this.commonService.getRecipes().subscribe(data => {
+          console.log('success!');
+          console.log(data);
+          this.recipes = data;
+      },
+          error => console.error(error)
+      )
   }
 
 
@@ -48,10 +60,16 @@ export class RecipelistComponent implements OnInit {
 
 
   openModal(){
+      console.log('this.recipe_full')
       console.log(this.recipe_full)
       const modalRef = this.modalService.open(RecipeModalComponent, { centered: true, size: 'lg'})
       modalRef.componentInstance.data = this.recipe_full
 
+  }
+
+
+
+  pageChanged(event){
   }
 
 

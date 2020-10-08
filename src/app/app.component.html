@@ -1,6 +1,15 @@
-<h1>{{title}}</h1>
+<!-- <h1>{{title}}</h1> -->
+<div class="fixed-top">
+    <nav class="nav-underline nav-links bg-white box-shadow">
+        <a class="nav-link" routerLink="sc" routerLinkActive="router-link-active">SC</a>
+        <a class="nav-link" routerLink="rb" routerLinkActive="router-link-active">Recipe Book</a>
+    </nav>
+</div>
 
+<router-outlet></router-outlet>
+<!-- <app-ingredients></app-ingredients> -->
+<!-- <app-recipelist></app-recipelist> -->
 
-
-<app-ingredients></app-ingredients>
-<app-recipelist></app-recipelist>
+<footer>
+    <p class="lightertext">v.1</p>
+</footer>
