@@ -20,9 +20,9 @@
                     <div class="col"></div>
                     <div class="col">
                         <div ngbDropdown class="d-inline-block">
-                            <button class="samesize montst" mat-stroked-button color="accent" id="dropdownBasic1" ngbDropdownToggle>Meal Type</button>
+                            <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic1" ngbDropdownToggle>Meal Type</button>
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                <button class="monst" ngbDropdownItem *ngFor="let mealtype of mealtypes" (click)="filter(mealtype)" >{{ mealtype }}</button>
+                                <button class="monst" ngbDropdownItem *ngFor="let mealtype of mealtypes" (click)="addFilter(mealtype,'type')" >{{ mealtype }}</button>
                             </div>
                         </div>
                     </div>
@@ -43,7 +43,40 @@
                         </div>
                     </div>
                     <div class="col"></div>
-                    <div class="col"></div>
+                    <div class="col">
+
+                        <!-- <mat-chip-list #chipList aria-label="Fruit selection">
+                            <mat-chip *ngFor="let filter of filters" [selectable]="selectable"
+                                     [removable]="removable" (removed)="removeFilter(filter)">
+                              {{filter.name}}
+                              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input matInput
+                                   placeholder="Ex. Pizza"
+                                   [matChipInputFor]="chipList"
+                                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                   [matChipInputAddOnBlur]="addOnBlur"
+                                   (matChipInputTokenEnd)="addFilter($event)">
+                          </mat-chip-list> -->
+
+
+                        <form class="example-form">
+                          <mat-form-field color="accent" class="example-full-width">
+                            <mat-label>Search Recipes</mat-label>
+                            <input matInput placeholder="Ex. Pizza" value="" (change)="search_recipes()" name="searchinput" [(ngModel)]="search_value">
+                            <button mat-button *ngIf="search_value" matSuffix mat-icon-button aria-label="Clear" (click)="search_value=''">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                          </mat-form-field>
+                        </form>
+
+                        <mat-chip-list #chipList>
+                            <mat-chip *ngFor="let filter of filters.keywords" (removed)="removeFilter(filter, 'keywords')">
+                              {{ filter }}
+                              <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                          </mat-chip-list>
+                    </div>
                 </div>
             </div>
     </div>

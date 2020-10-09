@@ -4,6 +4,9 @@ import { PantryService } from '../pantry.service'
 import { CommonService } from '../common.service'
 import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
 import {NgxPaginationModule} from 'ngx-pagination';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { ENTER } from '@angular/cdk/keycodes';
+
 // import 'rxjs/add/operator/toPromise';
 // import { Observable } from 'rxjs/Observable';
 
@@ -18,10 +21,19 @@ export class RecipelistComponent implements OnInit {
     recipe_full
     recipe
     p: number = 1;
-    mealtypes = ['Breakfast','Lunch/Dinner','Dessert','Sides/Sauces','Holiday']
+    mealtypes = ['Breakfast','Lunch/Dinner','Desserts','Sauces/Sides','Holiday']
     times = ['0-10 min','10-30 min','30-60 min','60+ min']
     difficulties = ['Easy','Moderate','Hard']
     image_upload: any;
+    search_value
+    filters = {
+        'keywords':[],
+        'type':'',
+        'time':'',
+        'difficulty':''
+    }
+
+    separatorKeysCodes: number[] = [ENTER];
 
 
   constructor(
@@ -89,7 +101,7 @@ export class RecipelistComponent implements OnInit {
   pageChanged(event){}
 
   filter(mealtype){
-      console.log('filtered on type: ', mealtype)
+      // console.log('filtered on type: ', mealtype)
       this.commonService.getRecipesByType(mealtype).subscribe(data => {
           // console.log(data);
           this.recipes = data;
@@ -121,8 +133,67 @@ export class RecipelistComponent implements OnInit {
   }
 
 
-  // uploadImage(){
-  //
-  // }
+  search_recipes(){
+      this.addFilter(this.search_value,'keywords')
+      // this.commonService.getRecipesbyKeyword(this.search_value).subscribe(data => {
+          // this.recipes = data;
+      // },
+          // error => console.error(error)
+      // )
+      this.query_recipes()
+  }
+
+
+
+  addFilter(value,category): void {
+     // const input = event.input;
+     // const value = event.value;
+     if (category=='type'){
+         this.filters.type = value
+     }
+     else if (category == 'keywords'){
+         if ((value || '').trim()) {
+             this.filters.keywords.push(value.trim());
+        }
+    }
+
+     this.query_recipes()
+
+     // Reset the input value
+     // if (input) {
+     //   input.value = '';
+     // }
+   }
+
+  removeFilter(filter,category): void {
+
+   if (category == 'keywords'){
+       const index = this.filters.keywords.indexOf(filter);
+       if (index >= 0) {
+           this.filters.keywords.splice(index, 1);
+       }
+   }
+   else if(category == 'type'){
+        this.filters.type=''
+   }
+
+   this.query_recipes()
+   // re-run mongo query
+   // need to make a generic query to call then. so like just pass in filters. maybe as a dict. so that it can just check like, oh time was passed as a filter type? then query with time. etc
+
+
+  }
+
+
+  query_recipes(){
+      this.commonService.getRecipesWithFilters(this.filters).subscribe(data => {
+          this.recipes = data;
+      },
+          error => console.error(error)
+      )
+
+  }
+
+
 
 }

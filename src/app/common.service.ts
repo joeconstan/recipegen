@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { Response } from '@angular/http';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +34,30 @@ export class CommonService {
       // return this.http.get(`http://localhost:8080/api/getRecipe/${uri_param}`)
       // uncomment for deployment
       return this.http.get(`/api/getRecipe/${uri_param}`)
+  }
+
+  getRecipesbyKeyword(keyword){
+      var uri_param = encodeURIComponent(keyword);
+      // return this.http.get(`http://localhost:8080/api/getRecipesbyKeyword/${uri_param}`)
+      // uncomment for deployment
+      return this.http.get(`/api/getRecipesbyKeyword/${uri_param}`)
+  }
+
+  getRecipesWithFilters(filters){
+      // var uri_param = encodeURIComponent('test1?test2');
+
+      var params = new HttpParams();
+
+      if (filters.keywords.length > 0){
+          params = params.set('keywords', filters.keywords)
+      }
+      if (filters.type!=''){
+          params = params.set('type', filters.type);
+      }
+
+      // return this.http.get('http://localhost:8080/api/getRecipesWithFilters', {params})
+      // uncomment for deployment
+      return this.http.get('/api/getRecipesWithFilters', {params})
   }
 
 
