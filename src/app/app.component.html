@@ -1,10 +1,25 @@
-<!-- <h1>{{title}}</h1> -->
-<div class="fixed-top">
+
+<nav mat-tab-nav-bar [color]="tabcolor" [backgroundColor]="background">
+  <a mat-tab-link *ngFor="let link of links"
+     (click)="active = link"
+     [active]="active == link"
+     routerLink="{{ link.route }}"> {{ link.label }} </a>
+     <a mat-tab-link disabled></a>
+     <a mat-tab-link disabled></a>
+     <a mat-tab-link disabled></a>
+     <a mat-tab-link disabled></a>
+     <a mat-tab-link disabled></a>
+     <a mat-tab-link disabled></a>
+     <a mat-tab-link disabled clsas="trdbanner">The Recipe Doc</a>
+</nav>
+
+
+<!-- <div class="fixed-top">
     <nav class="nav-underline nav-links bg-white box-shadow">
         <a class="nav-link" routerLink="sc" routerLinkActive="router-link-active">SC</a>
         <a class="nav-link" routerLink="rb" routerLinkActive="router-link-active">Recipe Book</a>
     </nav>
-</div>
+</div> -->
 
 <router-outlet></router-outlet>
 <!-- <app-ingredients></app-ingredients> -->

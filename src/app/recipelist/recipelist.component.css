@@ -68,7 +68,7 @@ mat-card:hover, .card:hover{
 
 
 .samesize{
-    min-width: 100px;
+    min-width: 120px;
 }
 
 
@@ -78,4 +78,8 @@ mat-card:hover, .card:hover{
 
 mat-card{
     /* border: 1px solid black; */
+}
+
+#chipList{
+    display: inline-block;
 }

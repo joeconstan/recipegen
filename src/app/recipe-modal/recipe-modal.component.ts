@@ -26,4 +26,8 @@ export class RecipeModalComponent implements OnInit {
       // this.recipe_full.ingredients =
   }
 
+  bookmark_recipe(){
+      
+  }
+
 }
