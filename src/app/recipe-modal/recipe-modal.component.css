@@ -1,0 +1,30 @@
+.montst{
+    font-family: 'Montserrat' !important;
+    font-size: 1.20em;
+    font-weight: bold;
+}
+
+.montst-sm{
+    font-family: 'Montserrat' !important;
+    font-size: .85em;
+}
+
+.montst-bg{
+    font-family: 'Montserrat' !important;
+    font-size: 1.5em;
+}
+
+.pedna{
+    font-family: peddana;
+    font-weight: 50 !important;
+}
+
+
+.montst-bg-it{
+    font-family: 'Montserrat' !important;
+    font-size: 1.5em;
+    font-style: italic;
+}
+
+
+

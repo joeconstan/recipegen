@@ -122,12 +122,14 @@ export class PantryService {
           var rec_name = passed_recipe.Name
           // console.log('rec_name: ', rec_name)
           return new Promise((resolve,reject) => {
+
               recipes_all["Recipes"].forEach(element => {
                   if (element['Name'] == rec_name){
                       // return element;
                       resolve(element)
                   }
               });
+
               reject(rec_name)
           });
 
