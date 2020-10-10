@@ -3,7 +3,7 @@ import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PantryService } from '../pantry.service'
 import { CommonService } from '../common.service'
 import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER } from '@angular/cdk/keycodes';
 
@@ -154,15 +154,16 @@ export class RecipelistComponent implements OnInit {
      else if (category == 'keywords'){
          if ((value || '').trim()) {
              this.filters.keywords.push(value.trim());
-        }
+         }
+    }
+    else if (category == 'time'){
+        this.filters.time = value
+    }
+    else if (category == 'difficulty'){
+        this.filters.difficulty = value
     }
 
      this.query_recipes()
-
-     // Reset the input value
-     // if (input) {
-     //   input.value = '';
-     // }
    }
 
   removeFilter(filter,category): void {
@@ -175,6 +176,12 @@ export class RecipelistComponent implements OnInit {
    }
    else if(category == 'type'){
         this.filters.type=''
+   }
+   else if(category == 'time'){
+        this.filters.time=''
+   }
+   else if(category == 'difficulty'){
+        this.filters.difficulty=''
    }
 
    this.query_recipes()
@@ -191,6 +198,7 @@ export class RecipelistComponent implements OnInit {
       },
           error => console.error(error)
       )
+      this.p=1
 
   }
 

@@ -18,6 +18,7 @@
                 <div class="row">
                     <div class="col"></div>
                     <div class="col"></div>
+                    <div class="col"></div>
                     <div class="col">
                         <div ngbDropdown class="d-inline-block">
                             <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic1" ngbDropdownToggle>Meal Type</button>
@@ -30,7 +31,7 @@
                         <div ngbDropdown class="d-inline-block">
                             <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic2" ngbDropdownToggle>Time</button>
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
-                                <button class="monst" ngbDropdownItem *ngFor="let time of times" (click)="filter(time)">{{ time }}</button>
+                                <button class="monst" ngbDropdownItem *ngFor="let time of times" (click)="addFilter(time,'time')">{{ time }}</button>
                             </div>
                         </div>
                     </div>
@@ -38,27 +39,12 @@
                         <div ngbDropdown class="d-inline-block">
                             <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic3" ngbDropdownToggle>Difficulty</button>
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic3">
-                                <button class="monst" ngbDropdownItem *ngFor="let difficulty of difficulties" (click)="filter(difficulty)">{{ difficulty }}</button>
+                                <button class="monst" ngbDropdownItem *ngFor="let difficulty of difficulties" (click)="addFilter(difficulty,'difficulty')">{{ difficulty }}</button>
                             </div>
                         </div>
                     </div>
                     <div class="col"></div>
-                    <div class="col">
-
-                        <!-- <mat-chip-list #chipList aria-label="Fruit selection">
-                            <mat-chip *ngFor="let filter of filters" [selectable]="selectable"
-                                     [removable]="removable" (removed)="removeFilter(filter)">
-                              {{filter.name}}
-                              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                            </mat-chip>
-                            <input matInput
-                                   placeholder="Ex. Pizza"
-                                   [matChipInputFor]="chipList"
-                                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                   [matChipInputAddOnBlur]="addOnBlur"
-                                   (matChipInputTokenEnd)="addFilter($event)">
-                          </mat-chip-list> -->
-
+                    <div class="col-3">
 
                         <form class="example-form">
                           <mat-form-field color="accent" class="example-full-width">
@@ -70,13 +56,37 @@
                           </mat-form-field>
                         </form>
 
-                        <mat-chip-list #chipList>
-                            <mat-chip *ngFor="let filter of filters.keywords" (removed)="removeFilter(filter, 'keywords')">
-                              {{ filter }}
-                              <mat-icon matChipRemove>cancel</mat-icon>
-                            </mat-chip>
-                          </mat-chip-list>
+
                     </div>
+                </div>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col"></div>
+                    <div class="col-3">
+                    <mat-chip-list #chipList>
+                        <mat-chip *ngFor="let filter of filters.keywords" (removed)="removeFilter(filter, 'keywords')">
+                          {{ filter }}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                        <mat-chip *ngIf="filters.type!=''" (removed)="removeFilter(filters.type, 'type')">
+                          {{ filters.type }}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                        <mat-chip *ngIf="filters.time!=''" (removed)="removeFilter(filters.type, 'time')">
+                          {{ filters.time }}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                        <mat-chip *ngIf="filters.difficulty!=''" (removed)="removeFilter(filters.type, 'difficulty')">
+                          {{ filters.difficulty }}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                      </mat-chip-list>
+                      </div>
                 </div>
             </div>
     </div>
@@ -101,7 +111,7 @@
                     <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"/>
                     <path fill-rule="evenodd" d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
                 </svg>
-                <p class="card-text inlined">30</p>
+                <p class="card-text inlined">{{ recipe.Length }}</p>
             </div>
             <div class="card-text">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-tag" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -117,8 +127,9 @@
           <!-- </div> -->
       </mat-card>
     </div>
+    </div>
 
-    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    <pagination-controls class="floatright" (pageChange)="p = $event"></pagination-controls>
 
 </div>
 
