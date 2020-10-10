@@ -54,6 +54,12 @@ export class CommonService {
       if (filters.type!=''){
           params = params.set('type', filters.type);
       }
+      if (filters.time!=''){
+          params = params.set('time', filters.time);
+      }
+      if (filters.difficulty!=''){
+          params = params.set('difficulty', filters.difficulty);
+      }
 
       // return this.http.get('http://localhost:8080/api/getRecipesWithFilters', {params})
       // uncomment for deployment
