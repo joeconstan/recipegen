@@ -25,6 +25,7 @@ export class AppComponent implements OnInit{
             route:'rb'
         }
     ]
+    
 
     public ngOnInit(): void {
         this.titleService.setTitle( 'The Recipe Doc' );

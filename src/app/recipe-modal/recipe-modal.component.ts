@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal,NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { PantryService } from '../pantry.service'
-
+import { CommonService } from '../common.service'
 
 @Component({
   selector: 'app-recipe-modal',
@@ -16,7 +16,8 @@ export class RecipeModalComponent implements OnInit {
 
   constructor(
       private pantryService: PantryService,
-      public modal: NgbActiveModal
+      public modal: NgbActiveModal,
+      private commonService: CommonService
   ) { }
 
   ngOnInit() {
@@ -27,7 +28,20 @@ export class RecipeModalComponent implements OnInit {
   }
 
   bookmark_recipe(){
-      
+
+  }
+
+  approveRecipe(){
+      this.recipe_full.Pending = false
+      this.commonService.updateRecipe(this.recipe_full).subscribe(data => {
+          this.modal.close()
+      },
+            error => console.error(error)
+      )
+  }
+
+  rejectRecipe(){
+
   }
 
 }

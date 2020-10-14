@@ -1,0 +1,79 @@
+<h1 mat-dialog-title>Add a Recipe</h1>
+<div mat-dialog-content>
+
+<!-- <p>Recipe Name</p> -->
+<!-- <p>
+  <mat-form-field>
+    <mat-label>Picture (optional)</mat-label>
+    <input matInput>
+  </mat-form-field>
+</p> -->
+<p>
+  <mat-form-field>
+    <mat-label>Recipe Name</mat-label>
+    <input matInput [(ngModel)]="data.Name">
+  </mat-form-field>
+</p>
+<p>
+  <mat-form-field>
+    <mat-label>Ingredients (comma-separated)</mat-label>
+    <input matInput value="" [matChipInputFor]="chipList" (matChipInputTokenEnd)="dialogue_addIngredient()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient">
+    <mat-chip-list #chipList>
+        <mat-chip *ngFor="let ingredient of data.Ingredients">
+          {{ ingredient }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-list>
+  </mat-form-field>
+</p>
+
+<p>
+    <mat-form-field>
+      <mat-label>Directions (Please enter as ordered steps)</mat-label>
+      <input matInput value="" [matChipInputFor]="chipListd" (matChipInputTokenEnd)="dialogue_addDirection()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addDirection()" name="d_direction_field" [(ngModel)]="dialogue_direction">
+      <mat-chip-list #chipListd>
+          <mat-chip *ngFor="let direction of data.Directions">
+            {{ direction }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+      </mat-chip-list>
+    </mat-form-field>
+</p>
+<p>
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+    <mat-select [(ngModel)]="dialogue_type" (selectionChange)="dialogue_addType()" matInput>
+      <mat-option value="Breakfast">Breakfast</mat-option>
+      <mat-option value="Lunch/Dinner">Lunch/Dinner</mat-option>
+      <mat-option value="Dessert">Dessert</mat-option>
+      <mat-option value="Snacks/Sauces">Snacks/Sauces</mat-option>
+      <mat-option value="Holiday">Holiday</mat-option>
+      <mat-option value="Breads">Breads</mat-option>
+    </mat-select>
+
+    </mat-form-field>
+</p>
+<p>
+    <mat-form-field>
+      <mat-label>Difficulty</mat-label>
+    <mat-select [(ngModel)]="dialogue_difficulty" (selectionChange)="dialogue_addDifficulty()" matInput>
+      <mat-option value="Easy">Easy</mat-option>
+      <mat-option value="Moderate">Moderate</mat-option>
+      <mat-option value="Hard">Hard</mat-option>
+    </mat-select>
+
+    </mat-form-field>
+</p>
+<p>
+    <mat-form-field>
+      <mat-label>Time (in minutes)</mat-label>
+      <input matInput [(ngModel)]="data.timelength">
+    </mat-form-field>
+</p>
+
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
+</div>
