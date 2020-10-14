@@ -7,9 +7,11 @@ import { HttpClientModule } from '@angular/common/http'
 import { AppComponent } from './app.component';
 import { IngredientsComponent } from './ingredients/ingredients.component';
 import { RecipelistComponent } from './recipelist/recipelist.component';
+import { RecipeModalComponent } from './recipe-modal/recipe-modal.component';
+import { DialogNewRecipeComponent } from './recipelist/recipelist.component';
+
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { RecipeModalComponent } from './recipe-modal/recipe-modal.component';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -22,6 +24,14 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { PendingComponent } from './pending/pending.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +39,11 @@ import { MatChipsModule } from '@angular/material/chips';
     IngredientsComponent,
     RecipelistComponent,
     RecipeModalComponent,
-    AlphaPipe
+    AlphaPipe,
+    DialogNewRecipeComponent,
+    RegisterComponent,
+    LoginComponent,
+    PendingComponent
   ],
   imports: [
     BrowserModule,
@@ -46,10 +60,18 @@ import { MatChipsModule } from '@angular/material/chips';
     MatTabsModule,
     MatInputModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatSnackBarModule,
+    MatSelectModule
   ],
-  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule ],
+  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule ],
   providers: [ CookieService ],
+  entryComponents: [
+    DialogNewRecipeComponent
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

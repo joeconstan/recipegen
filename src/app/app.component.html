@@ -1,16 +1,20 @@
 
 <nav mat-tab-nav-bar [color]="tabcolor" [backgroundColor]="background">
   <a mat-tab-link *ngFor="let link of links"
-     (click)="active = link"
-     [active]="active == link"
+     (click)="active = link.route"
+     [active]="active == link.route"
      routerLink="{{ link.route }}"> {{ link.label }} </a>
+     <a mat-tab-link routerLink="pending"> <mat-icon>list</mat-icon></a>
+     <!-- <a mat-tab-link (click)="active = pending" [active]="active == pending" routerLink="pending"> <mat-icon>list</mat-icon></a> -->
+     <!-- <a mat-tab-link *ngIf="user.adminflag == true" routerLink="pending"> <mat-icon>list</mat-icon></a> -->
+     <!-- <a mat-tab-link *ngIf="user.adminflag == false" disabled></a> -->
      <a mat-tab-link disabled></a>
      <a mat-tab-link disabled></a>
      <a mat-tab-link disabled></a>
      <a mat-tab-link disabled></a>
-     <a mat-tab-link disabled></a>
-     <a mat-tab-link disabled></a>
-     <a mat-tab-link disabled clsas="trdbanner">The Recipe Doc</a>
+     <!-- <a mat-tab-link disabled></a> -->
+     <a mat-tab-link disabled class="trdbanner">The Recipe Doc</a>
+     <a mat-tab-link class="trdbanner" routerLink="login" ><mat-icon>person</mat-icon></a>
 </nav>
 
 
@@ -26,5 +30,5 @@
 <!-- <app-recipelist></app-recipelist> -->
 
 <footer>
-    <p class="lightertext">v.13</p>
+    <p class="lightertext">v.14</p>
 </footer>

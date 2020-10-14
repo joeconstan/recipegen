@@ -1,14 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PantryService } from '../pantry.service'
 import { CommonService } from '../common.service'
 import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { ENTER } from '@angular/cdk/keycodes';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
-// import 'rxjs/add/operator/toPromise';
-// import { Observable } from 'rxjs/Observable';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UserService } from '../user.service'
+
+
+export interface DialogData {
+  Name: string;
+  Ingredients: string[];
+  Directions: string[];
+  Type: string;
+  timelength: number;
+  Difficulty: string;
+  Pending
+}
 
 @Component({
   selector: 'app-recipelist',
@@ -21,7 +32,7 @@ export class RecipelistComponent implements OnInit {
     recipe_full
     recipe
     p: number = 1;
-    mealtypes = ['Breakfast','Lunch/Dinner','Desserts','Sauces/Sides','Holiday']
+    mealtypes = ['Breakfast','Lunch/Dinner','Desserts','Sauces/Sides','Holiday','Breads']
     times = ['0-10 min','10-30 min','30-60 min','60+ min']
     difficulties = ['Easy','Moderate','Hard']
     image_upload: any;
@@ -33,21 +44,29 @@ export class RecipelistComponent implements OnInit {
         'difficulty':''
     }
 
-    separatorKeysCodes: number[] = [ENTER];
+    new_recipe = {
+        Name:'',
+        Ingredients:[],
+        Directions:[],
+        Type:'',
+        timelength: 0,
+        Difficulty: '',
+        Pending: Boolean
+    }
+
+    separatorKeysCodes: number[] = [ENTER,COMMA];
 
 
   constructor(
       private pantryService: PantryService,
       private modalService: NgbModal,
-      private commonService: CommonService
+      private commonService: CommonService,
+      private userService: UserService,
+      public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
-      // this.recipes = this.pantryService.getRecipes()
-      // this.recipes = this.pantryService.getAllRecipes()
       this.commonService.getRecipes().subscribe(data => {
-          // console.log('success!');
-          // console.log(data);
           this.recipes = data;
       },
           error => console.error(error)
@@ -57,38 +76,19 @@ export class RecipelistComponent implements OnInit {
 
 
   get_full_recipe(){
-      // this.recipe_full = await this.pantryService.loadRecipe(this.recipe).toPromise();
-      // console.log('here::: ', this.recipe.Name)
+
       this.commonService.getRecipe(this.recipe.Name).subscribe(data => {
           this.recipe_full = data[0];
           this.openModal()
       },
           error => console.error(error)
       )
-
-      // this.pantryService.loadRecipe(this.recipe).then((res) => {
-            // this.recipe_full = res
-            // this.openModal()
-      // });
   }
 
   viewRecipeModal(recipe) {
       this.recipe = recipe;
       this.get_full_recipe();
   }
-
-  // loadRecipe(recipe){
-  //     // this.recipe_full = this.pantryService.loadRecipe(recipe)
-  //
-  //     this.commonService.getRecipe(recipe).subscribe(data => {
-  //         console.log(data);
-  //         this.recipe_full = data;
-  //     },
-  //         error => console.error(error)
-  //     )
-  //
-  //     return;
-  // }
 
 
   openModal(){
@@ -202,6 +202,79 @@ export class RecipelistComponent implements OnInit {
 
   }
 
+  openNewRecipeDialog(){
+      // show new-recipe-form
+      const dialogRef = this.dialog.open(DialogNewRecipeComponent, {
+            width: '600px',
+            height: '700px',
+            autoFocus: false,
+            data: {
+                Name: this.new_recipe.Name,
+                Ingredients: this.new_recipe.Ingredients,
+                Directions: this.new_recipe.Directions,
+                Pending: true,
+                timelength: this.new_recipe.timelength,
+                Difficulty: this.new_recipe.Difficulty,
+                Type: this.new_recipe.Type
+            }
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+              console.log('result:...')
+              console.log(result)
+              this.commonService.newRecipe(result).subscribe(data => {
+                    console.log(data)
+              },
+                error => console.error(error)
+              )
+
+          });
+
+  }
 
 
+}
+
+
+@Component({
+  selector: 'dialog-new-recipe',
+  templateUrl: 'dialog-new-recipe.html',
+  styleUrls: ['./dialog-new-recipe.css']
+})
+export class DialogNewRecipeComponent {
+
+    dialogue_ingredient: string;
+    dialogue_direction: string;
+    dialogue_type: string;
+    dialogue_difficulty: string;
+    // dialogue_length: string;
+    separatorKeysCodes: number[] = [ENTER,COMMA];
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogNewRecipeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+  dialogue_addIngredient(){
+     this.data.Ingredients.push(this.dialogue_ingredient)
+     this.dialogue_ingredient = '';
+  }
+  dialogue_addDirection(){
+     this.data.Directions.push(this.dialogue_direction)
+     this.dialogue_direction = '';
+  }
+  dialogue_addType(){
+     this.data.Type = this.dialogue_type;
+  }
+  dialogue_addDifficulty(){
+     this.data.Difficulty = this.dialogue_difficulty;
+  }
+  // dialogue_addLength(){
+  //     console.log('testing addlength')
+  //    this.data.Length = this.dialogue_length;
+  // }
 }

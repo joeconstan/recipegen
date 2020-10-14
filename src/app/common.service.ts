@@ -17,10 +17,22 @@ export class CommonService {
       return this.http.post('/api/newRecipe', recipe)
   }
 
+ updateRecipe(recipe){
+      // return this.http.post('http://localhost:8080/api/updateRecipe', recipe)
+      // uncomment for deployment
+      return this.http.post('/api/updateRecipe', recipe)
+  }
+
   getRecipes(){
       // return this.http.get('http://localhost:8080/api/getRecipes')
       // uncomment for deployment
       return this.http.get('/api/getRecipes')
+  }
+
+  getPendingRecipes(){
+      // return this.http.get('http://localhost:8080/api/getPendingRecipes')
+      // uncomment for deployment
+      return this.http.get('/api/getPendingRecipes')
   }
   getRecipesByType(type){
       var uri_param = encodeURIComponent(type);
@@ -65,6 +77,27 @@ export class CommonService {
       // uncomment for deployment
       return this.http.get('/api/getRecipesWithFilters', {params})
   }
+
+
+  // USERS
+
+  register(user){
+      // return this.http.post('http://localhost:8080/user/newUser', user)
+      // uncomment for deployment
+      return this.http.post('/user/newUser', user)
+  }
+
+  getUser(username:string,password:string) {
+      var username = encodeURIComponent(username)
+      var pswd = encodeURIComponent(password)
+      var params = new HttpParams().set('username', username).set('pswd',pswd)
+
+      // return this.http.get('http://localhost:8080/user/getUser', {params})
+
+      // uncomment for deployment
+      return this.http.post('/user/getUser', {params})
+  }
+
 
 
 }

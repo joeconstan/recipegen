@@ -28,9 +28,13 @@
         </div>
       <!-- </div> -->
     <!-- </form> -->
+
   </div>
-  <!-- <div class="modal-footer"> -->
-      <!-- <button mat-button (click)="modal.close('Save click')">
-          <mat-icon>edit</mat-icon>
-      </button> -->
-  <!-- </div> -->
+  <div *ngIf="recipe_full.Pending" class="modal-footer">
+      <button mat-button (click)="approveRecipe()" color="primary">Approve</button>
+      <button mat-button (click)="rejectRecipe()" color="primary">Reject</button>
+      <!-- <mat-form-field> -->
+          <!-- <mat-label>Add a comment</mat-label> -->
+        <!-- <input matInput value="" placeholder="Enter text..."> -->
+      <!-- </mat-form-field> -->
+  </div>
