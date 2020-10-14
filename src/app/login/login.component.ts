@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
 
        // this.loading = true;
        this.commonService.getUser(this.f.username.value, this.f.password.value).subscribe(data => {
-            console.log(data)
+            // console.log(data)
             if (!data){
                 console.log('user does not exist or wrong pswd')
             }else{
