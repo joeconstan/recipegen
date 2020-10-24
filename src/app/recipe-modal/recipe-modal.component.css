@@ -34,3 +34,25 @@
 .floatleft{
     float: left;
 }
+
+
+mat-accordion, mat-expansion-panel{
+    width: 100% !important;
+    box-shadow: none;
+}
+
+.tilefix{
+    /* position: absolute; */
+    width: 100%;
+    /* height: 100%; */
+    box-shadow: none;
+}
+
+mat-panel-title{
+    float:right;
+}
+
+
+.widthtf{
+    width: 75%;
+}

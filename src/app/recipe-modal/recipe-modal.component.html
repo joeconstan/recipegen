@@ -30,11 +30,36 @@
     <!-- </form> -->
 
   </div>
-  <div *ngIf="recipe_full.Pending" class="modal-footer">
-      <button mat-button (click)="approveRecipe()" color="primary">Approve</button>
-      <button mat-button (click)="rejectRecipe()" color="primary">Reject</button>
-      <!-- <mat-form-field> -->
-          <!-- <mat-label>Add a comment</mat-label> -->
-        <!-- <input matInput value="" placeholder="Enter text..."> -->
-      <!-- </mat-form-field> -->
+  <div class="modal-footer">
+      <div *ngIf="recipe_full.Pending">
+          <button mat-button (click)="approveRecipe()" color="primary">Approve</button>
+          <button mat-button (click)="rejectRecipe()" color="primary">Reject</button>
+          <!-- <mat-form-field> -->
+              <!-- <mat-label>Add a comment</mat-label> -->
+            <!-- <input matInput value="" placeholder="Enter text..."> -->
+          <!-- </mat-form-field> -->
+      </div>
+      <div *ngIf="!recipe_full.Pending" class="tilefix">
+          <!-- <a role="button"><mat-icon>forum</mat-icon></a> -->
+          <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title><mat-icon>forum</mat-icon></mat-panel-title>
+                <mat-panel-description></mat-panel-description>
+              </mat-expansion-panel-header>
+              <div *ngFor="let comment of recipe_full.comments" id="commentsdiv">
+                <p class="montst-sm">- {{ comment.text }}</p>
+              </div>
+              <div>
+                 <input class="floatleft widthtf" matInput [(ngModel)]="newComment" type="text" name="" placeholder="Add a comment..."/>
+                 <a class="floatright widthof" (click)="addComment()" role="button"><mat-icon>send</mat-icon></a>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+
+
+
+      </div>
   </div>
+
