@@ -11,22 +11,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { UserService } from '../user.service'
 
 
-export interface DialogData {
-  Name: string;
-  Ingredients: string[];
-  Directions: string[];
-  Type: string;
-  timelength: number;
-  Difficulty: string;
-  Pending
-}
-
 @Component({
-  selector: 'app-recipelist',
-  templateUrl: './recipelist.component.html',
-  styleUrls: ['./recipelist.component.css']
+  selector: 'app-saved',
+  templateUrl: './saved.component.html',
+  styleUrls: ['./saved.component.css']
 })
-export class RecipelistComponent implements OnInit {
+export class SavedComponent implements OnInit {
 
     public recipes: any;
     recipe_full
@@ -56,7 +46,6 @@ export class RecipelistComponent implements OnInit {
 
     separatorKeysCodes: number[] = [ENTER,COMMA];
 
-
   constructor(
       private pantryService: PantryService,
       private modalService: NgbModal,
@@ -66,14 +55,13 @@ export class RecipelistComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      this.commonService.getRecipes().subscribe(data => {
+      let user = this.userService.getUser();
+      this.commonService.getSavedRecipes(user).subscribe(data => {
           this.recipes = data;
       },
           error => console.error(error)
       )
   }
-
-
 
   get_full_recipe(){
 
@@ -202,37 +190,6 @@ export class RecipelistComponent implements OnInit {
 
   }
 
-  openNewRecipeDialog(){
-      // show new-recipe-form
-      const dialogRef = this.dialog.open(DialogNewRecipeComponent, {
-            width: '600px',
-            height: '700px',
-            autoFocus: false,
-            data: {
-                Name: this.new_recipe.Name,
-                Ingredients: this.new_recipe.Ingredients,
-                Directions: this.new_recipe.Directions,
-                Pending: true,
-                timelength: this.new_recipe.timelength,
-                Difficulty: this.new_recipe.Difficulty,
-                Type: this.new_recipe.Type
-            }
-          });
-
-          dialogRef.afterClosed().subscribe(result => {
-              console.log('result:...')
-              console.log(result)
-              this.commonService.newRecipe(result).subscribe(data => {
-                    console.log(data)
-              },
-                error => console.error(error)
-              )
-
-          });
-
-  }
-
-
 
   random_recipe(){
       this.commonService.getRandomRecipe().subscribe(data => {
@@ -242,50 +199,5 @@ export class RecipelistComponent implements OnInit {
         error => console.error(error)
       )
   }
-
-}
-
-
-@Component({
-  selector: 'dialog-new-recipe',
-  templateUrl: 'dialog-new-recipe.html',
-  styleUrls: ['./dialog-new-recipe.css']
-})
-export class DialogNewRecipeComponent {
-
-    dialogue_ingredient: string;
-    dialogue_direction: string;
-    dialogue_type: string;
-    dialogue_difficulty: string;
-    // dialogue_length: string;
-    separatorKeysCodes: number[] = [ENTER,COMMA];
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogNewRecipeComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-
-  dialogue_addIngredient(){
-     this.data.Ingredients.push(this.dialogue_ingredient)
-     this.dialogue_ingredient = '';
-  }
-  dialogue_addDirection(){
-     this.data.Directions.push(this.dialogue_direction)
-     this.dialogue_direction = '';
-  }
-  dialogue_addType(){
-     this.data.Type = this.dialogue_type;
-  }
-  dialogue_addDifficulty(){
-     this.data.Difficulty = this.dialogue_difficulty;
-  }
-  // dialogue_addLength(){
-  //     console.log('testing addlength')
-  //    this.data.Length = this.dialogue_length;
-  // }
 
 }

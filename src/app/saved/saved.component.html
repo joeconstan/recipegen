@@ -11,12 +11,12 @@
                     <div class="col"></div>
                     <div class="col"></div>
                     <div class="col"></div>
-                    <div class="col"><h4 class="mat-display-1">Recipes</h4></div>
+                    <div class="col"><h4 class="mat-display-1">Saved Recipes</h4></div>
                     <div class="col"></div>
                     <div class="col"></div>
                     <div class="col"></div>
                     <div class="col">
-                        <a role="button" (click)="random_recipe()" ><mat-icon>shuffle</mat-icon></a>
+                        <!-- <a role="button" (click)="random_recipe()" ><mat-icon>shuffle</mat-icon></a> -->
                     </div>
                 </div>
                 <div class="row">
@@ -145,14 +145,5 @@
 
     <pagination-controls class="floatright" (pageChange)="p = $event"></pagination-controls>
 
-</div>
-
-<div>
-    <footer class="footer">
-        <button mat-fab (click)="openNewRecipeDialog()" >
-          <mat-icon>note_add</mat-icon>
-          <!-- <mat-icon>library_add</mat-icon> -->
-        </button>
-  </footer>
 </div>
 

@@ -32,6 +32,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { PendingComponent } from './pending/pending.component';
+import { SavedComponent } from './saved/saved.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { ChangelogComponent } from './changelog/changelog.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,9 @@ import { PendingComponent } from './pending/pending.component';
     DialogNewRecipeComponent,
     RegisterComponent,
     LoginComponent,
-    PendingComponent
+    PendingComponent,
+    SavedComponent,
+    ChangelogComponent
   ],
   imports: [
     BrowserModule,
@@ -65,9 +70,10 @@ import { PendingComponent } from './pending/pending.component';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatExpansionModule
   ],
-  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule ],
+  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule ],
   providers: [ CookieService ],
   entryComponents: [
     DialogNewRecipeComponent

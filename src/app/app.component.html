@@ -1,21 +1,38 @@
 
-<nav mat-tab-nav-bar [color]="tabcolor" [backgroundColor]="background">
+<!-- <nav mat-tab-nav-bar [color]="tabcolor" [backgroundColor]="background">
   <a mat-tab-link *ngFor="let link of links"
      (click)="active = link.route"
      [active]="active == link.route"
      routerLink="{{ link.route }}"> {{ link.label }} </a>
      <a mat-tab-link routerLink="pending"> <mat-icon>list</mat-icon></a>
-     <!-- <a mat-tab-link (click)="active = pending" [active]="active == pending" routerLink="pending"> <mat-icon>list</mat-icon></a> -->
-     <!-- <a mat-tab-link *ngIf="user.adminflag == true" routerLink="pending"> <mat-icon>list</mat-icon></a> -->
-     <!-- <a mat-tab-link *ngIf="user.adminflag == false" disabled></a> -->
      <a mat-tab-link disabled></a>
      <a mat-tab-link disabled></a>
      <a mat-tab-link disabled></a>
-     <a mat-tab-link disabled></a>
-     <!-- <a mat-tab-link disabled></a> -->
      <a mat-tab-link disabled class="trdbanner">The Recipe Doc</a>
      <a mat-tab-link class="trdbanner" routerLink="login" ><mat-icon>person</mat-icon></a>
+</nav> -->
+
+<!-- <a mat-tab-link (click)="active = pending" [active]="active == pending" routerLink="pending"> <mat-icon>list</mat-icon></a> -->
+<!-- <a mat-tab-link *ngIf="user.adminflag == true" routerLink="pending"> <mat-icon>list</mat-icon></a> -->
+<!-- <a mat-tab-link *ngIf="user.adminflag == false" disabled></a> -->
+
+
+<nav class="nav-underline nav-links bg-white box-shadow">
+    <a class="nav-link" routerLink="/rb" routerLinkActive="router-link-active">Recipe Book</a>
+    <a class="nav-link" routerLink="/ip" routerLinkActive="router-link-active">IP Recipes</a>
+
+    <div ngbDropdown class="nav-item d-inline-block">
+     <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle role="button"><mat-icon>person</mat-icon></a>
+     <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+       <button routerLink="/pending" ngbDropdownItem>Approvals</button>
+       <button routerLink="/saved" ngbDropdownItem>Saved</button>
+       <button ngbDropdownItem>Logout</button>
+     </div>
+     </div>
+    <!-- <a class="nav-link floatright" routerLink="/login" routerLinkActive="router-link-active"><mat-icon>person</mat-icon></a> -->
+    <a class="nav-link floatright">The Recipe Doc</a>
 </nav>
+
 
 
 <!-- <div class="fixed-top">
@@ -30,5 +47,5 @@
 <!-- <app-recipelist></app-recipelist> -->
 
 <footer>
-    <p class="lightertext">v.14</p>
+    <a routerLink="/changelog">v0.15</a>
 </footer>

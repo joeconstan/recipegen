@@ -40,6 +40,14 @@ export class LoginComponent implements OnInit {
 
   }
 
+  logout() {
+        var nouser = {}
+        this.userService.setUser(nouser)
+        localStorage.removeItem('user')
+        this.router.navigate(['/login'])
+  }
+
+
 
   onSubmit() {
        this.submitted = true;
@@ -58,7 +66,9 @@ export class LoginComponent implements OnInit {
             if (!data){
                 console.log('user does not exist or wrong pswd')
             }else{
-                this.userService.user = data[0]
+                this.userService.setUser(data[0])
+                localStorage.setItem('user', JSON.stringify(data[0]));
+                // this.userService.user = data[0]
                 this._snackBar.open('Logged in as '+data[0].username, 'ok', {
                     duration: 2000,
                 });

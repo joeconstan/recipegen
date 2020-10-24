@@ -9,5 +9,12 @@ export class UserService {
 
   constructor() { }
 
+  setUser(user){
+      this.user = user
+  }
+
+  getUser(){
+      return this.user
+  }
 
 }
