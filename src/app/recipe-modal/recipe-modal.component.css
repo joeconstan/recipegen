@@ -56,3 +56,13 @@ mat-panel-title{
 .widthtf{
     width: 75%;
 }
+
+.inline{
+    display: inline-block;
+    padding-left: 10px;
+}
+
+.graysmall p{
+    font-size: .85em;
+    color:gray;
+}

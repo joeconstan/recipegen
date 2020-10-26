@@ -11,6 +11,21 @@
       <!-- </button> -->
   </div>
   <div class="modal-body">
+      <div>
+        <div class="graysmall">
+          <p class="inline">Type</p>
+          <p class="inline">{{ recipe_full.Type }}</p>
+        </div>
+        <div class="graysmall">
+          <p class="inline">Length</p>
+          <p class="inline">{{ recipe_full.timelength }}</p>
+        </div>
+        <div class="graysmall">
+          <p class="inline">Difficulty</p>
+          <p class="inline">{{ recipe_full.Difficulty }}</p>
+        </div>
+      </div>
+      <hr>
     <!-- <form> -->
       <!-- <div class="form-group"> -->
       <button mat-button class="floatright" (click)="modal.close('Save click')">
@@ -40,15 +55,15 @@
           <!-- </mat-form-field> -->
       </div>
       <div *ngIf="!recipe_full.Pending" class="tilefix">
-          <!-- <a role="button"><mat-icon>forum</mat-icon></a> -->
           <mat-accordion>
             <mat-expansion-panel hideToggle>
               <mat-expansion-panel-header>
                 <mat-panel-title><mat-icon>forum</mat-icon></mat-panel-title>
                 <mat-panel-description></mat-panel-description>
               </mat-expansion-panel-header>
-              <div *ngFor="let comment of recipe_full.comments" id="commentsdiv">
-                <p class="montst-sm">- {{ comment.text }}</p>
+              <div *ngFor="let comment of recipe_comments" id="commentsdiv">
+                <p class="montst-sm"><strong>{{ comment.username }}</strong></p>
+                <p class="montst-sm">&nbsp;&nbsp;{{ comment.text }}</p>
               </div>
               <div>
                  <input class="floatleft widthtf" matInput [(ngModel)]="newComment" type="text" name="" placeholder="Add a comment..."/>

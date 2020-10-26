@@ -55,9 +55,12 @@ export class SavedComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      let user = this.userService.getUser();
+      let user = this.userService.user
+
       this.commonService.getSavedRecipes(user).subscribe(data => {
-          this.recipes = data;
+          this.recipes = data
+          console.log('data')
+          console.log(data)
       },
           error => console.error(error)
       )
