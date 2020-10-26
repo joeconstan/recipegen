@@ -30,13 +30,7 @@
 <p>
     <mat-form-field>
       <mat-label>Directions (Please enter as ordered steps)</mat-label>
-      <input matInput value="" [matChipInputFor]="chipListd" (matChipInputTokenEnd)="dialogue_addDirection()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addDirection()" name="d_direction_field" [(ngModel)]="dialogue_direction">
-      <mat-chip-list #chipListd>
-          <mat-chip *ngFor="let direction of data.Directions">
-            {{ direction }}
-            <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
-      </mat-chip-list>
+      <textarea matInput value="" (keyup.enter)="addNumbering()" (change)="dialogue_addDirection()" name="d_direction_field" [(ngModel)]="dialogue_direction"></textarea>
     </mat-form-field>
 </p>
 <p>

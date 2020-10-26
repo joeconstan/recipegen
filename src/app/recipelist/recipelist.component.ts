@@ -254,9 +254,10 @@ export class RecipelistComponent implements OnInit {
 export class DialogNewRecipeComponent {
 
     dialogue_ingredient: string;
-    dialogue_direction: string;
+    dialogue_direction = '1. ';
     dialogue_type: string;
     dialogue_difficulty: string;
+    step_num = 1;
     // dialogue_length: string;
     separatorKeysCodes: number[] = [ENTER,COMMA];
 
@@ -274,9 +275,31 @@ export class DialogNewRecipeComponent {
      this.dialogue_ingredient = '';
   }
   dialogue_addDirection(){
-     this.data.Directions.push(this.dialogue_direction)
-     this.dialogue_direction = '';
+     // this.data.Directions.push(this.dialogue_direction)
+     // this.dialogue_direction = '';
+     this.data.Directions = this.dialogue_direction.split(/\r?\n/);
   }
+
+  checkSteps(){
+      for (var i=1;i<=this.step_num;i++){
+          if (this.dialogue_direction.indexOf(i.toString()+'.')==-1){
+              // imperfect...
+              this.step_num=i-1;
+              if (this.step_num < 1){
+                  this.step_num = 1;
+              }
+          }
+      }
+
+  }
+
+  addNumbering(){
+      this.checkSteps()
+      this.step_num+=1
+      this.dialogue_direction+=this.step_num+". "
+  }
+
+
   dialogue_addType(){
      this.data.Type = this.dialogue_type;
   }

@@ -5,72 +5,110 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 @Injectable({
   providedIn: 'root'
 })
+
 export class CommonService {
+
+  private dev = false;
 
   constructor( private http: HttpClient ) { }
 
 
 
   newRecipe(recipe){
-      // return this.http.post('http://localhost:8080/api/newRecipe', recipe)
-      // uncomment for deployment
-      return this.http.post('/api/newRecipe', recipe)
+      if (this.dev){
+          return this.http.post('http://localhost:8080/api/newRecipe', recipe)
+      }else{
+          return this.http.post('/api/newRecipe', recipe)
+      }
   }
 
   saveRecipe(user){
-      // return this.http.post('http://localhost:8080/user/saveRecipe', user)
-      // uncomment for deployment
-      return this.http.post('/user/saveRecipe', user)
+       if (this.dev){
+           return this.http.post('http://localhost:8080/user/saveRecipe', user)
+       }else{
+           return this.http.post('/user/saveRecipe', user)
+       }
   }
 
  updateRecipe(recipe){
-      // return this.http.post('http://localhost:8080/api/updateRecipe', recipe)
+       if (this.dev){
+           return this.http.post('http://localhost:8080/api/updateRecipe', recipe)
+       }else{
+           return this.http.post('/api/updateRecipe', recipe)
+       }
       // uncomment for deployment
-      return this.http.post('/api/updateRecipe', recipe)
   }
 
- commentRecipe(recipe){
-      // return this.http.post('http://localhost:8080/api/commentRecipe', recipe)
+ commentRecipe(comment){
+      if (this.dev){
+          return this.http.post('http://localhost:8080/api/commentRecipe', comment)
+      }else{
+          return this.http.post('/api/commentRecipe', comment)
+      }
       // uncomment for deployment
-      return this.http.post('/api/commentRecipe', recipe)
+  }
+
+  getComments(recipeid){
+      var uri_param = encodeURIComponent(recipeid);
+       if (this.dev){
+           return this.http.get(`http://localhost:8080/api/getComments/${uri_param}`)
+       }else{
+           return this.http.get(`/api/getComments/${uri_param}`)
+       }
   }
 
   getRecipes(){
-      // return this.http.get('http://localhost:8080/api/getRecipes')
+       if (this.dev){
+           return this.http.get('http://localhost:8080/api/getRecipes')
+       }else{
+           return this.http.get('/api/getRecipes')
+       }
       // uncomment for deployment
-      return this.http.get('/api/getRecipes')
   }
 
   getPendingRecipes(){
-      // return this.http.get('http://localhost:8080/api/getPendingRecipes')
+       if (this.dev){
+           return this.http.get('http://localhost:8080/api/getPendingRecipes')
+       }else{
+           return this.http.get('/api/getPendingRecipes')
+       }
       // uncomment for deployment
-      return this.http.get('/api/getPendingRecipes')
   }
   getRecipesByType(type){
       var uri_param = encodeURIComponent(type);
-      // return this.http.get(`http://localhost:8080/api/getRecipesByType/${uri_param}`)
+      if (this.dev){
+          return this.http.get(`http://localhost:8080/api/getRecipesByType/${uri_param}`)
+      }else{
+          return this.http.get(`/api/getRecipesByType/${uri_param}`)
+      }
       // uncomment for deployment
-      return this.http.get(`/api/getRecipesByType/${uri_param}`)
   }
 
   getRecipe(recipe){
       var uri_param = encodeURIComponent(recipe);
-      // return this.http.get(`http://localhost:8080/api/getRecipe/${uri_param}`)
+      if (this.dev){
+          return this.http.get(`http://localhost:8080/api/getRecipe/${uri_param}`)
+      }else{
+          return this.http.get(`/api/getRecipe/${uri_param}`)
+      }
       // uncomment for deployment
-      return this.http.get(`/api/getRecipe/${uri_param}`)
   }
 
   getRandomRecipe(){
-      // return this.http.get('http://localhost:8080/api/getRandomRecipe')
-      // uncomment for deployment
-      return this.http.get('/api/getRandomRecipe')
+      if (this.dev){
+          return this.http.get('http://localhost:8080/api/getRandomRecipe')
+      }else{
+          return this.http.get('/api/getRandomRecipe')
+      }
   }
 
   getRecipesbyKeyword(keyword){
       var uri_param = encodeURIComponent(keyword);
-      // return this.http.get(`http://localhost:8080/api/getRecipesbyKeyword/${uri_param}`)
-      // uncomment for deployment
-      return this.http.get(`/api/getRecipesbyKeyword/${uri_param}`)
+      if (this.dev){
+          return this.http.get(`http://localhost:8080/api/getRecipesbyKeyword/${uri_param}`)
+      }else{
+          return this.http.get(`/api/getRecipesbyKeyword/${uri_param}`)
+      }
   }
 
   getRecipesWithFilters(filters){
@@ -91,19 +129,21 @@ export class CommonService {
           params = params.set('difficulty', filters.difficulty);
       }
 
-      // return this.http.get('http://localhost:8080/api/getRecipesWithFilters', {params})
-      // uncomment for deployment
-      return this.http.get('/api/getRecipesWithFilters', {params})
+      if (this.dev){
+          return this.http.get('http://localhost:8080/api/getRecipesWithFilters', {params})
+      }else{
+          return this.http.get('/api/getRecipesWithFilters', {params})
+      }
   }
-
 
 
   deleteRecipe(recipe){
-      // return this.http.post('http://localhost:8080/api/deleteRecipe', recipe)
-      // uncomment for deployment
-      return this.http.post('/api/deleteRecipe', recipe)
+       if (this.dev){
+           return this.http.post('http://localhost:8080/api/deleteRecipe', recipe)
+       }else{
+           return this.http.post('/api/deleteRecipe', recipe)
+       }
   }
-
 
 
   // USERS
@@ -129,16 +169,11 @@ export class CommonService {
   getSavedRecipes(user){
       // first query: get the saved recipes by this user from the db - new table?
       var params = new HttpParams().set('userid', user._id)
-      // return this.http.get('http://localhost:8080/user/getSaved', {params})
-      // uncomment for deployment
-      return this.http.get('/user/getSaved', {params})
-
-          // console.log('success! data: ', data)
-          // params = new HttpParams().set('recipelist', data)
-          // return this.http.get('http://localhost:8080/recipe/getRecipesFromList', {params})
-
-      // second query: grab the recipes by the recipe names given by the first query
+      if (this.dev){
+          return this.http.get('http://localhost:8080/user/getSaved', {params})
+      }else{
+          return this.http.get('/user/getSaved', {params})
+      }
   }
-
 
 }

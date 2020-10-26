@@ -49,10 +49,12 @@ export class AppComponent implements OnInit{
             // this.cookieService.set('myingredients', '')
         // }
 
-        let user = localStorage.getItem('user')
+        let user = JSON.parse(localStorage.getItem('user'))
         if (user){
+            // console.log(user)
             this.userService.setUser(user)
         }
+        // console.log('nouser')
 
     }
 }

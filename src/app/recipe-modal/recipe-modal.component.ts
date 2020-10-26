@@ -17,6 +17,7 @@ export class RecipeModalComponent implements OnInit {
 
     public recipe_full: any
     newComment
+    recipe_comments
 
   constructor(
       private pantryService: PantryService,
@@ -29,9 +30,14 @@ export class RecipeModalComponent implements OnInit {
 
   ngOnInit() {
       this.recipe_full = this.data
+      this.commonService.getComments(this.recipe_full._id).subscribe( data =>{
+        console.log(data)
+        this.recipe_comments = data;
+      },
+        error => console.log(error)
+      )
+
       // this.recipe_full = this.pantryService.loadRecipe(this.data)
-      // this.recipe_full.name = this.data
-      // this.recipe_full.ingredients =
   }
 
   bookmark_recipe(){
@@ -62,17 +68,32 @@ export class RecipeModalComponent implements OnInit {
 
 
   addComment(){
-      var commentobj = {
-          user:'temp',
-          text:this.newComment
+      // var commentobj = {
+          // user:'temp',
+          // text:this.newComment,
+      // }
+      // this.recipe_full.comments.push(commentobj)
+      if (!this.userService.user.username || this.userService.user.username==''){
+          this.modal.close()
+          this.router.navigate(['/login'])
+      }else{
+          var commentObj = {
+              recipeid: this.recipe_full._id,
+              userid: this.userService.user._id,
+              username: this.userService.user.username,
+              text: this.newComment
+          }
+
+          this.recipe_comments.push(commentObj)
+          this.newComment = ''
+
+          // this.commonService.commentRecipe(this.recipe_full).subscribe(data => {
+          this.commonService.commentRecipe(commentObj).subscribe(data => {
+                console.log(data)
+          },
+                error => console.error(error)
+          )
       }
-      this.recipe_full.comments.push(commentobj)
-      this.newComment = ''
-      this.commonService.commentRecipe(this.recipe_full).subscribe(data => {
-            console.log(data)
-      },
-            error => console.error(error)
-      )
 
   }
 
