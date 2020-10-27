@@ -30,7 +30,7 @@ export class PendingComponent implements OnInit {
   ngOnInit(): void {
       this.commonService.getPendingRecipes().subscribe(data => {
           this.pending_recipes = data;
-          if(!data.length || data.length == 0){
+          if(typeof data === 'object'){
               this.empty = true
           }else{
               this.empty = false
@@ -62,7 +62,7 @@ export class PendingComponent implements OnInit {
       this.modalRef.result.then((result) => {
           this.commonService.getPendingRecipes().subscribe(data => {
               this.pending_recipes = data
-              if(!data.length || data.length == 0){
+              if(typeof data === 'object'){
                   this.empty = true
               }else{
                   this.empty = false
@@ -73,7 +73,7 @@ export class PendingComponent implements OnInit {
         }, (reason) => {
             this.commonService.getPendingRecipes().subscribe(data => {
                 this.pending_recipes = data
-                if(!data.length || data.length == 0){
+                if(typeof data === 'object'){
                     this.empty = true
                 }else{
                     this.empty = false

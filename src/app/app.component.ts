@@ -53,6 +53,9 @@ export class AppComponent implements OnInit{
     }
 
     getAdmin(){
-        return this.userService.user.adminflag==true
+        if (this.userService.user){
+          return this.userService.user.adminflag==true
+        }
+        return false
     }
 }
