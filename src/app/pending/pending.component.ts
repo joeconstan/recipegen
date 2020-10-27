@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../common.service'
-import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
 
 @Component({
@@ -11,8 +11,15 @@ import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
 export class PendingComponent implements OnInit {
 
   pending_recipes: any;
+  empty = false;
   recipe_full
   recipe
+  private modalRef;
+
+  ngbModalOptions: NgbModalOptions = {
+      centered: true,
+      size: 'lg'
+  };
 
 
   constructor(
@@ -23,6 +30,11 @@ export class PendingComponent implements OnInit {
   ngOnInit(): void {
       this.commonService.getPendingRecipes().subscribe(data => {
           this.pending_recipes = data;
+          if(!data.length || data.length == 0){
+              this.empty = true
+          }else{
+              this.empty = false
+          }
       },
           error => console.error(error)
       )
@@ -31,7 +43,6 @@ export class PendingComponent implements OnInit {
 
 
   get_full_recipe(){
-
       this.commonService.getRecipe(this.recipe.Name).subscribe(data => {
           this.recipe_full = data[0];
           this.openModal()
@@ -46,8 +57,33 @@ export class PendingComponent implements OnInit {
   }
 
   openModal(){
-      const modalRef = this.modalService.open(RecipeModalComponent, { centered: true, size: 'lg'})
-      modalRef.componentInstance.data = this.recipe_full
+      this.modalRef = this.modalService.open(RecipeModalComponent, this.ngbModalOptions)
+      this.modalRef.componentInstance.data = this.recipe_full
+      this.modalRef.result.then((result) => {
+          this.commonService.getPendingRecipes().subscribe(data => {
+              this.pending_recipes = data
+              if(!data.length || data.length == 0){
+                  this.empty = true
+              }else{
+                  this.empty = false
+              }
+          },
+              error => console.error(error)
+          )
+        }, (reason) => {
+            this.commonService.getPendingRecipes().subscribe(data => {
+                this.pending_recipes = data
+                if(!data.length || data.length == 0){
+                    this.empty = true
+                }else{
+                    this.empty = false
+                }
+            },
+                error => console.error(error)
+            )
+        }
+      );
+
   }
 
 }

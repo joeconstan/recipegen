@@ -30,6 +30,14 @@ export class CommonService {
        }
   }
 
+  unSaveRecipe(user){
+       if (this.dev){
+           return this.http.post('http://localhost:8080/user/unSaveRecipe', user)
+       }else{
+           return this.http.post('/user/unSaveRecipe', user)
+       }
+  }
+
  updateRecipe(recipe){
        if (this.dev){
            return this.http.post('http://localhost:8080/api/updateRecipe', recipe)
@@ -149,9 +157,11 @@ export class CommonService {
   // USERS
 
   register(user){
-      // return this.http.post('http://localhost:8080/user/newUser', user)
-      // uncomment for deployment
-      return this.http.post('/user/newUser', user)
+      if (this.dev){
+          return this.http.post('http://localhost:8080/user/newUser', user)
+      }else{
+          return this.http.post('/user/newUser', user)
+      }
   }
 
   getUser(username:string,password:string) {
@@ -159,10 +169,11 @@ export class CommonService {
       var pswd = encodeURIComponent(password)
       var params = new HttpParams().set('username', username).set('pswd',pswd)
 
-      // return this.http.get('http://localhost:8080/user/getUser', {params})
-
-      // uncomment for deployment
-      return this.http.get('/user/getUser', {params})
+      if (this.dev){
+          return this.http.get('http://localhost:8080/user/getUser', {params})
+      }else{
+          return this.http.get('/user/getUser', {params})
+      }
   }
 
 

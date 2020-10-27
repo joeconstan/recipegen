@@ -35,6 +35,8 @@ import { PendingComponent } from './pending/pending.component';
 import { SavedComponent } from './saved/saved.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ChangelogComponent } from './changelog/changelog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @NgModule({
   declarations: [
@@ -71,9 +73,10 @@ import { ChangelogComponent } from './changelog/changelog.component';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatSelectModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule
   ],
-  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule ],
+  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule ],
   providers: [ CookieService ],
   entryComponents: [
     DialogNewRecipeComponent

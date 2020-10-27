@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { PantryService } from '../pantry.service'
 import { CommonService } from '../common.service'
 import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
@@ -46,6 +46,22 @@ export class SavedComponent implements OnInit {
 
     separatorKeysCodes: number[] = [ENTER,COMMA];
 
+    private modalRef;
+
+    ngbModalOptions: NgbModalOptions = {
+        centered: true,
+        size: 'lg',
+        beforeDismiss: () => {
+            let user = this.userService.user
+            this.commonService.getSavedRecipes(user).subscribe(data => {
+                this.recipes = data
+            },
+                error => console.error(error)
+            )
+            return true
+        }
+    };
+
   constructor(
       private pantryService: PantryService,
       private modalService: NgbModal,
@@ -59,8 +75,6 @@ export class SavedComponent implements OnInit {
 
       this.commonService.getSavedRecipes(user).subscribe(data => {
           this.recipes = data
-          console.log('data')
-          console.log(data)
       },
           error => console.error(error)
       )
@@ -83,10 +97,9 @@ export class SavedComponent implements OnInit {
 
 
   openModal(){
-      const modalRef = this.modalService.open(RecipeModalComponent, { centered: true, size: 'lg'})
-      modalRef.componentInstance.data = this.recipe_full
+      this.modalRef = this.modalService.open(RecipeModalComponent, this.ngbModalOptions)
+      this.modalRef.componentInstance.data = this.recipe_full
   }
-
 
 
   pageChanged(event){}

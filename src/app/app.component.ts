@@ -21,6 +21,7 @@ export class AppComponent implements OnInit{
     ) {}
 
     active = 1
+    user
     background: ThemePalette = undefined;
     tabcolor: ThemePalette = undefined;
     links = [
@@ -41,20 +42,17 @@ export class AppComponent implements OnInit{
 
     public ngOnInit(): void {
         this.titleService.setTitle( 'The Recipe Doc' );
-        // this.background = this.background ? undefined : 'basic';
         this.tabcolor = this.tabcolor ? undefined : 'accent';
-        // this.cookieService.set('cookie-test', 'test-value')
-        // const cookieexists = cookieService.check('myingredients');
-        // if (!cookieexists){
-            // this.cookieService.set('myingredients', '')
-        // }
-
+        // this.user = this.userService.user
         let user = JSON.parse(localStorage.getItem('user'))
         if (user){
-            // console.log(user)
+            this.user=user
             this.userService.setUser(user)
         }
-        // console.log('nouser')
 
+    }
+
+    getAdmin(){
+        return this.userService.user.adminflag==true
     }
 }
