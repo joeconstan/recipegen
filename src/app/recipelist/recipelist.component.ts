@@ -6,9 +6,10 @@ import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from '../user.service'
+import { FormControl, Validators } from '@angular/forms';
 
 
 export interface DialogData {
@@ -62,7 +63,8 @@ export class RecipelistComponent implements OnInit {
       private modalService: NgbModal,
       private commonService: CommonService,
       private userService: UserService,
-      public dialog: MatDialog
+      public dialog: MatDialog,
+      private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -220,13 +222,15 @@ export class RecipelistComponent implements OnInit {
           });
 
           dialogRef.afterClosed().subscribe(result => {
-              console.log('result:...')
-              console.log(result)
-              this.commonService.newRecipe(result).subscribe(data => {
-                    console.log(data)
-              },
-                error => console.error(error)
-              )
+              if (result){
+                  this.commonService.newRecipe(result).subscribe(data => {
+                      this._snackBar.open('Recipe Suggestion Submitted!', 'ok', {
+                          duration: 2000,
+                      });
+                  },
+                    error => console.error(error)
+                  )
+              }
 
           });
 
@@ -260,6 +264,7 @@ export class DialogNewRecipeComponent {
     step_num = 1;
     // dialogue_length: string;
     separatorKeysCodes: number[] = [ENTER,COMMA];
+
 
   constructor(
     public dialogRef: MatDialogRef<DialogNewRecipeComponent>,
@@ -306,6 +311,16 @@ export class DialogNewRecipeComponent {
   dialogue_addDifficulty(){
      this.data.Difficulty = this.dialogue_difficulty;
   }
+
+  dialogue_removeIngredient(ingredient){
+    var index = this.data.Ingredients.indexOf(ingredient, 0);
+    if (index > -1) {
+       this.data.Ingredients.splice(index, 1);
+    }
+
+  }
+
+
   // dialogue_addLength(){
   //     console.log('testing addlength')
   //    this.data.Length = this.dialogue_length;

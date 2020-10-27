@@ -11,7 +11,7 @@
 <p>
   <mat-form-field>
     <mat-label>Recipe Name</mat-label>
-    <input matInput [(ngModel)]="data.Name">
+    <input matInput [(ngModel)]="data.Name" required >
   </mat-form-field>
 </p>
 <p>
@@ -19,7 +19,7 @@
     <mat-label>Ingredients (comma-separated)</mat-label>
     <input matInput value="" [matChipInputFor]="chipList" (matChipInputTokenEnd)="dialogue_addIngredient()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient">
     <mat-chip-list #chipList>
-        <mat-chip *ngFor="let ingredient of data.Ingredients">
+        <mat-chip *ngFor="let ingredient of data.Ingredients" (removed)="dialogue_removeIngredient(ingredient)">
           {{ ingredient }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
@@ -36,13 +36,15 @@
 <p>
     <mat-form-field>
       <mat-label>Type</mat-label>
-    <mat-select [(ngModel)]="dialogue_type" (selectionChange)="dialogue_addType()" matInput>
+    <mat-select [(ngModel)]="dialogue_type" (selectionChange)="dialogue_addType()" matInput multiple>
       <mat-option value="Breakfast">Breakfast</mat-option>
       <mat-option value="Lunch/Dinner">Lunch/Dinner</mat-option>
-      <mat-option value="Dessert">Dessert</mat-option>
-      <mat-option value="Snacks/Sauces">Snacks/Sauces</mat-option>
+      <mat-option value="Dessert">Desserts</mat-option>
+      <mat-option value="Snacks/Sauces">Sauces/Sides</mat-option>
       <mat-option value="Holiday">Holiday</mat-option>
       <mat-option value="Breads">Breads</mat-option>
+      <mat-option value="Salads">Salads</mat-option>
+      <mat-option value="Soups">Soups</mat-option>
     </mat-select>
 
     </mat-form-field>
@@ -69,5 +71,10 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
+    <div *ngIf="data.Name == '' || data.timelength == 0" >
+        <button mat-button disabled [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
+    </div>
+    <div *ngIf="data.Name != '' && data.timelength != 0">
+        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
+    </div>
 </div>

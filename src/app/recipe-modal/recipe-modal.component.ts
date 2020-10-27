@@ -18,6 +18,8 @@ export class RecipeModalComponent implements OnInit {
     public recipe_full: any
     newComment
     recipe_comments
+    editing = false
+    TAdirections
 
   constructor(
       private pantryService: PantryService,
@@ -64,6 +66,30 @@ export class RecipeModalComponent implements OnInit {
             error => console.error(error)
       )
 
+  }
+  unbookmark_recipe(){
+      // if user logged in, add recipe to saved
+      if(this.userService.getUser()){
+          var user = this.userService.getUser()
+          const index = user.Saved.indexOf(this.recipe_full._id);
+          if (index >= 0) {
+              user.Saved.splice(index, 1);
+          }
+          this.userService.setUser(user)
+
+          this.commonService.unSaveRecipe(user).subscribe(data => {
+              this._snackBar.open('Recipe removed from saved list', 'ok', {
+                  duration: 2000,
+              });
+          },
+                error => console.error(error)
+          )
+      }
+      // else, close modal & redirect to login page
+      else{
+          this.modal.close()
+          this.router.navigate(['/login'])
+      }
   }
 
 
@@ -114,5 +140,23 @@ export class RecipeModalComponent implements OnInit {
           error => console.error(error)
       )
   }
+
+  editRecipe(){
+      this.editing = true
+      var modified_string = ''
+      this.recipe_full.Directions.forEach(element => {
+          modified_string+=element+'\n'
+      });
+      // this.TAdirections = this.recipe_full.Directions
+      this.TAdirections = modified_string
+  }
+
+  userSaved(){
+      if (this.userService.user.Saved.indexOf(this.recipe_full._id) > -1){
+          return true
+      }
+      return false
+  }
+
 
 }

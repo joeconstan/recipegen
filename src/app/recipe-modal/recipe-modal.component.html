@@ -2,9 +2,16 @@
       <h4 class="modal-title montst-bg-it" id="modal-basic-title">{{ recipe_full.Name }}</h4>
       <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')"> -->
           <!-- <span aria-hidden="true">&times;</span> -->
-          <button mat-button (click)="bookmark_recipe()">
-              <mat-icon>bookmark_border</mat-icon>
-          </button>
+          <div *ngIf="userSaved()">
+              <button mat-button (click)="unbookmark_recipe()">
+                  <mat-icon>bookmark</mat-icon>
+              </button>
+          </div>
+          <div *ngIf="!userSaved()">
+              <button mat-button (click)="bookmark_recipe()">
+                  <mat-icon>bookmark_border</mat-icon>
+              </button>
+          </div>
           <!-- <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> -->
               <!-- <path fill-rule="evenodd" d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5L13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175l-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/> -->
           <!-- </svg> -->
@@ -13,33 +20,51 @@
   <div class="modal-body">
       <div>
         <div class="graysmall">
-          <p class="inline">Type</p>
+          <p class="inline">Type:</p>
           <p class="inline">{{ recipe_full.Type }}</p>
         </div>
         <div class="graysmall">
-          <p class="inline">Length</p>
+          <p class="inline">Length:</p>
           <p class="inline">{{ recipe_full.timelength }}</p>
         </div>
         <div class="graysmall">
-          <p class="inline">Difficulty</p>
+          <p class="inline">Difficulty:</p>
           <p class="inline">{{ recipe_full.Difficulty }}</p>
+        </div>
+        <div class="graysmall">
+          <p class="inline">Author:</p>
+          <!-- <p class="inline">link</p> -->
+          <p class="inline">{{ recipe_full.author }}</p>
         </div>
       </div>
       <hr>
     <!-- <form> -->
       <!-- <div class="form-group"> -->
-      <button mat-button class="floatright" (click)="modal.close('Save click')">
+      <!-- <button mat-button class="floatright" (click)="modal.close('Save click')"> -->
+      <button mat-button class="floatright" (click)="editRecipe()">
           <mat-icon>edit</mat-icon>
       </button>
+
         <label ngbAutofocus for="ingredientsdiv" class="montst">Ingredients</label>
-        <div *ngFor="let ingredient of recipe_full.Ingredients" id="ingredientsdiv">
-          <p class="montst-sm">{{ ingredient }}</p>
+        <div *ngIf="editing == false">
+            <div *ngFor="let ingredient of recipe_full.Ingredients" id="ingredientsdiv">
+              <p class="montst-sm">{{ ingredient }}</p>
+            </div>
+        </div>
+        <div *ngIf="editing == true">
+            <!-- <textarea rows="5" name="ingredientsTA" matInput [(ngModel)]="TAIngredients" ></textarea> -->
         </div>
         <br>
         <hr>
+
         <label for="directionsdiv" class="montst">Directions</label>
-        <div *ngFor="let direction of recipe_full.Directions" id="directionsdiv">
-          <p class="montst-sm">- {{ direction }}</p>
+        <div *ngIf="editing == false">
+            <div *ngFor="let direction of recipe_full.Directions" id="directionsdiv">
+                <p class="montst-sm">- {{ direction }}</p>
+            </div>
+        </div>
+        <div *ngIf="editing == true">
+            <textarea rows="5" name="directionsTA" matInput [(ngModel)]="TAdirections" ></textarea>
         </div>
       <!-- </div> -->
     <!-- </form> -->

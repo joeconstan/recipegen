@@ -101,5 +101,8 @@ mat-card:hover, .card:hover{
 
 .veryverylong{
     font-size: .5em !important;
+}
 
+#randombutton{
+    color: black;
 }
