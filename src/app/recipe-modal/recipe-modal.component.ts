@@ -94,12 +94,7 @@ export class RecipeModalComponent implements OnInit {
 
 
   addComment(){
-      // var commentobj = {
-          // user:'temp',
-          // text:this.newComment,
-      // }
-      // this.recipe_full.comments.push(commentobj)
-      if (!this.userService.user.username || this.userService.user.username==''){
+      if (!this.userService.user || !this.userService.user.username || this.userService.user.username==''){
           this.modal.close()
           this.router.navigate(['/login'])
       }else{
@@ -152,8 +147,10 @@ export class RecipeModalComponent implements OnInit {
   }
 
   userSaved(){
-      if (this.userService.user.Saved.indexOf(this.recipe_full._id) > -1){
-          return true
+      if (this.userService.user){
+        if (this.userService.user.Saved.indexOf(this.recipe_full._id) > -1){
+            return true
+        }
       }
       return false
   }
