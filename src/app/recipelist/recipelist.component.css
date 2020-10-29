@@ -62,6 +62,7 @@ mat-card:hover, .card:hover{
 
 .recipe-img{
     height: 300px;
+    object-fit: cover;
 }
 
 
@@ -106,3 +107,5 @@ mat-card:hover, .card:hover{
 #randombutton{
     color: black;
 }
+
+

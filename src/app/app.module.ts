@@ -36,6 +36,7 @@ import { SavedComponent } from './saved/saved.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ChangelogComponent } from './changelog/changelog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     LoginComponent,
     PendingComponent,
     SavedComponent,
-    ChangelogComponent
+    ChangelogComponent,
+    SinglerecipeComponent
   ],
   imports: [
     BrowserModule,
