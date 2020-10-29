@@ -1,6 +1,4 @@
-  <div class="modal-header" (mouseenter)="editable('name',true)" (mouseleave)="editable('name',false)">
-
-
+  <div (mouseenter)="editable('name',true)" (mouseleave)="editable('name',false)">
 
       <div *ngIf="editing_name == false">
           <div contenteditable="false"> <h4  class="modal-title montst-bg-it" id="modal-basic-title">{{ recipe_full.Name }}</h4></div>
@@ -60,7 +58,6 @@
         </div>
         <div class="graysmall">
           <p class="inline">Author:</p>
-          <!-- <p class="inline">link</p> -->
           <p class="inline">{{ recipe_full.author }}</p>
         </div>
       </div>
@@ -118,10 +115,6 @@
       <div *ngIf="recipe_full.Pending">
           <button mat-button (click)="approveRecipe()" color="primary">Approve</button>
           <button mat-button (click)="rejectRecipe()" color="primary">Reject</button>
-          <!-- <mat-form-field> -->
-              <!-- <mat-label>Add a comment</mat-label> -->
-            <!-- <input matInput value="" placeholder="Enter text..."> -->
-          <!-- </mat-form-field> -->
       </div>
       <div *ngIf="editing_ing == true || editing_dir == true">
         <button mat-button (click)="cancelEdits()" color="basic">Cancel</button>

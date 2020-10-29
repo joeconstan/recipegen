@@ -8,6 +8,7 @@ import { RegisterComponent } from './register/register.component'
 import { PendingComponent } from './pending/pending.component'
 import { SavedComponent } from './saved/saved.component'
 import { ChangelogComponent } from './changelog/changelog.component'
+import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component'
 
 const routes: Routes = [
     { path: 'sc', component: IngredientsComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'pending', component: PendingComponent },
     { path: 'saved', component: SavedComponent },
-    { path: 'changelog', component: ChangelogComponent }
+    { path: 'changelog', component: ChangelogComponent },
+    { path: 'recipe/:recipe', component: SinglerecipeComponent }
 ];
 
 @NgModule({

@@ -1,56 +1,55 @@
-import { Component, OnInit, Input } from '@angular/core'
-import { NgbModal,NgbActiveModal } from '@ng-bootstrap/ng-bootstrap'
-import { PantryService } from '../pantry.service'
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Observable } from 'rxjs';
 import { CommonService } from '../common.service'
 import { UserService } from '../user.service'
-import { Router, ActivatedRoute } from '@angular/router'
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-recipe-modal',
-  templateUrl: './recipe-modal.component.html',
-  styleUrls: ['./recipe-modal.component.css']
+  selector: 'app-singlerecipe',
+  templateUrl: './singlerecipe.component.html',
+  styleUrls: ['./singlerecipe.component.css']
 })
-export class RecipeModalComponent implements OnInit {
+export class SinglerecipeComponent implements OnInit {
 
-    @Input() data
 
-    public recipe_full: any
-    newComment
-    recipe_comments
-    editing = false
+  recipe_full: any
+  newComment
+  recipe_comments
+  editing = false
 
-    editing_name = false
-    editing_ing = false
-    editing_dir = false
+  editing_name = false
+  editing_ing = false
+  editing_dir = false
 
-    editable_name = false
-    editable_ing = false
-    editable_dir = false
-
-    TAdirections
-    TAIngredients
+  editable_name = false
+  editable_ing = false
+  editable_dir = false
 
   constructor(
-      private pantryService: PantryService,
-      public modal: NgbActiveModal,
-      private commonService: CommonService,
-      private userService: UserService,
-      private router: Router,
-      private _snackBar: MatSnackBar
+    private route: ActivatedRoute,
+    private router: Router,
+    private commonService: CommonService,
+    private userService: UserService
   ) { }
 
-  ngOnInit() {
-      this.recipe_full = this.data
-      this.commonService.getComments(this.recipe_full._id).subscribe( data =>{
-        console.log(data)
-        this.recipe_comments = data;
-      },
-        error => console.log(error)
-      )
+  ngOnInit(): void {
+    // var recipe_name = decodeURIComponent(this.route.snapshot.paramMap.get('recipe'));
+    var recipe_name = this.route.snapshot.paramMap.get('recipe')
+    console.log(recipe_name)
 
-      // this.recipe_full = this.pantryService.loadRecipe(this.data)
+    this.commonService.getRecipe(recipe_name).subscribe(data => {
+        this.recipe_full = data[0];
+          console.log(this.recipe_full)
+    },
+        error => console.error(error)
+    )
   }
+
+
+
+
+
+
 
   bookmark_recipe(){
       // if user logged in, add recipe to saved
@@ -218,6 +217,10 @@ export class RecipeModalComponent implements OnInit {
     console.log(uri_param)
 
   }
+
+
+
+
 
 
 }

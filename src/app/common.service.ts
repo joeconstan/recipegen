@@ -8,7 +8,7 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 
 export class CommonService {
 
-  private dev = false;
+  private dev = true;
 
   constructor( private http: HttpClient ) { }
 
