@@ -4,7 +4,9 @@ import { PantryService } from '../pantry.service'
 import { CommonService } from '../common.service'
 import { UserService } from '../user.service'
 import { Router, ActivatedRoute } from '@angular/router'
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { ClipboardService } from 'ngx-clipboard'
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-recipe-modal',
@@ -18,18 +20,25 @@ export class RecipeModalComponent implements OnInit {
     public recipe_full: any
     newComment
     recipe_comments
+    recipe_image: any
     editing = false
 
     editing_name = false
+    editing_meta = false
     editing_ing = false
     editing_dir = false
 
     editable_name = false
+    editable_meta = false
     editable_ing = false
     editable_dir = false
 
-    TAdirections
-    TAIngredients
+    fileToUpload = {
+      recipeid:'',
+      filedata:null,
+      filename:''
+    };
+    user;
 
   constructor(
       private pantryService: PantryService,
@@ -37,17 +46,28 @@ export class RecipeModalComponent implements OnInit {
       private commonService: CommonService,
       private userService: UserService,
       private router: Router,
-      private _snackBar: MatSnackBar
+      private _snackBar: MatSnackBar,
+      private _clipboardService: ClipboardService,
+      private _sanitizer: DomSanitizer
   ) { }
 
   ngOnInit() {
+      this.user = this.userService.user
       this.recipe_full = this.data
       this.commonService.getComments(this.recipe_full._id).subscribe( data =>{
-        console.log(data)
         this.recipe_comments = data;
       },
         error => console.log(error)
       )
+      // this.commonService.getImages(this.recipe_full._id).subscribe( data => {
+      //   if (data){
+      //     this.recipe_image = data.data
+      //   }
+      // },
+      //   error => {
+      //     console.log(error)
+      //   }
+      // )
 
       // this.recipe_full = this.pantryService.loadRecipe(this.data)
   }
@@ -154,6 +174,8 @@ export class RecipeModalComponent implements OnInit {
         this.editing_dir = true
       }else if (section == 'name'){
         this.editing_name = true
+      }else if (section == 'meta'){
+        this.editing_meta = true
       }
       // var editable_dir_string = ''
       // this.recipe_full.Directions.forEach(element => {
@@ -176,6 +198,7 @@ export class RecipeModalComponent implements OnInit {
     //set editing false
     this.editing = false
     this.editing_name = false
+    this.editing_meta = false
     this.editing_ing = false
     this.editing_dir = false
   }
@@ -191,12 +214,12 @@ export class RecipeModalComponent implements OnInit {
   editable(section,torf){
     if (section == 'ingredients'){
       this.editable_ing = torf
-    }
-    else if (section == 'name'){
+    }else if (section == 'name'){
       this.editable_name = torf
-    }
-    else if (section == 'directions'){
+    }else if (section == 'directions'){
       this.editable_dir = torf
+    }else if (section == 'meta'){
+      this.editable_meta = torf
     }
   }
 
@@ -214,9 +237,68 @@ export class RecipeModalComponent implements OnInit {
     var uri_param = encodeURIComponent(this.recipe_full.Name)
     let recipe_url = `http://localhost:4200/recipe/${uri_param}`
     // pop up a dialog letting them copy the url
-    console.log(recipe_url)
-    console.log(uri_param)
+    // console.log(recipe_url)
 
+    this._clipboardService.copy(recipe_url)
+
+  }
+
+
+
+
+  getBase64(file){
+      return new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.readAsDataURL(file)
+          reader.onload = () => resolve(reader.result)
+          reader.onerror = error => reject(error)
+      })
+  }
+
+
+
+
+  readImage(fileInput: FileList){
+      if (!this.userService.user || this.userService.user.adminflag == false){
+        return;
+      }
+      this.fileToUpload.filedata = fileInput[0];
+      this.fileToUpload.filename = fileInput[0].name.toString();
+      this.fileToUpload.recipeid = this.recipe_full._id.toString();
+      // var fileName = fileInput.target.files[0].name
+      // console.log(this.fileToUpload.filename)
+      this.getBase64(this.fileToUpload.filedata).then(data => {
+        this.fileToUpload.filedata = data
+        // console.log('this.fileToUpload.filedata')
+        // console.log(this.fileToUpload.filedata)
+        // console.log(this.fileToUpload.filedata)
+        this.commonService.addRecipeImg(this.fileToUpload).subscribe(data => {
+              // console.log(data)
+              // on image uploaded,
+              // open a snackbar
+              this._snackBar.open('Image Added!', 'ok', {
+                  duration: 2000,
+              });
+              // reload the recipe so the image shows up
+              this.commonService.getRecipe(this.recipe_full.Name).subscribe(data => {
+                  this.recipe_full = data[0];
+              },
+                  error => console.error(error)
+              )
+
+        },
+              error => console.error(error)
+        )
+
+
+      });
+      // if(fileInput){
+          // var file = fileInput.target.files[0]
+      // }
+  }
+
+
+  upload_image(){
   }
 
 

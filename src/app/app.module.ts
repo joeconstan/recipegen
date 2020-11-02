@@ -37,7 +37,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { ChangelogComponent } from './changelog/changelog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component';
-
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -76,7 +76,8 @@ import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component';
     MatSnackBarModule,
     MatSelectModule,
     MatExpansionModule,
-    MatTooltipModule
+    MatTooltipModule,
+    ClipboardModule
   ],
   exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule ],
   providers: [ CookieService ],

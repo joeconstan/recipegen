@@ -109,7 +109,8 @@
                     </mat-card-header>
                     <!-- <h4 class="card-header centered"> {{ (recipe.Name.length>25)? (recipe.Name | slice:0:25)+'..':(recipe.Name) }}</h4> -->
                     <!-- <div id="recipeimage"> -->
-                      <img mat-card-image class="card-img-top recipe-img" src="/assets/img/recipes/{{ recipe.Name| alpha }}.jpeg" onerror="this.src='/assets/img/placeholder.jpeg';" alt="image">
+                      <img mat-card-image *ngIf="recipe.images && recipe.images[0]" class="card-img-top recipe-img" src="{{'data:image/jpg;base64,' + recipe.images[0].filedata}}" onerror="this.src='/assets/img/placeholder.jpeg';" alt="image">
+                      <!-- <img mat-card-image class="card-img-top recipe-img" src="/assets/img/recipes/{{ recipe.Name| alpha }}.jpeg" onerror="this.src='/assets/img/placeholder.jpeg';" alt="image"> -->
                     <!-- </div> -->
               <!-- <img class="card-img-top" src="/assets/img/recipes/recipe pics p1-3/{{ recipe.Name.split(' ').join('') | lowercase}}.jpeg" alt="image"> -->
               <mat-card-content class="bg-custom2">

@@ -55,6 +55,10 @@ export class RecipelistComponent implements OnInit {
         Pending: Boolean
     }
 
+    images = []
+
+    private modalRef;
+
     separatorKeysCodes: number[] = [ENTER,COMMA];
 
 
@@ -69,12 +73,23 @@ export class RecipelistComponent implements OnInit {
 
   ngOnInit(): void {
       this.commonService.getRecipes().subscribe(data => {
-          this.recipes = data;
+          this.recipes = data
       },
           error => console.error(error)
       )
+
   }
 
+  getImageById(recipeid){
+    console.log('recipeid')
+    console.log(recipeid)
+    this.images.forEach(element => {
+      console.log(element)
+      if (element.recipeid == recipeid){
+        return element;
+      }
+    });
+  }
 
 
   get_full_recipe(){
@@ -94,8 +109,22 @@ export class RecipelistComponent implements OnInit {
 
 
   openModal(){
-      const modalRef = this.modalService.open(RecipeModalComponent, { centered: true, size: 'lg'})
-      modalRef.componentInstance.data = this.recipe_full
+      this.modalRef = this.modalService.open(RecipeModalComponent, { centered: true, size: 'lg'})
+      this.modalRef.componentInstance.data = this.recipe_full
+      this.modalRef.result.then((result) => {
+        this.commonService.getRecipes().subscribe(data => {
+            this.recipes = data
+        },
+            error => console.error(error)
+        )
+      }, (reason) => {
+          this.commonService.getRecipes().subscribe(data => {
+              this.recipes = data
+          },
+              error => console.error(error)
+          )
+        }
+      );
   }
 
 
@@ -246,6 +275,7 @@ export class RecipelistComponent implements OnInit {
         error => console.error(error)
       )
   }
+
 
 }
 
