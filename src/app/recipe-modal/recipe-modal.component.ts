@@ -209,6 +209,10 @@ export class RecipeModalComponent implements OnInit {
 
     //set editing false
     this.editing = false
+    this.editing_name = false
+    this.editing_meta = false
+    this.editing_ing = false
+    this.editing_dir = false
   }
 
   editable(section,torf){
@@ -235,7 +239,8 @@ export class RecipeModalComponent implements OnInit {
 
   shareRecipe(){
     var uri_param = encodeURIComponent(this.recipe_full.Name)
-    let recipe_url = `http://localhost:4200/recipe/${uri_param}`
+    // let recipe_url = `http://localhost:4200/recipe/${uri_param}`
+    let recipe_url = `https://recipe-doc.herokuapp.com/recipe/${uri_param}`
     // pop up a dialog letting them copy the url
     // console.log(recipe_url)
 
