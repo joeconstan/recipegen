@@ -11,6 +11,7 @@ import { ChangelogComponent } from './changelog/changelog.component'
 import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component'
 
 const routes: Routes = [
+    { path: '', component: RecipelistComponent },
     { path: 'sc', component: IngredientsComponent },
     { path: 'rb', component: RecipelistComponent },
     { path: 'login', component: LoginComponent },

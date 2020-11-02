@@ -1,0 +1,81 @@
+.montst{
+    font-family: 'Montserrat' !important;
+    font-size: 1.20em;
+    font-weight: bold;
+}
+
+.montst-sm{
+    font-family: 'Montserrat' !important;
+    font-size: .85em;
+}
+
+.montst-bg{
+    font-family: 'Montserrat' !important;
+    font-size: 1.5em;
+}
+
+.pedna{
+    font-family: peddana;
+    font-weight: 50 !important;
+}
+
+
+.montst-bg-it{
+    font-family: 'Montserrat' !important;
+    font-size: 1.5em;
+    font-style: italic;
+}
+
+
+.floatright{
+    float: right;
+}
+
+.floatleft{
+    float: left;
+}
+
+
+mat-accordion, mat-expansion-panel{
+    width: 100% !important;
+    box-shadow: none;
+}
+
+.tilefix{
+    /* position: absolute; */
+    width: 100%;
+    /* height: 100%; */
+    box-shadow: none;
+}
+
+mat-panel-title{
+    float:right;
+}
+
+
+.widthtf{
+    width: 75%;
+}
+
+.inline{
+    display: inline-block;
+    padding-left: 10px;
+}
+
+.graysmall p{
+    font-size: .85em;
+    color:gray;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+
+.editable:hover  {
+  background: #FFF;
+  border-color: #69c773;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
+  padding: .5em;
+  border-radius: 3px;
+}

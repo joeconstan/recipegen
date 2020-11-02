@@ -18,7 +18,7 @@
 
       <div *ngIf="userSaved()">
 
-        <button mat-button (click)="shareRecipe()">
+        <button mat-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
           <mat-icon>share</mat-icon>
         </button>
 
@@ -30,7 +30,7 @@
 
       <div *ngIf="!userSaved()">
 
-        <button mat-button (click)="shareRecipe()">
+        <button mat-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
           <mat-icon>share</mat-icon>
         </button>
 
@@ -45,25 +45,71 @@
 
   <!-- modal-body -->
   <div class="modal-body">
-      <div>
-        <div class="graysmall">
-          <p class="inline">Type:</p>
-          <p class="inline">{{ recipe_full.Type }}</p>
+
+      <div (mouseenter)="editable('meta',true)" (mouseleave)="editable('meta',false)">
+        <div *ngIf="editable_meta == true">
+          <button mat-button class="floatright" (click)="editRecipe('meta')">
+              <mat-icon>edit</mat-icon>
+          </button>
         </div>
-        <div class="graysmall">
-          <p class="inline">Length:</p>
-          <p class="inline">{{ recipe_full.timelength }}</p>
+
+        <div *ngIf="editing_meta == false">
+          <div class="graysmall">
+            <p class="inline">Type:</p>
+            <p class="inline">{{ recipe_full.Type }}</p>
+          </div>
+          <div class="graysmall">
+            <p class="inline">Length:</p>
+            <p class="inline">{{ recipe_full.timelength }}</p>
+          </div>
+          <div class="graysmall">
+            <p class="inline">Difficulty:</p>
+            <p class="inline">{{ recipe_full.Difficulty }}</p>
+          </div>
+          <div class="graysmall">
+            <p class="inline">Author:</p>
+            <!-- <p class="inline">link</p> -->
+            <p class="inline">{{ recipe_full.author }}</p>
+          </div>
         </div>
-        <div class="graysmall">
-          <p class="inline">Difficulty:</p>
-          <p class="inline">{{ recipe_full.Difficulty }}</p>
+        <div *ngIf="editing_meta == true">
+          <div class="graysmall">
+            <p class="inline">Type:</p>
+            <p contenteditable="true" class="inline">{{ recipe_full.Type }}</p>
+          </div>
+          <div class="graysmall">
+            <p class="inline">Length:</p>
+            <p contenteditable="true" class="inline">{{ recipe_full.timelength }}</p>
+          </div>
+          <div class="graysmall">
+            <p class="inline">Difficulty:</p>
+            <p contenteditable="true" class="inline">{{ recipe_full.Difficulty }}</p>
+          </div>
+          <div class="graysmall">
+            <p class="inline">Author:</p>
+            <!-- <p class="inline">link</p> -->
+            <p contenteditable="true" class="inline">{{ recipe_full.author }}</p>
+          </div>
         </div>
-        <div class="graysmall">
-          <p class="inline">Author:</p>
-          <!-- <p class="inline">link</p> -->
-          <p class="inline">{{ recipe_full.author }}</p>
-        </div>
+
       </div>
+      <hr>
+
+
+      <div *ngIf="recipe_full && recipe_full.images[0]">
+        <div class="inlined" *ngFor="let image of recipe_full.images">
+          <img class="inlined" src="{{'data:image/jpg;base64,' + image.filedata}}" width="150" alt="">
+        </div>
+        <!-- <img *ngIf="recipe_image" [src]="recipe_image" width="150" alt=""> -->
+      </div>
+
+
+      <div *ngIf="user && user.adminflag==true" class="image-upload form-group">
+        <!-- <label for="fileupload" (click)="upload_image()" ><mat-icon>attach_file</mat-icon></label> -->
+        <input type="file" name="fileupload" id="fileupload" (change)="readImage($event.target.files)">
+        <!-- <button>Upload</button> -->
+      </div>
+
       <hr>
 
 

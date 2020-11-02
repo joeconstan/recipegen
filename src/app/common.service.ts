@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 // import { Response } from '@angular/http';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http'
 
 export class CommonService {
 
-  private dev = true;
+  private dev = false;
 
   constructor( private http: HttpClient ) { }
 
@@ -47,6 +48,15 @@ export class CommonService {
       // uncomment for deployment
   }
 
+ addRecipeImg(fileobj){
+       if (this.dev){
+           return this.http.post('http://localhost:8080/api/addRecipeImg', fileobj)
+       }else{
+           return this.http.post('/api/addRecipeImg', fileobj)
+       }
+      // uncomment for deployment
+  }
+
  commentRecipe(comment){
       if (this.dev){
           return this.http.post('http://localhost:8080/api/commentRecipe', comment)
@@ -62,6 +72,23 @@ export class CommonService {
            return this.http.get(`http://localhost:8080/api/getComments/${uri_param}`)
        }else{
            return this.http.get(`/api/getComments/${uri_param}`)
+       }
+  }
+
+  getImages(recipeid):Observable<any>{
+      var uri_param = encodeURIComponent(recipeid);
+       if (this.dev){
+           return this.http.get(`http://localhost:8080/api/getImages/${uri_param}`)
+       }else{
+           return this.http.get(`/api/getImages/${uri_param}`)
+       }
+  }
+
+  getAllImages(){
+       if (this.dev){
+           return this.http.get('http://localhost:8080/api/getAllImages')
+       }else{
+           return this.http.get('/api/getAllImages')
        }
   }
 
