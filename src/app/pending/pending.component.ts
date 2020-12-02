@@ -31,9 +31,9 @@ export class PendingComponent implements OnInit {
       this.commonService.getPendingRecipes().subscribe(data => {
           this.pending_recipes = data;
           if(typeof data === 'object'){
-              this.empty = true
+              this.empty = false // doesn't work
           }else{
-              this.empty = false
+              this.empty = true
           }
       },
           error => console.error(error)
@@ -63,9 +63,9 @@ export class PendingComponent implements OnInit {
           this.commonService.getPendingRecipes().subscribe(data => {
               this.pending_recipes = data
               if(typeof data === 'object'){
-                  this.empty = true
-              }else{
                   this.empty = false
+              }else{
+                  this.empty = true
               }
           },
               error => console.error(error)

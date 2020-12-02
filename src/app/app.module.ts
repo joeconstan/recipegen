@@ -38,6 +38,7 @@ import { ChangelogComponent } from './changelog/changelog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component';
 import { ClipboardModule } from 'ngx-clipboard';
+import { NgxFlickingModule } from '@egjs/ngx-flicking';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ClipboardModule } from 'ngx-clipboard';
     MatSelectModule,
     MatExpansionModule,
     MatTooltipModule,
-    ClipboardModule
+    ClipboardModule,
+    NgxFlickingModule
   ],
   exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule ],
   providers: [ CookieService ],

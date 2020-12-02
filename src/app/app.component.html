@@ -26,7 +26,8 @@
      <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="dropdownBasic1">
        <div *ngIf="getAdmin() == true"><button routerLink="/pending" ngbDropdownItem>Approvals</button></div>
        <button routerLink="/saved" ngbDropdownItem>Saved</button>
-       <button routerLink="/login" ngbDropdownItem>Login</button>
+       <button *ngIf="!getUser()" routerLink="/login" ngbDropdownItem>Login</button>
+       <button *ngIf="getUser()"(click)="logout()" ngbDropdownItem>Logout</button>
      </div>
      </div>
     <!-- <a class="nav-link floatright" routerLink="/login" routerLinkActive="router-link-active"><mat-icon>person</mat-icon></a> -->
