@@ -113,21 +113,29 @@ export class RecipelistComponent implements OnInit {
       this.modalRef = this.modalService.open(RecipeModalComponent, { centered: true, size: 'lg'})
       this.modalRef.componentInstance.data = this.recipe_full
       this.modalRef.result.then((result) => {
-        this.query_recipes()
-        // this.commonService.getRecipes().subscribe(data => {
-        //     this.recipes = data
-        // },
-        //     error => console.error(error)
-        // )
-      }, (reason) => {
+        // this.query_recipes doesnt sort the recipe results, while getRecipes() does, so gotta check. kinda messy tho
+        if (this.filters.keywords.length<1 && this.filters.type=='' && this.filters.time=='' && this.filters.difficulty==''){
+          this.commonService.getRecipes().subscribe(data => {
+              this.recipes = data
+          },
+              error => console.error(error)
+          )
+        }else{
           this.query_recipes()
-          // this.commonService.getRecipes().subscribe(data => {
-          //     this.recipes = data
-          // },
-          //     error => console.error(error)
-          // )
         }
-      );
+
+      }, (reason) => {
+        if (this.filters.keywords.length<1 && this.filters.type=='' && this.filters.time=='' && this.filters.difficulty==''){
+          this.commonService.getRecipes().subscribe(data => {
+              this.recipes = data
+          },
+              error => console.error(error)
+          )
+        }else{
+          this.query_recipes()
+        }
+      }
+    );
   }
 
 
