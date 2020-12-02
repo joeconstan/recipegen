@@ -103,7 +103,6 @@ export class CommonService {
        }else{
            return this.http.get('/api/getRecipes')
        }
-      // uncomment for deployment
   }
 
   getPendingRecipes(){
@@ -112,7 +111,6 @@ export class CommonService {
        }else{
            return this.http.get('/api/getPendingRecipes')
        }
-      // uncomment for deployment
   }
   getRecipesByType(type){
       var uri_param = encodeURIComponent(type);
@@ -121,7 +119,6 @@ export class CommonService {
       }else{
           return this.http.get(`/api/getRecipesByType/${uri_param}`)
       }
-      // uncomment for deployment
   }
 
   getRecipe(recipe){
@@ -131,7 +128,6 @@ export class CommonService {
       }else{
           return this.http.get(`/api/getRecipe/${uri_param}`)
       }
-      // uncomment for deployment
   }
 
   getRandomRecipe(){
