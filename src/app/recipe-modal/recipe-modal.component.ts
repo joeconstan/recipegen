@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { ClipboardService } from 'ngx-clipboard'
 import { DomSanitizer } from '@angular/platform-browser';
+import { NgxFlickingModule } from '@egjs/ngx-flicking';
 
 @Component({
   selector: 'app-recipe-modal',
@@ -39,6 +40,7 @@ export class RecipeModalComponent implements OnInit {
       filename:''
     };
     user;
+    removeable: boolean[] = [];
 
   constructor(
       private pantryService: PantryService,
@@ -59,6 +61,11 @@ export class RecipeModalComponent implements OnInit {
       },
         error => console.log(error)
       )
+
+      this.recipe_full.images.forEach((element, i) => {
+          this.removeable.push(false);
+      });
+
       // this.commonService.getImages(this.recipe_full._id).subscribe( data => {
       //   if (data){
       //     this.recipe_image = data.data
@@ -192,8 +199,19 @@ export class RecipeModalComponent implements OnInit {
       // this.TAIngredients = editable_ing_string
   }
 
+  trackByIdx(index: number, obj: any): any {
+    return index;
+  }
+
+
+  addIngredient(){
+    this.recipe_full.Ingredients.push('')
+  }
+  addDirection(){
+    this.recipe_full.Directions.push('')
+  }
+
   saveEdits(){
-    // save changes -- if user has admin rights, edits go straight to the databse. otherwise, they go to admins for approval
 
     //set editing false
     this.editing = false
@@ -201,6 +219,28 @@ export class RecipeModalComponent implements OnInit {
     this.editing_meta = false
     this.editing_ing = false
     this.editing_dir = false
+
+    // save changes -- if user has admin rights, edits go straight to the databse. otherwise, they go to admins for approval
+    var has_admin = this.userService.user && this.userService.user.adminflag == true;
+
+    if (has_admin){
+      this.commonService.editRecipe(this.recipe_full).subscribe(data => {
+          console.log('edited');
+      },
+          error => console.error(error)
+      )
+    }else{
+      this._snackBar.open('Unable to submit edits (not allowed)', 'ok', {
+          duration: 2000,
+      });
+      // console.log('need admin priv');
+      // if not admin, send edits for approval
+      // somehow
+      // and show a snackbar
+
+
+    }
+
   }
 
 
@@ -239,8 +279,9 @@ export class RecipeModalComponent implements OnInit {
 
   shareRecipe(){
     var uri_param = encodeURIComponent(this.recipe_full.Name)
-    // let recipe_url = `http://localhost:4200/recipe/${uri_param}`
-    let recipe_url = `https://recipe-doc.herokuapp.com/recipe/${uri_param}`
+    let recipe_url = `http://localhost:4200/recipe/${uri_param}`
+    // uncomment for deployment
+    // let recipe_url = `https://recipe-doc.herokuapp.com/recipe/${uri_param}`
     // pop up a dialog letting them copy the url
     // console.log(recipe_url)
 
@@ -304,6 +345,30 @@ export class RecipeModalComponent implements OnInit {
 
 
   upload_image(){
+  }
+
+
+
+  removeImage(){
+
+  }
+
+  showremove(torf,i){
+    this.removeable[i] = torf;
+  }
+
+  isRemoveable(idx){
+    return this.removeable[idx];
+  }
+
+
+
+  onNeedPanel(e) {
+    // ADD PANELS
+  }
+
+  onMoveEnd(e) {
+    // HANDLE INDEX CHANGE
   }
 
 

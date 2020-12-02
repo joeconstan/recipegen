@@ -45,7 +45,14 @@ export class CommonService {
        }else{
            return this.http.post('/api/updateRecipe', recipe)
        }
-      // uncomment for deployment
+  }
+
+ editRecipe(recipe){
+       if (this.dev){
+           return this.http.post('http://localhost:8080/api/editRecipe', recipe)
+       }else{
+           return this.http.post('/api/editRecipe', recipe)
+       }
   }
 
  addRecipeImg(fileobj){
@@ -54,7 +61,6 @@ export class CommonService {
        }else{
            return this.http.post('/api/addRecipeImg', fileobj)
        }
-      // uncomment for deployment
   }
 
  commentRecipe(comment){
@@ -63,7 +69,6 @@ export class CommonService {
       }else{
           return this.http.post('/api/commentRecipe', comment)
       }
-      // uncomment for deployment
   }
 
   getComments(recipeid){

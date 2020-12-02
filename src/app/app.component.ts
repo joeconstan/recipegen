@@ -58,4 +58,20 @@ export class AppComponent implements OnInit{
         }
         return false
     }
+
+    getUser(){
+        if (this.userService.user){
+          return this.userService.user != {}
+        }
+        return false
+    }
+
+    logout() {
+          var nouser = {}
+          this.userService.setUser(nouser)
+          localStorage.removeItem('user')
+          this.router.navigate(['/login'])
+    }
+
+    
 }

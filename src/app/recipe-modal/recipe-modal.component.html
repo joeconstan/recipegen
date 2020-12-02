@@ -3,10 +3,10 @@
 
 
       <div *ngIf="editing_name == false">
-          <div contenteditable="false"> <h4  class="modal-title montst-bg-it" id="modal-basic-title">{{ recipe_full.Name }}</h4></div>
+          <div contenteditable="false"> <h4 class="modal-title montst-bg-it" id="modal-basic-title">{{ recipe_full.Name }}</h4></div>
       </div>
       <div *ngIf="editing_name == true">
-          <div contenteditable="true"> <h4  class="modal-title montst-bg-it" id="modal-basic-title">{{ recipe_full.Name }}</h4></div>
+        <div contenteditable="true" ngDefaultControl [(ngModel)]="recipe_full.Name"> <input type="text" value="{{ recipe_full.Name }}" class="modal-title montst-bg-it" id="modal-basic-title"></div>
       </div>
 
       <div *ngIf="editable_name == true">
@@ -71,6 +71,10 @@
             <!-- <p class="inline">link</p> -->
             <p class="inline">{{ recipe_full.author }}</p>
           </div>
+          <div class="graysmall">
+            <p class="inline">Submitted by:</p>
+            <p class="inline">{{ recipe_full.submittedby }}</p>
+          </div>
         </div>
         <div *ngIf="editing_meta == true">
           <div class="graysmall">
@@ -90,18 +94,25 @@
             <!-- <p class="inline">link</p> -->
             <p contenteditable="true" class="inline">{{ recipe_full.author }}</p>
           </div>
+          <div class="graysmall">
+            <p class="inline">Submitted by:</p>
+            <p contenteditable="true" class="inline">{{ recipe_full.submittedby }}</p>
+          </div>
         </div>
 
       </div>
       <hr>
 
 
-      <div *ngIf="recipe_full && recipe_full.images[0]">
-        <div class="inlined" *ngFor="let image of recipe_full.images">
-          <img class="inlined" src="{{'data:image/jpg;base64,' + image.filedata}}" width="150" alt="">
+        <div *ngIf="recipe_full && recipe_full.images[0]">
+          <div class="inlined imagewrap" *ngFor="let image of recipe_full.images;let i = index">
+            <mat-icon *ngIf="isRemoveable(i)" (click)="removeImage()" class="close">clear</mat-icon>
+            <!-- <mat-icon *ngIf="isRemoveable(i)" class="close">clear</mat-icon> -->
+            <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{'data:image/jpg;base64,' + image.filedata}}" width="150" alt="">
+          </div>
+          <!-- <img *ngIf="recipe_image" [src]="recipe_image" width="150" alt=""> -->
         </div>
-        <!-- <img *ngIf="recipe_image" [src]="recipe_image" width="150" alt=""> -->
-      </div>
+
 
 
       <div *ngIf="user && user.adminflag==true" class="image-upload form-group">
@@ -128,9 +139,10 @@
           </div>
         </div>
         <div *ngIf="editing_ing == true">
-          <div *ngFor="let ingredient of recipe_full.Ingredients" id="ingredientsdiv">
-            <div contenteditable="true" class="editable"> <p class="montst-sm">{{ ingredient }}</p></div>
+          <div *ngFor="let ingredient of recipe_full.Ingredients;let i = index;trackBy:trackByIdx" id="ingredientsdiv">
+            <div name="ingredientslist" ngDefaultControl [(ngModel)]="recipe_full.Ingredients[i]" class="editable montst-sm"> <input type="text" value="{{recipe_full.Ingredients[i]}}" class="montst-sm"></div>
           </div>
+          <button mat-button (click)="addIngredient()" ><mat-icon>add</mat-icon></button>
         </div>
         <br>
       </div>
@@ -146,14 +158,15 @@
         </div>
         <label for="directionsdiv" class="montst">Directions</label>
         <div *ngIf="editing_dir == false">
-          <div *ngFor="let direction of recipe_full.Directions" id="directionsdiv">
-            <p class="montst-sm">- {{ direction }}</p>
+          <div *ngFor="let direction of recipe_full.Directions;let i = index;" id="directionsdiv">
+            <p class="montst-sm">{{i}}. {{ direction }}</p>
           </div>
         </div>
         <div *ngIf="editing_dir == true">
-          <div *ngFor="let direction of recipe_full.Directions" id="directionsdiv">
-            <div contenteditable="true" class="editable"> <p class="montst-sm">{{ direction }}</p></div>
+          <div *ngFor="let direction of recipe_full.Directions;let i = index;" id="directionsdiv">
+            <div ngDefaultControl [(ngModel)]="recipe_full.Directions[i]" class="editable montst-sm"> <input type="text" value="{{recipe_full.Directions[i]}}" class="montst-sm"></div>
           </div>
+          <button mat-button (click)="addDirection()" ><mat-icon>add</mat-icon></button>
         </div>
       </div>
 

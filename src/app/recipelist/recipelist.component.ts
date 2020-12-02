@@ -52,7 +52,8 @@ export class RecipelistComponent implements OnInit {
         Type:'',
         timelength: 0,
         Difficulty: '',
-        Pending: Boolean
+        Pending: Boolean,
+        submittedby: ''
     }
 
     images = []
@@ -251,7 +252,9 @@ export class RecipelistComponent implements OnInit {
           });
 
           dialogRef.afterClosed().subscribe(result => {
+              this.new_recipe.Ingredients = []
               if (result){
+                  result.submittedby = this.userService.user.username
                   this.commonService.newRecipe(result).subscribe(data => {
                       this._snackBar.open('Recipe Suggestion Submitted!', 'ok', {
                           duration: 2000,

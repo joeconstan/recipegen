@@ -85,9 +85,15 @@ mat-panel-title{
   border-radius: 3px;
 }
 
-/* .image-upload>input {
-  display: none;
+.imagewrap{
+  display: inline-block;
+  position: relative;
 }
-.image-upload>label{
-    cursor: pointer;
-} */
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 3%;
+  cursor: pointer;
+  z-index: 100;
+}
