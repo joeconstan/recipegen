@@ -279,11 +279,11 @@ export class RecipeModalComponent implements OnInit {
 
   shareRecipe(){
     var uri_param = encodeURIComponent(this.recipe_full.Name)
-    let recipe_url = `http://localhost:4200/recipe/${uri_param}`
+    // let recipe_url = `http://localhost:4200/recipe/${uri_param}`
     // uncomment for deployment
-    // let recipe_url = `https://recipe-doc.herokuapp.com/recipe/${uri_param}`
+    let recipe_url = `https://recipe-doc.herokuapp.com/recipe/${uri_param}`
     // pop up a dialog letting them copy the url
-    // console.log(recipe_url)
+    console.log(recipe_url)
 
     this._clipboardService.copy(recipe_url)
 
