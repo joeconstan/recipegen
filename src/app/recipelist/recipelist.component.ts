@@ -113,17 +113,19 @@ export class RecipelistComponent implements OnInit {
       this.modalRef = this.modalService.open(RecipeModalComponent, { centered: true, size: 'lg'})
       this.modalRef.componentInstance.data = this.recipe_full
       this.modalRef.result.then((result) => {
-        this.commonService.getRecipes().subscribe(data => {
-            this.recipes = data
-        },
-            error => console.error(error)
-        )
+        this.query_recipes()
+        // this.commonService.getRecipes().subscribe(data => {
+        //     this.recipes = data
+        // },
+        //     error => console.error(error)
+        // )
       }, (reason) => {
-          this.commonService.getRecipes().subscribe(data => {
-              this.recipes = data
-          },
-              error => console.error(error)
-          )
+          this.query_recipes()
+          // this.commonService.getRecipes().subscribe(data => {
+          //     this.recipes = data
+          // },
+          //     error => console.error(error)
+          // )
         }
       );
   }
