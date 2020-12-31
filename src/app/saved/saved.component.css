@@ -38,10 +38,18 @@ mat-card-header{
     font-family: 'Montserrat' !important;
     text-align: center !important;
     font-size: 1.75em;
+    min-height: 2.25em;
+    display: inline-block;
+    width: 100%;
     /* background-color: grey; */
     /* font-weight: 250; */
     /* font-size: rem; */
     /* font-weight: lighter; */
+}
+mat-card-title, .mat-card-header-text{
+    text-align: center !important;
+    margin:0 auto;
+
 }
 mat-card:hover, .card:hover{
     cursor: pointer;
@@ -62,6 +70,7 @@ mat-card:hover, .card:hover{
 
 .recipe-img{
     height: 300px;
+    object-fit: cover;
 }
 
 
@@ -101,5 +110,10 @@ mat-card:hover, .card:hover{
 
 .veryverylong{
     font-size: .5em !important;
-
 }
+
+#randombutton{
+    color: black;
+}
+
+

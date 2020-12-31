@@ -158,6 +158,9 @@ export class RecipeModalComponent implements OnInit {
   approveRecipe(){
       this.recipe_full.Pending = false
       this.commonService.updateRecipe(this.recipe_full).subscribe(data => {
+          this._snackBar.open('Recipe Approved', 'ok', {
+              duration: 2000,
+          });
           this.modal.close()
       },
             error => console.error(error)
@@ -167,6 +170,9 @@ export class RecipeModalComponent implements OnInit {
   rejectRecipe(){
       this.recipe_full.Pending = false
       this.commonService.deleteRecipe(this.recipe_full).subscribe(data => {
+        this._snackBar.open('Recipe Deleted', 'ok', {
+            duration: 2000,
+        });
           this.modal.close()
       },
           error => console.error(error)
@@ -371,5 +377,22 @@ export class RecipeModalComponent implements OnInit {
     // HANDLE INDEX CHANGE
   }
 
+
+
+  // helper function for displaying rating stars
+  counter(i: number) {
+      if (i>0){
+        return new Array(i);
+      }else{
+        return [];
+      }
+  }
+
+  removeDir(dir){
+    var index_dir = this.recipe_full.directions.indexOf(dir);
+    if (index_dir !== -1) {
+      this.recipe_full.directions.splice(index_dir, 1);
+    }
+  }
 
 }
