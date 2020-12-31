@@ -206,7 +206,6 @@ export class CommonService {
 
 
   getSavedRecipes(user){
-      // first query: get the saved recipes by this user from the db - new table?
       var params = new HttpParams().set('userid', user._id)
       if (this.dev){
           return this.http.get('http://localhost:8080/user/getSaved', {params})

@@ -79,24 +79,27 @@
         <div *ngIf="editing_meta == true">
           <div class="graysmall">
             <p class="inline">Type:</p>
-            <p contenteditable="true" class="inline">{{ recipe_full.Type }}</p>
+              <div name="meta_type" ngDefaultControl [(ngModel)]="recipe_full.Type"><input type="text" class="inline" value="{{ recipe_full.Type }}"></div>
           </div>
           <div class="graysmall">
             <p class="inline">Length:</p>
-            <p contenteditable="true" class="inline">{{ recipe_full.timelength }}</p>
+            <div name="meta_length" ngDefaultControl [(ngModel)]="recipe_full.timelength"><input type="text" class="inline" value="{{ recipe_full.timelength }}"></div>
+            <!-- <p contenteditable="true" class="inline">{{ recipe_full.timelength }}</p> -->
           </div>
           <div class="graysmall">
             <p class="inline">Difficulty:</p>
-            <p contenteditable="true" class="inline">{{ recipe_full.Difficulty }}</p>
+            <div name="meta_difficulty" ngDefaultControl [(ngModel)]="recipe_full.Difficulty"><input type="text" class="inline" value="{{ recipe_full.Difficulty }}"></div>
+            <!-- <p contenteditable="true" class="inline">{{ recipe_full.Difficulty }}</p> -->
           </div>
           <div class="graysmall">
             <p class="inline">Author:</p>
-            <!-- <p class="inline">link</p> -->
-            <p contenteditable="true" class="inline">{{ recipe_full.author }}</p>
+            <div name="meta_author" ngDefaultControl [(ngModel)]="recipe_full.author"><input type="text" class="inline" value="{{ recipe_full.author }}"></div>
+            <!-- <p contenteditable="true" class="inline">{{ recipe_full.author }}</p> -->
           </div>
           <div class="graysmall">
             <p class="inline">Submitted by:</p>
-            <p contenteditable="true" class="inline">{{ recipe_full.submittedby }}</p>
+            <div name="meta_submittedby" ngDefaultControl [(ngModel)]="recipe_full.submittedby"><input type="text" class="inline" value="{{ recipe_full.submittedby }}"></div>
+            <!-- <p contenteditable="true" class="inline">{{ recipe_full.submittedby }}</p> -->
           </div>
         </div>
 
@@ -182,7 +185,7 @@
             <!-- <input matInput value="" placeholder="Enter text..."> -->
           <!-- </mat-form-field> -->
       </div>
-      <div *ngIf="editing_ing == true || editing_dir == true">
+      <div *ngIf="editing_ing == true || editing_dir == true || editing_meta == true">
         <button mat-button (click)="cancelEdits()" color="basic">Cancel</button>
         <button mat-button (click)="saveEdits()" color="primary">Save Changes</button>
       </div>

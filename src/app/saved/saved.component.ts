@@ -44,6 +44,9 @@ export class SavedComponent implements OnInit {
         Pending: Boolean
     }
 
+    user;
+    _subscription;
+
     separatorKeysCodes: number[] = [ENTER,COMMA];
 
     private modalRef;
@@ -52,8 +55,7 @@ export class SavedComponent implements OnInit {
         centered: true,
         size: 'lg',
         beforeDismiss: () => {
-            let user = this.userService.user
-            this.commonService.getSavedRecipes(user).subscribe(data => {
+            this.commonService.getSavedRecipes(this.user).subscribe(data => {
                 this.recipes = data
             },
                 error => console.error(error)
@@ -68,12 +70,14 @@ export class SavedComponent implements OnInit {
       private commonService: CommonService,
       private userService: UserService,
       public dialog: MatDialog
-  ) { }
+  ) {
+    this._subscription = userService.user.subscribe((value) => {
+          this.user = value;
+    });
+  }
 
   ngOnInit(): void {
-      let user = this.userService.user
-
-      this.commonService.getSavedRecipes(user).subscribe(data => {
+      this.commonService.getSavedRecipes(this.user).subscribe(data => {
           this.recipes = data
       },
           error => console.error(error)

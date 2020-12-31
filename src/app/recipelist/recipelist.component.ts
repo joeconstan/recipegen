@@ -33,7 +33,7 @@ export class RecipelistComponent implements OnInit {
     recipe_full
     recipe
     p: number = 1;
-    mealtypes = ['Breakfast','Lunch/Dinner','Desserts','Sauces/Sides','Holiday','Breads', 'Salads', 'Soups']
+    mealtypes = ['Breakfast', 'Lunch/Dinner', 'Desserts', 'Sauces/Spices', 'Sides', 'Holiday', 'Breads', 'Salads', 'Soups']
     times = ['0-10 min','10-30 min','30-60 min','60+ min']
     difficulties = ['Easy','Moderate','Hard']
     image_upload: any;
@@ -244,6 +244,19 @@ export class RecipelistComponent implements OnInit {
 
   }
 
+  // parseIngredients(res_ings){
+  //     //
+  //     var ings = res_ings.split('\n')
+  //     if (ings.length == 0){
+  //       ings = ings.split(', ')
+  //       if (ings.length == 0){
+  //         ings = ings.split(',')
+  //       }
+  //     }
+  //     return ings
+  // }
+
+
   openNewRecipeDialog(){
       // show new-recipe-form
       const dialogRef = this.dialog.open(DialogNewRecipeComponent, {
@@ -264,7 +277,8 @@ export class RecipelistComponent implements OnInit {
           dialogRef.afterClosed().subscribe(result => {
               this.new_recipe.Ingredients = []
               if (result){
-                  result.submittedby = this.userService.user.username
+                  // result.Ingredients = this.parseIngredients(result.Ingredients)
+                  result.submittedby = this.user.username
                   this.commonService.newRecipe(result).subscribe(data => {
                       this._snackBar.open('Recipe Suggestion Submitted!', 'ok', {
                           duration: 2000,
@@ -318,14 +332,15 @@ export class DialogNewRecipeComponent {
   }
 
 
+
   dialogue_addIngredient(){
-     this.data.Ingredients.push(this.dialogue_ingredient)
-     this.dialogue_ingredient = '';
+     this.data.Ingredients = this.dialogue_ingredient.split(/\r?\n/)
+     // this.dialogue_ingredient = '';
   }
   dialogue_addDirection(){
      // this.data.Directions.push(this.dialogue_direction)
      // this.dialogue_direction = '';
-     this.data.Directions = this.dialogue_direction.split(/\r?\n/);
+     this.data.Directions = this.dialogue_direction.split(/\r?\n/)
   }
 
   checkSteps(){

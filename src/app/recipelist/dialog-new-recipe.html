@@ -16,14 +16,15 @@
 </p>
 <p>
   <mat-form-field>
-    <mat-label>Ingredients (comma-separated)</mat-label>
-    <input matInput value="" [matChipInputFor]="chipList" (matChipInputTokenEnd)="dialogue_addIngredient()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient">
-    <mat-chip-list #chipList>
+    <mat-label>Ingredients (newline-separated)</mat-label>
+    <!-- <input matInput value="" [matChipInputFor]="chipList" (matChipInputTokenEnd)="dialogue_addIngredient()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient"> -->
+    <textarea matInput value="" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient"></textarea>
+    <!-- <mat-chip-list #chipList>
         <mat-chip *ngFor="let ingredient of data.Ingredients" (removed)="dialogue_removeIngredient(ingredient)">
           {{ ingredient }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
-    </mat-chip-list>
+    </mat-chip-list> -->
   </mat-form-field>
 </p>
 
