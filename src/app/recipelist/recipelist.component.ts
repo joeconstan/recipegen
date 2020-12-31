@@ -58,6 +58,8 @@ export class RecipelistComponent implements OnInit {
 
     images = []
 
+    user;
+
     private modalRef;
 
     separatorKeysCodes: number[] = [ENTER,COMMA];
@@ -73,6 +75,7 @@ export class RecipelistComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+      this.user = this.userService.user
       this.commonService.getRecipes().subscribe(data => {
           this.recipes = data
       },
@@ -82,10 +85,10 @@ export class RecipelistComponent implements OnInit {
   }
 
   getImageById(recipeid){
-    console.log('recipeid')
-    console.log(recipeid)
+    // console.log('recipeid')
+    // console.log(recipeid)
     this.images.forEach(element => {
-      console.log(element)
+      // console.log(element)
       if (element.recipeid == recipeid){
         return element;
       }
