@@ -61,10 +61,12 @@
           <div class="graysmall">
             <p class="inline">Length:</p>
             <p class="inline">{{ recipe_full.timelength }}</p>
+            <p class="inline" *ngIf="recipe_full.timeWarning"><span style="color:red">*Overnight Work Required*</span></p>
           </div>
           <div class="graysmall">
             <p class="inline">Difficulty:</p>
             <p class="inline">{{ recipe_full.Difficulty }}</p>
+            <p class="inline" *ngIf="recipe_full.difficultyWarning"><span style="color:red">*Special Equipment Required*</span></p>
           </div>
           <div class="graysmall">
             <p class="inline">Author:</p>
@@ -162,7 +164,7 @@
         <label for="directionsdiv" class="montst">Directions</label>
         <div *ngIf="editing_dir == false">
           <div *ngFor="let direction of recipe_full.Directions;let i = index;" id="directionsdiv">
-            <p class="montst-sm">{{i}}. {{ direction }}</p>
+            <p class="montst-sm">{{ direction }}</p>
           </div>
         </div>
         <div *ngIf="editing_dir == true">

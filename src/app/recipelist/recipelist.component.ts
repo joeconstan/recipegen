@@ -18,8 +18,11 @@ export interface DialogData {
   Directions: string[];
   Type: string;
   timelength: number;
+  timeWarning: boolean;
   Difficulty: string;
-  Pending
+  difficultyWarning: boolean;
+  Pending,
+  Author: string
 }
 
 @Component({
@@ -42,7 +45,8 @@ export class RecipelistComponent implements OnInit {
         'keywords':[],
         'type':'',
         'time':'',
-        'difficulty':''
+        'difficulty':'',
+        'searchIngredients':false
     }
 
     new_recipe = {
@@ -63,7 +67,7 @@ export class RecipelistComponent implements OnInit {
     private modalRef;
 
     separatorKeysCodes: number[] = [ENTER,COMMA];
-
+    // searchIngredients = false
 
   constructor(
       private pantryService: PantryService,
@@ -306,6 +310,10 @@ export class RecipelistComponent implements OnInit {
       )
   }
 
+  scrollTop(){
+    window.scroll(0,0)
+  }
+
 
 }
 
@@ -369,6 +377,10 @@ export class DialogNewRecipeComponent {
   dialogue_addType(){
      this.data.Type = this.dialogue_type;
   }
+  // dialogue_addTimeWarning(){
+    // this.data.timeWarning = this.di
+  // }
+
   dialogue_addDifficulty(){
      this.data.Difficulty = this.dialogue_difficulty;
   }

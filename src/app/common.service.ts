@@ -164,6 +164,9 @@ export class CommonService {
       if (filters.difficulty!=''){
           params = params.set('difficulty', filters.difficulty);
       }
+      if (filters.searchIngredients){
+          params = params.set('searchIngredients', filters.searchIngredients);
+      }
 
       if (this.dev){
           return this.http.get('http://localhost:8080/api/getRecipesWithFilters', {params})

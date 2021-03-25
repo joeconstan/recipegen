@@ -39,6 +39,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxFlickingModule } from '@egjs/ngx-flicking';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 
 @NgModule({
   declarations: [
@@ -79,9 +81,10 @@ import { NgxFlickingModule } from '@egjs/ngx-flicking';
     MatExpansionModule,
     MatTooltipModule,
     ClipboardModule,
-    NgxFlickingModule
+    NgxFlickingModule,
+    MatCheckboxModule
   ],
-  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule ],
+  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule, MatCheckboxModule ],
   providers: [ CookieService ],
   entryComponents: [
     DialogNewRecipeComponent
