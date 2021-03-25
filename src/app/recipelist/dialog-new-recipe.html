@@ -16,6 +16,12 @@
 </p>
 <p>
   <mat-form-field>
+    <mat-label>Original Author/Link (Optional)</mat-label>
+    <input matInput [(ngModel)]="data.Author" >
+  </mat-form-field>
+</p>
+<p>
+  <mat-form-field>
     <mat-label>Ingredients (newline-separated)</mat-label>
     <!-- <input matInput value="" [matChipInputFor]="chipList" (matChipInputTokenEnd)="dialogue_addIngredient()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient"> -->
     <textarea matInput value="" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient"></textarea>
@@ -58,15 +64,20 @@
       <mat-option value="Moderate">Moderate</mat-option>
       <mat-option value="Hard">Hard</mat-option>
     </mat-select>
-
     </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="data.difficultyWarning" value="True">Requires Special Equipment (e.g. Ice cream maker)</mat-checkbox>
 </p>
+<br>
 <p>
     <mat-form-field>
       <mat-label>Time (in minutes)</mat-label>
       <input matInput [(ngModel)]="data.timelength">
     </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="data.timeWarning" value="True">Must Sit Overnight</mat-checkbox>
 </p>
+<br>
 
 
 </div>

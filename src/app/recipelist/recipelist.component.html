@@ -21,8 +21,8 @@
                 </div>
                 <div class="row">
                     <div class="col"></div>
-                    <div class="col"></div>
-                    <div class="col"></div>
+                    <!-- <div class="col"></div> -->
+                    <!-- <div class="col"></div> -->
                     <div class="col">
                         <div ngbDropdown class="d-inline-block">
                             <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic1" ngbDropdownToggle>Meal Type</button>
@@ -48,16 +48,20 @@
                         </div>
                     </div>
                     <div class="col"></div>
-                    <div class="col-3">
+                    <div class="col-5">
 
                         <form class="example-form">
-                          <mat-form-field color="accent" class="example-full-width">
+                          <mat-form-field color="accent" class="example-full-width inline">
                             <mat-label>Search Recipes</mat-label>
                             <input matInput placeholder="Ex. Pizza" value="" (change)="search_recipes()" name="searchinput" [(ngModel)]="search_value">
                             <button mat-button *ngIf="search_value" matSuffix mat-icon-button aria-label="Clear" (click)="search_value=''">
                                 <mat-icon>close</mat-icon>
                             </button>
                           </mat-form-field>
+                          <mat-checkbox name="searchIng" ngDefaultControl class="inline" [(ngModel)]="filters.searchIngredients">Search Ingredients</mat-checkbox>
+                          <!-- <mat-form-field color="accent" class="example-full-width"> -->
+                          <!-- </mat-form-field> -->
+
                         </form>
 
 
@@ -146,7 +150,7 @@
         </div>
     </div>
 
-    <pagination-controls class="floatright" (pageChange)="p = $event"></pagination-controls>
+    <pagination-controls class="floatright" (pageChange)="p = $event;scrollTop()"></pagination-controls>
 
 </div>
 
