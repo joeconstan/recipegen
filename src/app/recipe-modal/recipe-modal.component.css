@@ -26,6 +26,9 @@
     font-style: italic;
 }
 
+.modal-header-button{
+    margin-right: 25px;
+}
 
 .floatright{
     float: right;

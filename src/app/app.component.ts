@@ -4,6 +4,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { ThemePalette } from '@angular/material/core';
 import { Router, ActivatedRoute } from '@angular/router'
 import { UserService } from './user.service'
+import { CommonService } from './common.service'
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ export class AppComponent implements OnInit{
         private titleService: Title,
         private router: Router,
         private route: ActivatedRoute,
-        private userService: UserService
+        private userService: UserService,
+        private commonService: CommonService
     ) {}
 
     active = 1
@@ -43,12 +45,34 @@ export class AppComponent implements OnInit{
     public ngOnInit(): void {
         this.titleService.setTitle( 'The Recipe Doc' );
         this.tabcolor = this.tabcolor ? undefined : 'accent';
-        // this.user = this.userService.user
+
+        // retrieve the locally stored usre
         let user = JSON.parse(localStorage.getItem('user'))
+
+        // use local username to retrieve full updated db record
         if (user){
-            this.user=user
-            this.userService.setUser(user)
+          this.commonService.getUser(user['username']).subscribe(data => {
+               if (!data){
+                   // console.log('user does not exist or wrong pswd')
+               }else{
+                   this.userService.setUser(data)
+                   this.user=data
+                   localStorage.setItem('user', JSON.stringify(data));
+                   // this.userService.user = data[0]
+                   // this._snackBar.open('Logged in as '+data['username'], 'ok', {
+                       // duration: 2000,
+                   // });
+                   // this.router.navigate(['/rb'])
+               }
+          },
+               error => console.error(error)
+          )
         }
+
+        // if (user){
+        //     this.user=user
+        //     this.userService.setUser(user)
+        // }
 
     }
 
@@ -73,5 +97,5 @@ export class AppComponent implements OnInit{
           this.router.navigate(['/login'])
     }
 
-    
+
 }

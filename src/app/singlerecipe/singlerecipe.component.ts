@@ -36,12 +36,12 @@ export class SinglerecipeComponent implements OnInit {
 
   ngOnInit(): void {
     // var recipe_name = decodeURIComponent(this.route.snapshot.paramMap.get('recipe'));
-    var recipe_name = this.route.snapshot.paramMap.get('recipe')
-    console.log(recipe_name)
+    var recipe_id = this.route.snapshot.paramMap.get('recipe')
+    // console.log(recipe_id)
 
-    this.commonService.getRecipe(recipe_name).subscribe(data => {
-        this.recipe_full = data[0];
-          console.log(this.recipe_full)
+    this.commonService.getRecipe(recipe_id).subscribe(data => {
+        this.recipe_full = data;
+        // console.log(this.recipe_full)
     },
         error => console.error(error)
     )

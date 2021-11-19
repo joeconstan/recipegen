@@ -10,6 +10,7 @@ export class UserService {
   constructor() { }
 
   setUser(user){
+      // this should also save the user to local storage
       this.user = user
   }
 

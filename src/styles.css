@@ -18,3 +18,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     position: fixed;
     z-index: 10000;
 }
+
+.modalClass{
+    /* max-width: 1000px; */
+    /* width: 80%; */
+}

@@ -47,6 +47,9 @@ export class SavedComponent implements OnInit {
     user;
     _subscription;
 
+    images = [];
+    modal_images = [];
+
     separatorKeysCodes: number[] = [ENTER,COMMA];
 
     private modalRef;
@@ -71,23 +74,78 @@ export class SavedComponent implements OnInit {
       private userService: UserService,
       public dialog: MatDialog
   ) {
-    this._subscription = userService.user.subscribe((value) => {
-          this.user = value;
-    });
   }
 
   ngOnInit(): void {
+      this.user = this.userService.user
       this.commonService.getSavedRecipes(this.user).subscribe(data => {
           this.recipes = data
+          // console.log(data)
+          this.getImagesS3()
       },
           error => console.error(error)
       )
   }
 
+  getImages(recipeid=''){
+    this.commonService.getImages(recipeid).subscribe(data => {
+        if (recipeid==''){
+          this.images = data
+        }else{
+          // if a single recipeid was asked for, then this was an update to a single recipe's imgs. delete those imgs and add any current ones.
+          this.images = this.images.filter(img=>img.recipe_id!=recipeid)
+          this.images.push.apply(this.images, data);
+        }
+
+    },
+        error => console.error(error)
+    )
+  }
+
+  getImagesS3(recipeid=''){
+    this.commonService.getImagesS3(recipeid).subscribe(data => {
+        if (recipeid==''){
+          this.images = data
+        }else{
+          // if a single recipeid was asked for, then this was an update to a single recipe's imgs. delete those imgs and add any current ones.
+          this.images = this.images.filter(img=>img.recipe_id!=recipeid)
+          this.images.push.apply(this.images, data);
+        }
+
+    },
+        error => console.error(error)
+    )
+  }
+
+
+  hasImage(recipe_id){
+    return this.images.find(x=>x.recipe_id == recipe_id)
+  }
+
+  getImgData(recipe){
+     let img = this.images.find(x=>x.recipe_id == recipe.id && x.primary_img == true)
+     if (img){
+       return img.filedata
+     }else{
+       console.log('no img')
+     }
+  }
+
+
+  getImgDataS3(recipe){
+     let img = this.images.find(x=>x.recipe_id == recipe.id && x.primary_img == true)
+     if (img){
+       // console.log('https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' + img.filename)
+       return 'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' + recipe.id+img.filename
+     }else{
+       // console.log('no img')
+     }
+  }
+
   get_full_recipe(){
 
-      this.commonService.getRecipe(this.recipe.Name).subscribe(data => {
-          this.recipe_full = data[0];
+      this.commonService.getRecipe(this.recipe.name).subscribe(data => {
+          this.recipe_full = data;
           this.openModal()
       },
           error => console.error(error)
@@ -95,29 +153,35 @@ export class SavedComponent implements OnInit {
   }
 
   viewRecipeModal(recipe) {
+      this.modal_images = [];
       this.recipe = recipe;
-      this.get_full_recipe();
+      this.recipe_full = recipe;
+      let imgs = this.images.filter(x=>x.recipe_id == recipe.id);
+      this.modal_images = imgs;
+      this.openModal()
   }
 
 
   openModal(){
       this.modalRef = this.modalService.open(RecipeModalComponent, this.ngbModalOptions)
       this.modalRef.componentInstance.data = this.recipe_full
+      this.modalRef.componentInstance.data = {
+        'recipe': this.recipe_full,
+        'images': this.modal_images
+      }
   }
 
 
   pageChanged(event){}
 
-  filter(mealtype){
-      // console.log('filtered on type: ', mealtype)
-      this.commonService.getRecipesByType(mealtype).subscribe(data => {
-          // console.log(data);
-          this.recipes = data;
-      },
-          error => console.error(error)
-      )
-
-  }
+  // filter(mealtype){
+  //     this.commonService.getRecipesByType(mealtype).subscribe(data => {
+  //         this.recipes = data;
+  //     },
+  //         error => console.error(error)
+  //     )
+  //
+  // }
 
 
 

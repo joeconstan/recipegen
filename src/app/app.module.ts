@@ -40,7 +40,7 @@ import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxFlickingModule } from '@egjs/ngx-flicking';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -82,10 +82,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatTooltipModule,
     ClipboardModule,
     NgxFlickingModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
   ],
-  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule, MatCheckboxModule ],
-  providers: [ CookieService ],
+  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule, MatCheckboxModule, MatProgressSpinnerModule ],
+  providers: [ CookieService, ],
   entryComponents: [
     DialogNewRecipeComponent
   ],

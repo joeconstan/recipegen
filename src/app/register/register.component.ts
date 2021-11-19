@@ -48,10 +48,19 @@ export class RegisterComponent implements OnInit {
        // console.log(this.form.value)
 
        this.commonService.register(this.form.value).subscribe(data => {
-               this._snackBar.open('User added!', 'ok', {
-                   duration: 2000,
-               });
-           this.router.navigate(['/login'])
+        if (data){
+          // if data, then it succeeded
+          this._snackBar.open('User added!', 'ok', {
+             duration: 2000,
+          });
+          this.router.navigate(['/login'])
+        }else{
+          // else, it failed. prob duplicate username
+          this._snackBar.open('Username already taken', '', {
+             duration: 2000,
+          });
+        }
+
        },
             error => console.error(error)
        )
