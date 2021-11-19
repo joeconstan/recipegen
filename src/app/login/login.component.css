@@ -3,3 +3,19 @@
     margin: 0 auto;
     top:5%;
 }
+
+#gsigninbutton{
+    font-size: 13px;
+    border: 1px solid gray;
+}
+
+#gsigninbutton svg{
+  vertical-align: baseline;
+  margin-top: -0.3em;
+  margin-bottom: -0.3em;
+  margin-right: 2px;
+}
+
+.btn{
+  line-height: 1.15 !important;
+}

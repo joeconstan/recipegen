@@ -56,3 +56,14 @@ nav .router-link-active{
     padding-left: 5px;
     padding-top: 15px;
 }
+
+.userNametext{
+  /* vertical-align: top; */
+  vertical-align: middle;
+}
+
+.dropdown-toggle::after{
+  vertical-align: 0em;
+}
+
+

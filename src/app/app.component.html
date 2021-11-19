@@ -19,10 +19,10 @@
 
 <nav class="nav-underline nav-links bg-white box-shadow">
     <a class="nav-link" routerLink="" routerLinkActive="router-link-active">Recipe Book</a>
-    <a class="nav-link" routerLink="/ip" routerLinkActive="router-link-active">IP Recipes</a>
+    <!-- <a class="nav-link" routerLink="/ip" routerLinkActive="router-link-active">IP Recipes</a> -->
 
     <div ngbDropdown class="nav-item d-inline-block">
-     <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle role="button"><mat-icon>person</mat-icon><p *ngIf="user">{{user.username}}</p></a>
+     <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle role="button"><mat-icon>person</mat-icon><p class="userNametext" *ngIf="user">{{user.username.toUpperCase()}}</p></a>
      <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="dropdownBasic1">
        <div *ngIf="getAdmin() == true"><button routerLink="/pending" ngbDropdownItem>Approvals</button></div>
        <button routerLink="/saved" ngbDropdownItem>Saved</button>

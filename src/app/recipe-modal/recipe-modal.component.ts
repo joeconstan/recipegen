@@ -37,10 +37,13 @@ export class RecipeModalComponent implements OnInit {
     fileToUpload = {
       recipeid:'',
       filedata:null,
-      filename:''
+      filename:'',
+      primary: true
     };
     user;
     removeable: boolean[] = [];
+    images = []
+    modal_images;
 
   constructor(
       private pantryService: PantryService,
@@ -55,18 +58,25 @@ export class RecipeModalComponent implements OnInit {
 
   ngOnInit() {
       this.user = this.userService.user
-      this.recipe_full = this.data
-      this.commonService.getComments(this.recipe_full._id).subscribe( data =>{
+      this.recipe_full = this.data.recipe
+      this.modal_images = this.data.images
+      // console.log(this.data)
+      this.commonService.getComments(this.recipe_full.id).subscribe( data =>{
         this.recipe_comments = data;
       },
         error => console.log(error)
       )
 
-      this.recipe_full.images.forEach((element, i) => {
-          this.removeable.push(false);
-      });
+      if (this.recipe_full.images){
+        // NOTE: recipe_full.images will not exist going forward. moved to separate table
+        this.recipe_full.images.forEach((element, i) => {
+            this.removeable.push(false);
+        });
+      }
 
-      // this.commonService.getImages(this.recipe_full._id).subscribe( data => {
+      this.getImages()
+
+      // this.commonService.getImages(this.recipe_full.id).subscribe( data => {
       //   if (data){
       //     this.recipe_image = data.data
       //   }
@@ -79,24 +89,55 @@ export class RecipeModalComponent implements OnInit {
       // this.recipe_full = this.pantryService.loadRecipe(this.data)
   }
 
+
+  getImages(){
+    // this.images = this.recipe_full.images
+    this.images = this.modal_images
+    // this.commonService.getImages(idList).subscribe(data => {
+    //     this.images = data
+    // },
+    //     error => console.error(error)
+    // )
+  }
+
+
+  getImagesS3(recipe){
+    let imgs = this.images.filter(x=>x.recipe_id == recipe.id);
+    imgs.forEach(img => {
+      img.url = 'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' + recipe.id+img.filename
+    });
+    return imgs;
+  }
+
+
+  getImgDataS3(recipe){
+     let img = this.images.find(x=>x.recipe_id == recipe.id)
+     if (img){
+       // console.log('https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' + img.filename)
+       return 'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' + recipe.id+img.filename
+     }else{
+       // console.log('no img')
+     }
+  }
+
   bookmark_recipe(){
       // if user logged in, add recipe to saved
-      if(this.userService.getUser()){
-          console.log('saved recipe')
-      }
       // else, close modal & redirect to login page
-      else{
+      if(!this.userService.getUser()){
           this.modal.close()
           this.router.navigate(['/login'])
       }
 
       var user = this.userService.getUser()
-      user.Saved.push(this.recipe_full._id)
+      if (!user.saved){
+        user.saved = [];
+      }
+      user.saved.push(this.recipe_full.id)
 
       this.userService.setUser(user)
 
       this.commonService.saveRecipe(user).subscribe(data => {
-          this._snackBar.open('Recipe Saved!', 'ok', {
+          this._snackBar.open('Recipe Saved', 'ok', {
               duration: 2000,
           });
       },
@@ -108,19 +149,21 @@ export class RecipeModalComponent implements OnInit {
       // if user logged in, add recipe to saved
       if(this.userService.getUser()){
           var user = this.userService.getUser()
-          const index = user.Saved.indexOf(this.recipe_full._id);
+          const index = user.saved.indexOf(this.recipe_full.id);
           if (index >= 0) {
-              user.Saved.splice(index, 1);
+              user.saved.splice(index, 1);
+              console.log(user.saved)
+              this.userService.setUser(user)
+              this.commonService.unSaveRecipe(user).subscribe(data => {
+                  this._snackBar.open('Recipe removed from saved list', 'ok', {
+                      duration: 2000,
+                  });
+              },
+                    error => console.error(error)
+              )
           }
-          this.userService.setUser(user)
 
-          this.commonService.unSaveRecipe(user).subscribe(data => {
-              this._snackBar.open('Recipe removed from saved list', 'ok', {
-                  duration: 2000,
-              });
-          },
-                error => console.error(error)
-          )
+
       }
       // else, close modal & redirect to login page
       else{
@@ -136,8 +179,9 @@ export class RecipeModalComponent implements OnInit {
           this.router.navigate(['/login'])
       }else{
           var commentObj = {
-              recipeid: this.recipe_full._id,
-              userid: this.userService.user._id,
+              recipeid: this.recipe_full.id,
+              created: new Date(),
+              userid: this.userService.user.id,
               username: this.userService.user.username,
               text: this.newComment
           }
@@ -147,7 +191,7 @@ export class RecipeModalComponent implements OnInit {
 
           // this.commonService.commentRecipe(this.recipe_full).subscribe(data => {
           this.commonService.commentRecipe(commentObj).subscribe(data => {
-                console.log(data)
+                // console.log(data)
           },
                 error => console.error(error)
           )
@@ -156,7 +200,7 @@ export class RecipeModalComponent implements OnInit {
   }
 
   approveRecipe(){
-      this.recipe_full.Pending = false
+      this.recipe_full.pending = false
       this.commonService.updateRecipe(this.recipe_full).subscribe(data => {
           this._snackBar.open('Recipe Approved', 'ok', {
               duration: 2000,
@@ -168,8 +212,8 @@ export class RecipeModalComponent implements OnInit {
   }
 
   rejectRecipe(){
-      this.recipe_full.Pending = false
-      this.commonService.deleteRecipe(this.recipe_full).subscribe(data => {
+      this.recipe_full.pending = false
+      this.commonService.deleteRecipe(this.recipe_full.id).subscribe(data => {
         this._snackBar.open('Recipe Deleted', 'ok', {
             duration: 2000,
         });
@@ -262,21 +306,22 @@ export class RecipeModalComponent implements OnInit {
   }
 
   editable(section,torf){
-    if (section == 'ingredients'){
-      this.editable_ing = torf
-    }else if (section == 'name'){
-      this.editable_name = torf
-    }else if (section == 'directions'){
-      this.editable_dir = torf
-    }else if (section == 'meta'){
-      this.editable_meta = torf
-    }
+    // if (section == 'ingredients'){
+    //   this.editable_ing = torf
+    // }else if (section == 'name'){
+    //   this.editable_name = torf
+    // }else if (section == 'directions'){
+    //   this.editable_dir = torf
+    // }else if (section == 'meta'){
+    //   this.editable_meta = torf
+    // }
   }
 
 
   userSaved(){
-      if (this.userService.user){
-        if (this.userService.user.Saved.indexOf(this.recipe_full._id) > -1){
+      // console.log(this.userService.user)
+      if (this.userService.user && this.userService.user.saved!=null){
+        if (this.userService.user.saved.indexOf(this.recipe_full.id) > -1){
             return true
         }
       }
@@ -284,12 +329,13 @@ export class RecipeModalComponent implements OnInit {
   }
 
   shareRecipe(){
-    var uri_param = encodeURIComponent(this.recipe_full.Name)
-    // let recipe_url = `http://localhost:4200/#/recipe/${uri_param}`
+    // var uri_param = encodeURIComponent(this.recipe_full.name)
+    var uri_param = encodeURIComponent(this.recipe_full.id)
     // uncomment for deployment
-    let recipe_url = `https://recipe-doc.herokuapp.com/#/recipe/${uri_param}`
+    // let recipe_url = `http://localhost:4200/#/recipe/${uri_param}`
+    let recipe_url = `https://therecipedoc.com/#/recipe/${uri_param}`
     // pop up a dialog letting them copy the url
-    console.log(recipe_url)
+    // console.log(recipe_url)
 
     this._clipboardService.copy(recipe_url)
 
@@ -316,39 +362,69 @@ export class RecipeModalComponent implements OnInit {
       }
       this.fileToUpload.filedata = fileInput[0];
       this.fileToUpload.filename = fileInput[0].name.toString();
-      this.fileToUpload.recipeid = this.recipe_full._id.toString();
+      this.fileToUpload.recipeid = this.recipe_full.id.toString();
+      this.fileToUpload.primary = this.modal_images.length < 1;
+      let filetypea = this.fileToUpload.filename.split('.')
+      let filetype = filetypea[filetypea.length-1].toLowerCase()
+      if (filetype!='jpg' && filetype!='png' && filetype!='jpeg' && filetype!='gif'){
+        this._snackBar.open('Incorrect file type', 'ok', {
+            duration: 2000,
+        });
+        return;
+      }
+
       // var fileName = fileInput.target.files[0].name
-      // console.log(this.fileToUpload.filename)
       this.getBase64(this.fileToUpload.filedata).then(data => {
         this.fileToUpload.filedata = data
-        // console.log('this.fileToUpload.filedata')
-        // console.log(this.fileToUpload.filedata)
-        // console.log(this.fileToUpload.filedata)
-        this.commonService.addRecipeImg(this.fileToUpload).subscribe(data => {
-              // console.log(data)
-              // on image uploaded,
-              // open a snackbar
-              this._snackBar.open('Image Added!', 'ok', {
-                  duration: 2000,
-              });
-              // reload the recipe so the image shows up
-              this.commonService.getRecipe(this.recipe_full.Name).subscribe(data => {
-                  this.recipe_full = data[0];
-              },
-                  error => console.error(error)
-              )
+        // this.commonService.gets3Url().subscribe(data => {
+          // console.log('returned: ', data)
+          // get s3 presigned upload url
+          // use the url to post the image to s3, where it will then move to db (how? some trigger?)
+          // this.commonService.addRecipeImgS3(data['url'], data['fields'], this.fileToUpload).subscribe(data => {
+          this.commonService.addRecipeImgS3(this.fileToUpload).subscribe(data => {
 
-        },
-              error => console.error(error)
-        )
+          // this.commonService.addRecipeImg(this.fileToUpload).subscribe(data => {
+                this._snackBar.open('Image Added!', 'ok', {
+                    duration: 2000,
+                });
+                // reload the recipe so the image shows up
+                this.commonService.getRecipe(this.recipe_full.id).subscribe(data => {
+                    this.recipe_full = data;
+                    this.refreshImages()
+                },
+                    error => console.error(error)
+                )
+
+          },
+                error => console.error(error)
+          )
+
+
+        // },
+              // error => console.error(error)
+        // )
+        // });
+
 
 
       });
-      // if(fileInput){
-          // var file = fileInput.target.files[0]
-      // }
   }
 
+  refreshImages(){
+    this.commonService.getImages(this.recipe_full.id).subscribe(data => {
+        this.images = data;
+    },
+        error => console.error(error)
+    )
+  }
+
+
+  getImgData(recipe_id){
+     let img = this.images.find(x=>x.recipeid == recipe_id)
+     if (img){
+       return img.filedata
+     }
+  }
 
   upload_image(){
   }
@@ -356,7 +432,6 @@ export class RecipeModalComponent implements OnInit {
 
 
   removeImage(){
-
   }
 
   showremove(torf,i){

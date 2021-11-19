@@ -4,6 +4,10 @@ nav {
     padding-bottom: 6px;
 }
 
+.bolder{
+  font-weight: 500;
+}
+
 nav a{
     /* padding: 5px 10px; */
     text-decoration: none;
@@ -31,6 +35,11 @@ nav .router-link-active{
 
 h4,.montst{
     font-family: 'Montserrat' !important;
+}
+
+.spinner{
+  margin: 0 auto;
+  margin-top: 500px;
 }
 
 mat-card-header{
@@ -125,5 +134,22 @@ mat-card:hover, .card:hover{
     padding-left: 5px;
     padding-right: 5px;
   }
+
+.bordered{
+  border: 1px solid gray;
+}
+
+.rightpanel{
+    position: absolute;
+    right: 10%;
+    height: 510px;
+    width: 300px;
+
+    /* top: 100px; */
+}
+
+.bold{
+  font-weight: bold;
+}
 
 

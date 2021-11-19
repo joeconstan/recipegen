@@ -11,13 +11,13 @@
 <p>
   <mat-form-field>
     <mat-label>Recipe Name</mat-label>
-    <input matInput [(ngModel)]="data.Name" >
+    <input matInput [(ngModel)]="data.name" >
   </mat-form-field>
 </p>
 <p>
   <mat-form-field>
     <mat-label>Original Author/Link (Optional)</mat-label>
-    <input matInput [(ngModel)]="data.Author" >
+    <input matInput [(ngModel)]="data.author" >
   </mat-form-field>
 </p>
 <p>
@@ -47,7 +47,8 @@
       <mat-option value="Breakfast">Breakfast</mat-option>
       <mat-option value="Lunch/Dinner">Lunch/Dinner</mat-option>
       <mat-option value="Dessert">Desserts</mat-option>
-      <mat-option value="Snacks/Sauces">Sauces/Sides</mat-option>
+      <mat-option value="Sauces/Spices">Sauces/Spices</mat-option>
+      <mat-option value="Sides">Sides</mat-option>
       <mat-option value="Holiday">Holiday</mat-option>
       <mat-option value="Breads">Breads</mat-option>
       <mat-option value="Salads">Salads</mat-option>
@@ -83,10 +84,10 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-    <div *ngIf="data.Name == '' || data.timelength == 0" >
+    <div *ngIf="data.name == '' || data.timelength == 0" >
         <button mat-button disabled [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
     </div>
-    <div *ngIf="data.Name != '' && data.timelength != 0">
+    <div *ngIf="data.name != '' && data.timelength != 0">
         <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
     </div>
 </div>
