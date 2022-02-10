@@ -46,7 +46,7 @@ export class AppComponent implements OnInit{
         this.titleService.setTitle( 'The Recipe Doc' );
         this.tabcolor = this.tabcolor ? undefined : 'accent';
 
-        // retrieve the locally stored usre
+        // retrieve the locally stored user
         let user = JSON.parse(localStorage.getItem('user'))
 
         // use local username to retrieve full updated db record
@@ -88,6 +88,16 @@ export class AppComponent implements OnInit{
           return this.userService.user != {}
         }
         return false
+    }
+
+
+    getUserFromService(){
+      if (this.userService.user && this.userService.user.username){
+        this.user = this.userService.user
+        return true;
+      }else{
+        return false;
+      }
     }
 
     logout() {

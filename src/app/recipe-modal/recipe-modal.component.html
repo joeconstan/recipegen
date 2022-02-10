@@ -2,7 +2,7 @@
   <div class="modal-header" (mouseenter)="editable('name',true)" (mouseleave)="editable('name',false)">
 
       <div *ngIf="editing_name == false">
-          <div contenteditable="false"> <h4 class="modal-title montst-bg-it" id="modal-basic-title">{{ recipe_full.name }}</h4></div>
+          <div contenteditable="false"> <h4 class="modal-title montst-bg-it recipetitle" id="modal-basic-title">{{ recipe_full.name }}</h4></div>
       </div>
       <div *ngIf="editing_name == true">
         <div contenteditable="true" ngDefaultControl [(ngModel)]="recipe_full.name"> <input type="text" value="{{ recipe_full.name }}" class="modal-title montst-bg-it" id="modal-basic-title"></div>
@@ -111,24 +111,17 @@
       </div>
       <hr>
 
-
-        <!-- <div *ngIf="getImgData(recipe_full._id)"> -->
         <div>
-          <!-- <div class="inlined imagewrap" *ngFor="let image of images;let i = index"> -->
           <div class="inlined imagewrap" *ngFor="let image of getImagesS3(recipe_full);let i = index">
             <mat-icon *ngIf="isRemoveable(i)" (click)="removeImage()" class="close">clear</mat-icon>
-            <!-- <mat-icon *ngIf="isRemoveable(i)" class="close">clear</mat-icon> -->
-            <!-- <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{getImgData(recipe_full._id)}}" width="150" alt=""> -->
-            <!-- <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{image.filedata}}" width="150" alt=""> -->
-            <!-- <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{getImgDataS3(recipe_full)}}" width="150" alt=""> -->
-            <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{image.url}}" width="150" alt="">
+            <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{image.url}}" width="350" alt="">
           </div>
-          <!-- <img *ngIf="recipe_image" [src]="recipe_image" width="150" alt=""> -->
         </div>
 
+<!-- move the image to the right of the author, submnitted by, etc, stuff -->
 
 
-      <div *ngIf="user && user.adminflag==true" class="image-upload form-group">
+      <div *ngIf="user && user.adminflag==true" class="image-upload form-group margintop">
         <!-- <label for="fileupload" (click)="upload_image()" ><mat-icon>attach_file</mat-icon></label> -->
         <input type="file" accept="image/*" name="fileupload" id="fileupload" (change)="readImage($event.target.files)">
         <!-- <button>Upload</button> -->
@@ -146,12 +139,31 @@
           </button>
         </div>
 
-        <label ngbAutofocus for="ingredientsdiv" class="montst">Ingredients</label>
-        <div *ngIf="editing_ing == false">
-          <div *ngFor="let ingredient of recipe_full.ingredients" id="ingredientsdiv">
-            <div contenteditable="false"> <p class="montst-sm">{{ ingredient }}</p></div>
+        <div class="row">
+          <div class="col-8"><label ngbAutofocus for="ingredientsdiv" class="montst">Ingredients</label></div>
+          <div class="col-4">
+                  <div class="floatleft margintop marginright">Scale</div>
+                  <button mat-stroked-button color="primary" class="floatleft" [ngClass]="{'selectedScale': recipe_scale == 1}" (click)="scaleRecipe(1)">1x</button>
+                  <button mat-stroked-button color="primary" class="floatleft" [ngClass]="{'selectedScale': recipe_scale == 2}" (click)="scaleRecipe(2)">2x</button>
+                  <button mat-stroked-button color="primary" class="floatleft" [ngClass]="{'selectedScale': recipe_scale == 3}" (click)="scaleRecipe(3)">3x</button>
           </div>
         </div>
+
+        <div *ngIf="editing_ing == false && recipe_scale==1">
+          <!-- <div *ngFor="let ingredient of recipe_full.ingredients" id="ingredientsdiv"> -->
+          <!-- <div *ngIf=""> -->
+            <div *ngFor="let ingredient of recipe_full.ingredients" id="ingredientsdiv">
+              <div contenteditable="false"> <p class="montst-sm">{{ ingredient }}</p></div>
+            </div>
+          <!-- </div> -->
+
+        </div>
+        <div *ngIf="editing_ing == false && recipe_scale!=1">
+            <div *ngFor="let ingredient of scaled_ingredients" id="ingredientsdiv">
+              <div contenteditable="false"> <p class="montst-sm">{{ ingredient }}</p></div>
+            </div>
+        </div>
+
         <div *ngIf="editing_ing == true">
           <div *ngFor="let ingredient of recipe_full.ingredients;let i = index;trackBy:trackByIdx" id="ingredientsdiv">
             <div name="ingredientslist" ngDefaultControl [(ngModel)]="recipe_full.ingredients[i]" class="editable montst-sm"> <input type="text" value="{{recipe_full.ingredients[i]}}" class="montst-sm"></div>

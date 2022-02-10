@@ -44,6 +44,9 @@ export class RecipeModalComponent implements OnInit {
     removeable: boolean[] = [];
     images = []
     modal_images;
+    recipe_scale = 1
+    originalIngScale
+    scaled_ingredients = []
 
   constructor(
       private pantryService: PantryService,
@@ -54,7 +57,8 @@ export class RecipeModalComponent implements OnInit {
       private _snackBar: MatSnackBar,
       private _clipboardService: ClipboardService,
       private _sanitizer: DomSanitizer
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
       this.user = this.userService.user
@@ -75,6 +79,19 @@ export class RecipeModalComponent implements OnInit {
       }
 
       this.getImages()
+
+      // storing for use with scaling recipe later
+      this.scaled_ingredients = this.recipe_full.ingredients
+      // this.originalIngScale = []
+      // this.recipe_full.ingredients.forEach(ing => {
+        // this.originalIngScale.push(JSON.parse(JSON.stringify(ing)))
+      // });
+
+
+      // const obj = JSON.parse(JSON.stringify(this.recipe_full.ingredients));
+      // this.originalIngScale = obj
+
+
 
       // this.commonService.getImages(this.recipe_full.id).subscribe( data => {
       //   if (data){
@@ -377,7 +394,6 @@ export class RecipeModalComponent implements OnInit {
       this.getBase64(this.fileToUpload.filedata).then(data => {
         this.fileToUpload.filedata = data
         // this.commonService.gets3Url().subscribe(data => {
-          // console.log('returned: ', data)
           // get s3 presigned upload url
           // use the url to post the image to s3, where it will then move to db (how? some trigger?)
           // this.commonService.addRecipeImgS3(data['url'], data['fields'], this.fileToUpload).subscribe(data => {
@@ -411,6 +427,7 @@ export class RecipeModalComponent implements OnInit {
   }
 
   refreshImages(){
+    console.log(this.recipe_full.id)
     this.commonService.getImages(this.recipe_full.id).subscribe(data => {
         this.images = data;
     },
@@ -467,6 +484,89 @@ export class RecipeModalComponent implements OnInit {
     var index_dir = this.recipe_full.directions.indexOf(dir);
     if (index_dir !== -1) {
       this.recipe_full.directions.splice(index_dir, 1);
+    }
+  }
+
+
+  retrieveAmountFromIngredient(ingredient:string){
+    let amount:string
+    let regx = /(\d\s\d|\d|[/]| - |[-])+/g;
+    // /(\d\s\d|\d|[/]|[-])+/g;
+    // /(\d|[/]|\s|[-])+/g;
+    // ((\d)+(|[/]|\s|[-]))+
+
+    let res = ingredient.match(regx)
+    if (res){
+      amount = res[0]
+      return amount
+    }
+  }
+
+  scaleAmount(amount:string,multiple:number){
+    let scaledAmount:number
+    let afterws, beforews
+    if (amount.includes('/')){
+      afterws = amount.split(' ')
+      if (afterws.length>1){
+        beforews = afterws[0]
+        afterws = afterws[1]
+      }else{
+        afterws = amount
+      }
+
+      let numerator = afterws.split('/')[0]
+      let denominator = afterws.split('/')[1]
+      let dec = Number((Number(numerator)/Number(denominator)).toFixed(2))
+      if (beforews){
+        scaledAmount = (Number(beforews)*multiple) + Number((dec*multiple).toFixed(2))
+      }else{
+        scaledAmount = Number((dec*multiple).toFixed(2))
+      }
+
+    }else{
+      scaledAmount = Number(amount)*multiple
+    }
+    return scaledAmount
+  }
+
+  scaleRecipe(multiple){
+    this.recipe_scale = multiple
+    if (multiple!=1){
+      let ing_els = []
+      this.recipe_full.ingredients.forEach((ing,index) => {
+        // parse for number at beginning of string
+        // if found, multiply it by the scale
+        let newing = JSON.parse(JSON.stringify(ing));
+        // let re = /(\d|[/])+/;
+        // let res = newing.match(re)
+        let amount = this.retrieveAmountFromIngredient(newing)
+        let scaledAmount
+        if (amount){
+          if (amount.includes('-')){
+            // if theres a range, calculate them separately
+            let resa = amount.split('-')[0].trim()
+            let resb = amount.split('-')[1].trim()
+            let scaledAmount1 = this.scaleAmount(resa,multiple)
+            let scaledAmount2 = this.scaleAmount(resb,multiple)
+            scaledAmount = scaledAmount1 + ' - ' + scaledAmount2
+          }
+          else{
+          // else if (amount.includes('/')){
+            scaledAmount = this.scaleAmount(amount,multiple)
+          }
+            // let frac = amount;
+            // let dec = Number((Number(frac.charAt(0))/Number(frac.charAt(2))).toFixed(2))
+            // let newamount = Number((dec*multiple).toFixed(2))
+          ing_els.push(newing.replace(amount,scaledAmount+ ' '))
+          // }
+          // else{
+            // ing_els.push(newing.replace(amount,scaledAmount))
+          // }
+        }else{
+          ing_els.push(newing)
+        }
+      });
+      this.scaled_ingredients = ing_els
     }
   }
 

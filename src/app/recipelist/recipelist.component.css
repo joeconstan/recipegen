@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
+body{
+  background-image: url('../../assets/Rect Light.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 nav {
     padding-bottom: 6px;
 }
@@ -48,7 +54,7 @@ mat-card-header{
     text-align: center !important;
     font-size: 1.75em;
     min-height: 2.25em;
-    display: inline-block;
+    display: inline-block !important;
     width: 100%;
     /* background-color: grey; */
     /* font-weight: 250; */
@@ -84,7 +90,7 @@ mat-card:hover, .card:hover{
 
 
 .samesize{
-    min-width: 120px;
+    min-width: 120px !important;
 }
 
 

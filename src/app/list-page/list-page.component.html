@@ -1,0 +1,24 @@
+<div class="container" *ngIf="list">
+
+  <div class="row">
+    <h1 class="centered">{{list.title}}</h1>
+  </div>
+    <div class="row margintop">{{list.description}}</div>
+
+    <div class="row margintop">
+      <div class="centered"><img mat-card-image class="card-img-top list-img" src="{{getCoverImage()}}" onerror="this.src='/assets/img/placeholder.jpeg';" alt="image"></div>
+    </div>
+
+    <div class="row margintop">
+      <div class="col">
+
+        <div *ngFor="let recipe of listRecipes">
+          <div class="row margintop"><a href="{{getRecipeLink(recipe)}}" class="recipelink">{{recipe.name}}</a></div>
+          <!-- {{recipe.description}} -->
+          <img mat-card-image class="card-img-top list-img-small row margintop" src="{{getImage(recipe.id)}}" onerror="this.src='/assets/img/placeholder.jpeg';" alt="image">
+          test description
+        </div>
+      </div>
+    </div>
+
+</div>

@@ -41,6 +41,8 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { NgxFlickingModule } from '@egjs/ngx-flicking';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ExploreComponent } from './explore/explore.component';
+import { ListPageComponent } from './list-page/list-page.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     PendingComponent,
     SavedComponent,
     ChangelogComponent,
-    SinglerecipeComponent
+    SinglerecipeComponent,
+    ExploreComponent,
+    ListPageComponent
   ],
   imports: [
     BrowserModule,

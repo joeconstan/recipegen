@@ -9,9 +9,12 @@ import { PendingComponent } from './pending/pending.component'
 import { SavedComponent } from './saved/saved.component'
 import { ChangelogComponent } from './changelog/changelog.component'
 import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component'
+import { ExploreComponent } from './explore/explore.component'
+import { ListPageComponent } from './list-page/list-page.component'
 
 const routes: Routes = [
     { path: '', component: RecipelistComponent },
+    { path: 'explore', component: ExploreComponent },
     { path: 'sc', component: IngredientsComponent },
     { path: 'rb', component: RecipelistComponent },
     { path: 'login', component: LoginComponent },
@@ -19,7 +22,8 @@ const routes: Routes = [
     { path: 'pending', component: PendingComponent },
     { path: 'saved', component: SavedComponent },
     { path: 'changelog', component: ChangelogComponent },
-    { path: 'recipe/:recipe', component: SinglerecipeComponent }
+    { path: 'recipe/:recipe', component: SinglerecipeComponent },
+    { path: 'list/:list', component: ListPageComponent }
 ];
 
 @NgModule({
