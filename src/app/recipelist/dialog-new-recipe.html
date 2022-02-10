@@ -1,5 +1,15 @@
 <h1 mat-dialog-title>Add a Recipe</h1>
 <div mat-dialog-content>
+  <a role="button" class="clickable link" *ngIf="!import" (click)="import=!import">Import</a>
+  <mat-form-field *ngIf="import">
+    <mat-label>Recipe URL</mat-label>
+    <input matInput [(ngModel)]="recipeurl" >
+  </mat-form-field>
+  <!-- <mat-form-field *ngIf="import"> -->
+    <button *ngIf="import" mat-button (click)="importRecipe()">Ok</button>
+  <!-- </mat-form-field> -->
+  <br>
+  <br>
 
 <!-- <p>Recipe Name</p> -->
 <!-- <p>
@@ -77,6 +87,15 @@
     </mat-form-field>
 
     <mat-checkbox [(ngModel)]="data.timeWarning" value="True">Must Sit Overnight</mat-checkbox>
+</p>
+<br>
+
+<p>
+    <mat-form-field>
+      <mat-label>Yield</mat-label>
+      <input matInput placeholder="e.g. 16 cookies" [(ngModel)]="data.yield">
+    </mat-form-field>
+
 </p>
 <br>
 

@@ -25,10 +25,10 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col"></div>
                     <!-- <div class="col"></div> -->
                     <!-- <div class="col"></div> -->
-                    <div class="col">
+                    <!-- <div class="col"></div> -->
+                    <div class="col col-sm-6 col-lg-2">
                         <div ngbDropdown class="d-inline-block">
                             <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic1" ngbDropdownToggle>Meal Type</button>
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
@@ -36,7 +36,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-sm-6 col-lg-2">
                         <div ngbDropdown class="d-inline-block">
                             <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic2" ngbDropdownToggle>Time</button>
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-sm-6 col-lg-2">
                         <div ngbDropdown class="d-inline-block">
                             <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic3" ngbDropdownToggle>Difficulty</button>
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic3">
@@ -52,7 +52,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-sm-6 col-lg-2">
                         <div ngbDropdown class="d-inline-block">
                             <button class="samesize montst" mat-stroked-button color="warn" id="dropdownBasic3" ngbDropdownToggle>Tags</button>
                             <div ngbDropdownMenu aria-labelledby="dropdownBasic3">
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <!-- <div class="col"></div> -->
-                    <div class="col-5">
+                    <div class="col-5 col-lg-4">
 
                         <form class="example-form">
                           <mat-form-field color="accent" class="example-full-width inline">
@@ -104,6 +104,10 @@
                         </mat-chip>
                         <mat-chip *ngIf="filters.difficulty!=''" (removed)="removeFilter(filters.type, 'difficulty')">
                           {{ filters.difficulty }}
+                          <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                        <mat-chip *ngIf="filters.tags!=''" (removed)="removeFilter(filters.type, 'tag')">
+                          {{ filters.tags }}
                           <mat-icon matChipRemove>cancel</mat-icon>
                         </mat-chip>
                       </mat-chip-list>

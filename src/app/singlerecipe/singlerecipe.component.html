@@ -31,6 +31,10 @@
               </div>
             </mat-card-subtitle>
           </mat-card-header>
+          <div class="inlined imagewrap" *ngFor="let image of getImagesS3(recipe_full)">
+            <img class="inlined" src="{{image.url}}" width="350" alt="">
+          </div>
+
           <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
           <mat-card-content>
             <!-- ingredients -->

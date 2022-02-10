@@ -12,7 +12,6 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 })
 export class SinglerecipeComponent implements OnInit {
 
-
   recipe_full: any
   newComment
   recipe_comments
@@ -25,6 +24,7 @@ export class SinglerecipeComponent implements OnInit {
   editable_name = false
   editable_ing = false
   editable_dir = false
+  images = []
 
   constructor(
     private route: ActivatedRoute,
@@ -35,16 +35,31 @@ export class SinglerecipeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // var recipe_name = decodeURIComponent(this.route.snapshot.paramMap.get('recipe'));
     var recipe_id = this.route.snapshot.paramMap.get('recipe')
-    // console.log(recipe_id)
 
     this.commonService.getRecipe(recipe_id).subscribe(data => {
         this.recipe_full = data;
-        // console.log(this.recipe_full)
+        this.getImageNamesS3()
     },
         error => console.error(error)
     )
+
+  }
+
+  getImageNamesS3(){
+    this.commonService.getImagesS3(this.recipe_full.id).subscribe(data => {
+        this.images = data
+    },
+        error => console.error(error)
+    )
+  }
+
+  getImagesS3(recipe){
+    let imgs = this.images.filter(x=>x.recipe_id == recipe.id);
+    imgs.forEach(img => {
+      img.url = 'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' + recipe.id+img.filename
+    });
+    return imgs;
   }
 
 

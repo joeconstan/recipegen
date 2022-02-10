@@ -26,6 +26,13 @@ nav .router-link-active{
     color:red !important;
  }
 
+ .nav-img{
+   width: 245px;
+   height: 55px;
+   /* vertical-align: middle; */
+   margin-top: 10px;
+ }
+
 .box-shadow{
     box-shadow: 0 .25rem .75rem rgba(0,0,0,.05);
 }

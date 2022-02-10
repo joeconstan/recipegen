@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation  } from '@angular/core';
 import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PantryService } from '../pantry.service'
 import { CommonService } from '../common.service'
@@ -26,12 +26,14 @@ export interface DialogData {
   author: string;
   rating: number;
   tags: string[];
+  yield: string;
 }
 
 @Component({
   selector: 'app-recipelist',
   templateUrl: './recipelist.component.html',
-  styleUrls: ['./recipelist.component.css']
+  styleUrls: ['./recipelist.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class RecipelistComponent implements OnInit {
 
@@ -42,7 +44,8 @@ export class RecipelistComponent implements OnInit {
     mealtypes = ['Breakfast', 'Lunch/Dinner', 'Desserts', 'Sauces/Spices', 'Sides', 'Holiday', 'Breads', 'Salads', 'Soups']
     times = ['0-10 min','10-30 min','30-60 min','60+ min']
     difficulties = ['Easy','Moderate','Hard']
-    tags = ['Gluten Free', 'Low FODMAP', 'Nut Free', 'Soy Free'] //should be: any tag that has been added to a recipe
+    // tags = ['Gluten Free', 'Low FODMAP', 'Nut Free', 'Soy Free'] //should be: any tag that has been added to a recipe
+    tags = ['Nut Free', 'Gluten Free']
     image_upload: any;
     search_value
     filters = {
@@ -50,7 +53,8 @@ export class RecipelistComponent implements OnInit {
         'type':'',
         'time':'',
         'difficulty':'',
-        'searchIngredients':false
+        'searchIngredients':false,
+        'tags':''
     }
 
     new_recipe = {
@@ -64,7 +68,8 @@ export class RecipelistComponent implements OnInit {
         submittedby: '',
         author: '',
         rating: 0,
-        tags: []
+        tags: [],
+        yield: ''
     }
 
     images = []
@@ -216,7 +221,7 @@ export class RecipelistComponent implements OnInit {
 
   openModal(){
       this.modalRef = this.modalService.open(RecipeModalComponent, {
-        centered: true, size: 'lg'
+        centered: true, size: 'xl'
      })
       this.modalRef.componentInstance.data = {
         'recipe': this.recipe_full,
@@ -358,6 +363,9 @@ export class RecipelistComponent implements OnInit {
       else if (category == 'difficulty'){
           this.filters.difficulty = value
       }
+      else if (category == 'tag'){
+          this.filters.tags = value
+      }
 
       this.search_value = ''
       this.query_recipes()
@@ -379,6 +387,9 @@ export class RecipelistComponent implements OnInit {
    }
    else if(category == 'difficulty'){
         this.filters.difficulty=''
+   }
+   else if(category == 'tag'){
+        this.filters.tags=''
    }
 
    this.recipesLoading = true;
@@ -458,7 +469,8 @@ export class RecipelistComponent implements OnInit {
                 Type: this.new_recipe.Type,
                 author: this.new_recipe.author,
                 rating: 0,
-                tags: []
+                tags: [],
+                yield: this.new_recipe.yield
             }
           });
 
@@ -467,6 +479,15 @@ export class RecipelistComponent implements OnInit {
               if (result){
                   // result.Ingredients = this.parseIngredients(result.Ingredients)
                   result.submittedby = this.userService.user.username
+                  let nutFree = true;
+                  result.Ingredients.forEach(ing => {
+                    if (ing.toLowerCase().includes('nut') || ing.toLowerCase().includes('cashew') || ing.toLowerCase().includes('almond') || ing.toLowerCase().includes('pecan')){
+                      nutFree = false;
+                    }
+                  });
+                  if (nutFree){
+                    result.tags.push('Nut Free')
+                  }
                   this.commonService.newRecipe(result).subscribe(data => {
                       this._snackBar.open('Recipe Suggestion Submitted!', 'ok', {
                           duration: 2000,
@@ -516,7 +537,8 @@ export class DialogNewRecipeComponent {
     step_num = 1;
     // dialogue_length: string;
     separatorKeysCodes: number[] = [ENTER,COMMA];
-
+    import = false
+    recipeurl: string;
 
   constructor(
     public dialogRef: MatDialogRef<DialogNewRecipeComponent>,
@@ -552,6 +574,8 @@ export class DialogNewRecipeComponent {
   }
 
   addNumbering(){
+    // get cursor position
+      // so, if dialogue_direction now has a newline character where previously it didnt...then..ugh but idk. that happens after the numbering, i think
       this.checkSteps()
       this.step_num+=1
       this.dialogue_direction+=this.step_num+". "
@@ -574,7 +598,12 @@ export class DialogNewRecipeComponent {
     if (index > -1) {
        this.data.ingredients.splice(index, 1);
     }
+  }
 
+
+  importRecipe(){
+    this.import = true;
+    console.log(this.recipeurl)
   }
 
 

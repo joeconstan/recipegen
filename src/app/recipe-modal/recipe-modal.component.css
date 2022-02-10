@@ -14,9 +14,26 @@
     font-size: 1.5em;
 }
 
+.recipetitle{
+    font-weight: bold;
+    font-size: 2em;
+}
+
+.margintop{
+  margin-top: 8px;
+}
+
+.marginright{
+  margin-right: 5px;
+}
+
 .pedna{
     font-family: peddana;
     font-weight: 50 !important;
+}
+
+.selectedScale{
+  background-color: #eeeeee;
 }
 
 

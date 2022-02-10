@@ -5,3 +5,11 @@ mat-form-field {
 #chipList{
     display: inline-block;
 }
+
+.link{
+  color: blue;
+}
+
+.clickable{
+  cursor: pointer;
+}

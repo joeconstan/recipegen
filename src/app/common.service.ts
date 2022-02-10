@@ -9,72 +9,39 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 
 export class CommonService {
 
-  // private dev = true;
-
   constructor( private http: HttpClient ) { }
 
 
 
   /* RECIPES */
   newRecipe(recipe){
-      // if (this.dev){
-          // return this.http.post('http://localhost:8080/api/newRecipe', recipe)
-          return this.http.post('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
-      // }else{
-      //     return this.http.post('/api/newRecipe', recipe)
-      // }
+      return this.http.post('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
   }
 
   saveRecipe(user){
-       // if (this.dev){
-           // return this.http.post('http://localhost:8080/user/saveRecipe', user)
-           return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
-       // }else{
-       //     return this.http.post('/user/saveRecipe', user)
-       // }
+
+       return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
   }
 
   unSaveRecipe(user){
-       // if (this.dev){
-           // return this.http.post('http://localhost:8080/user/unSaveRecipe', user)
-           return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
-       // }else{
-       //     return this.http.post('/user/unSaveRecipe', user)
-       // }
+       return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
   }
 
  updateRecipe(recipe){
-       // if (this.dev){
-           // return this.http.post('http://localhost:8080/api/updateRecipe', recipe)
-           return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
-       // }else{
-       //     return this.http.post('/api/updateRecipe', recipe)
-       // }
+        return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
   }
 
  editRecipe(recipe){
-       // if (this.dev){
-           return this.http.post('http://localhost:8080/api/editRecipe', recipe)
-       // }else{
-       //     return this.http.post('/api/editRecipe', recipe)
-       // }
+        return this.http.post('http://localhost:8080/api/editRecipe', recipe)
   }
-
-
 
 
   getRecipes(){
     // var startKey2 = encodeURIComponent(startKey)
     // var params = new HttpParams().set('startKey', startKey2)
+         // return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipes-v2', {params} )
+         return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipes-v2' )
 
-       // if (this.dev){
-           // return this.http.get('http://localhost:8080/api/getRecipes')
-           // return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipes')
-           // return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipes-v2', {params} )
-           return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipes-v2' )
-       // }else{
-           // return this.http.get('/api/getRecipes')
-       // }
   }
 
 
@@ -83,12 +50,7 @@ export class CommonService {
   }
 
   getPendingRecipes(){
-       // if (this.dev){
-           // return this.http.get('http://localhost:8080/api/getPendingRecipes')
            return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/pending-recipes')
-       // }else{
-       //     return this.http.get('/api/getPendingRecipes')
-       // }
   }
   // getRecipesByType(type){
   //     var uri_param = encodeURIComponent(type);
@@ -102,21 +64,21 @@ export class CommonService {
 
   getRecipe(recipe){
       // var uri_param = encodeURIComponent(recipe);
-      // if (this.dev){
-          // return this.http.get(`http://localhost:8080/api/getRecipe/${uri_param}`)
-          return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe/',{params:{'recipe':recipe}})
-      // }else{
-          // return this.http.get(`/api/getRecipe/${uri_param}`)
-      // }
+        return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe/',{params:{'recipe':recipe}})
+  }
+
+
+
+  getLists(){
+    return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/lists/')
+  }
+
+  getList(list_id){
+    return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/list/',{params:{'list_id':list_id}})
   }
 
   getRandomRecipe(){
-      // if (this.dev){
-          // return this.http.get('http://localhost:8080/api/getRandomRecipe')
-          return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/random-recipe')
-      // }else{
-      //     return this.http.get('/api/getRandomRecipe')
-      // }
+    return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/random-recipe')
   }
 
   // getRecipesbyKeyword(keyword){
@@ -149,13 +111,11 @@ export class CommonService {
       if (filters.searchIngredients){
           params = params.set('searchIngredients', filters.searchIngredients);
       }
+      if (filters.tags){
+          params = params.set('tags', filters.tags);
+      }
 
-      // if (this.dev){
-          // return this.http.get('http://localhost:8080/api/getRecipesWithFilters', {params})
           return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipes-v2', {params})
-      // }else{
-          // return this.http.get('/api/getRecipesWithFilters', {params})
-      // }
   }
 
 
