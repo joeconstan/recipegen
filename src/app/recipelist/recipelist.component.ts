@@ -157,7 +157,6 @@ export class RecipelistComponent implements OnInit {
   }
 
 
-
   hasImage(recipe_id){
     // console.log(this.images.find(x=>x.recipe_id == recipe_id))
     return this.images.find(x=>x.recipe_id == recipe_id)
@@ -329,6 +328,14 @@ export class RecipelistComponent implements OnInit {
           this.getBase64(file).then(data => this.image_upload = data)
       }
   }
+
+
+  runSearchIfValue(){
+    if (this.search_value || this.filters.keywords.length > 0){
+      this.search_recipes()
+    }
+  }
+
 
 
   search_recipes(){

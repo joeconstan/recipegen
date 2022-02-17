@@ -27,9 +27,19 @@ export class CommonService {
        return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
   }
 
- updateRecipe(recipe){
-        return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
+  updateRecipe(recipe){
+    return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
   }
+
+
+  makePrimary(imageid,recipeid){
+    let image = {
+      'id': imageid,
+      'recipe_id':recipeid
+    }
+    return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/s3images', image)
+  }
+
 
  editRecipe(recipe){
         return this.http.post('http://localhost:8080/api/editRecipe', recipe)
@@ -43,7 +53,6 @@ export class CommonService {
          return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipes-v2' )
 
   }
-
 
   getRecipeCount(){
       return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe-count')
