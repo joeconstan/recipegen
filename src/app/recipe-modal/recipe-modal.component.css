@@ -117,3 +117,13 @@ mat-panel-title{
   cursor: pointer;
   z-index: 100;
 }
+
+.topright {
+  position: absolute;
+  top: 8%;
+  right: 5%;
+  cursor: pointer;
+  z-index: 100;
+}
+
+

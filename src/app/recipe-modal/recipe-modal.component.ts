@@ -42,6 +42,7 @@ export class RecipeModalComponent implements OnInit {
     };
     user;
     removeable: boolean[] = [];
+    primary: boolean[] = [];
     images = []
     modal_images;
     recipe_scale = 1
@@ -455,10 +456,26 @@ export class RecipeModalComponent implements OnInit {
     this.removeable[i] = torf;
   }
 
+  showprimary(torf,i){
+    this.primary[i] = torf;
+  }
+
   isRemoveable(idx){
     return this.removeable[idx];
   }
 
+  isHovered(idx){
+    return this.primary[idx];
+  }
+
+  makePrimary(image){
+    console.log(image)
+    this.commonService.makePrimary(image.id, image.recipe_id).subscribe( data =>{
+      // this.recipe_comments = data;
+    },
+      error => console.log(error)
+    )
+  }
 
 
   onNeedPanel(e) {

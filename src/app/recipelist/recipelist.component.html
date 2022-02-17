@@ -71,7 +71,7 @@
                                 <mat-icon>close</mat-icon>
                             </button>
                           </mat-form-field>
-                          <mat-checkbox name="searchIng" ngDefaultControl class="inline" [(ngModel)]="filters.searchIngredients">Search Ingredients</mat-checkbox>
+                          <mat-checkbox name="searchIng" ngDefaultControl class="inline" (change)="runSearchIfValue()" [(ngModel)]="filters.searchIngredients">Search Ingredients</mat-checkbox>
                           <!-- <mat-form-field color="accent" class="example-full-width"> -->
                           <!-- </mat-form-field> -->
 

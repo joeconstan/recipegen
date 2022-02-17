@@ -7,8 +7,8 @@
   </div>
 
   <div class="row">
-      <div *ngFor="let list of lists" class="col-lg-4 mb-4 grid-margin">
-            <mat-card class="shadow p-3 mb-5 bg-white rounded">
+      <div *ngFor="let list of lists; let i = index" class="col-lg-4 mb-4 grid-margin">
+            <mat-card *ngIf="i==0" class="shadow p-3 mb-5 bg-white rounded">
                 <mat-card-header>
                     <mat-card-title> {{ list.title }}</mat-card-title>
                 </mat-card-header>

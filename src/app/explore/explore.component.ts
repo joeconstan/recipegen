@@ -41,7 +41,7 @@ export class ExploreComponent implements OnInit {
     // get lists from db
     this.commonService.getLists().subscribe(data => {
         this.lists = data;
-        console.log(data)
+        // console.log(data)
         // console.log(this.recipe_full)
     },
         error => console.error(error)

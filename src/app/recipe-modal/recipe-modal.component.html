@@ -113,8 +113,10 @@
 
         <div>
           <div class="inlined imagewrap" *ngFor="let image of getImagesS3(recipe_full);let i = index">
-            <mat-icon *ngIf="isRemoveable(i)" (click)="removeImage()" class="close">clear</mat-icon>
-            <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{image.url}}" width="350" alt="">
+            <!-- <mat-icon *ngIf="isRemoveable(i)" (click)="removeImage()" class="close">clear</mat-icon> -->
+            <mat-icon (mouseenter)="showprimary(true,i)" *ngIf="user && user.adminflag==true && isHovered(i)" (click)="makePrimary(image)"class="topright clickable">star</mat-icon>
+            <!-- <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{image.url}}" width="350" alt=""> -->
+            <img class="inlined" (mouseenter)="showprimary(true,i)" (mouseleave)="showprimary(false,i)" src="{{image.url}}" width="350" alt="">
           </div>
         </div>
 
