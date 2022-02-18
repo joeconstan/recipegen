@@ -19,7 +19,6 @@ export class CommonService {
   }
 
   saveRecipe(user){
-
        return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
   }
 
@@ -27,8 +26,14 @@ export class CommonService {
        return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
   }
 
+  rateRecipe(ratingobj){
+      return this.http.post('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/rating', ratingobj)
+  }
+
+
+
   updateRecipe(recipe){
-    return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
+      return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
   }
 
 
@@ -157,6 +162,17 @@ export class CommonService {
        // }else{
            // return this.http.get(`/api/getComments/${uri_param}`)
        // }
+  }
+
+
+  getRating(recipeid){
+    var params = new HttpParams().set('recipeid', recipeid)
+    return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/rating', {params} )
+  }
+
+
+  getRatings():Observable<any>{
+    return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/ratings')
   }
 
   // getImages(recipeid):Observable<any>{

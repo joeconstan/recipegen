@@ -41,6 +41,8 @@ export class RecipeModalComponent implements OnInit {
       primary: true
     };
     user;
+    rating_count
+    recipe_rating
     removeable: boolean[] = [];
     primary: boolean[] = [];
     images = []
@@ -65,8 +67,15 @@ export class RecipeModalComponent implements OnInit {
       this.user = this.userService.user
       this.recipe_full = this.data.recipe
       this.modal_images = this.data.images
-      // console.log(this.data)
-      this.commonService.getComments(this.recipe_full.id).subscribe( data =>{
+
+      this.commonService.getRating(this.recipe_full.id).subscribe(data =>{
+        this.rating_count = data[0];
+        this.recipe_rating = data[1];
+      },
+        error => console.log(error)
+      )
+
+      this.commonService.getComments(this.recipe_full.id).subscribe(data =>{
         this.recipe_comments = data;
       },
         error => console.log(error)
@@ -188,6 +197,34 @@ export class RecipeModalComponent implements OnInit {
           this.modal.close()
           this.router.navigate(['/login'])
       }
+  }
+
+
+  rateRecipe(event){
+    let rating = event.target.htmlFor
+    // if user not signed in, redirect to sign in
+    if (!this.userService.user || !this.userService.user.username || this.userService.user.username==''){
+        this.modal.close()
+        this.router.navigate(['/login'])
+    }else{
+      // otherwise, submit rating
+      let ratingObj = {
+        recipeid: this.recipe_full.id,
+        username: this.userService.user.username,
+        rating: rating
+      }
+      this.commonService.rateRecipe(ratingObj).subscribe(data => {
+        this.commonService.getRating(this.recipe_full.id).subscribe(data =>{
+          this.rating_count = data[0];
+          this.recipe_rating = data[1];
+        },
+          error => console.log(error)
+        )
+      },
+            error => console.error(error)
+      )
+    }
+
   }
 
 
@@ -469,7 +506,7 @@ export class RecipeModalComponent implements OnInit {
   }
 
   makePrimary(image){
-    console.log(image)
+    // console.log(image)
     this.commonService.makePrimary(image.id, image.recipe_id).subscribe( data =>{
       // this.recipe_comments = data;
     },
