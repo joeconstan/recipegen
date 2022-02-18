@@ -3,7 +3,31 @@
 
       <div *ngIf="editing_name == false">
           <div contenteditable="false"> <h4 class="modal-title montst-bg-it recipetitle" id="modal-basic-title">{{ recipe_full.name }}</h4></div>
+          <div class="rating">
+            <mat-radio-group
+              name="rating"
+              [(ngModel)]="recipe_rating"
+              (click)="rateRecipe($event)">
+              <p *ngIf="recipe_rating && rating_count==1" class="marginleft">{{rating_count}} Rating</p>
+              <p *ngIf="recipe_rating && rating_count!=1" class="marginleft">{{rating_count}} Ratings</p>
+              <p *ngIf="!recipe_rating || recipe_rating==0" class="marginleft">0 Ratings</p>
+              <mat-radio-button name="rating" [value]="5" id="5"></mat-radio-button><label for="5">☆</label>
+              <mat-radio-button name="rating" [value]="4" id="4"></mat-radio-button><label for="4">☆</label>
+              <mat-radio-button name="rating" [value]="3" id="3"></mat-radio-button><label for="3">☆</label>
+              <mat-radio-button name="rating" [value]="2" id="2"></mat-radio-button><label for="2">☆</label>
+              <mat-radio-button name="rating" [value]="1" id="1"></mat-radio-button><label for="1">☆</label>
+            </mat-radio-group>
+            <!-- <input type="radio" [(ngModel)]="ratingtest" name="rating" (click)="rateRecipe(5)" [checked]="recipe_rating==5" value="5" id="5"><label for="5">☆</label>
+            <input type="radio" name="rating" (click)="rateRecipe(4)" [checked]="recipe_rating==4" value="4" id="4"><label for="4">☆</label>
+            <input type="radio" name="rating" (click)="rateRecipe(3)" [checked]="recipe_rating==3" value="3" id="3"><label for="3">☆</label>
+            <input type="radio" name="rating" (click)="rateRecipe(2)" [checked]="recipe_rating==2" value="2" id="2"><label for="2">☆</label>
+            <input type="radio" name="rating" (click)="rateRecipe(1)" [checked]="recipe_rating==1" value="1" id="1"><label for="1">☆</label> -->
+          </div>
+          <!-- <div class="rating">
+          </div> -->
       </div>
+
+
       <div *ngIf="editing_name == true">
         <div contenteditable="true" ngDefaultControl [(ngModel)]="recipe_full.name"> <input type="text" value="{{ recipe_full.name }}" class="modal-title montst-bg-it" id="modal-basic-title"></div>
       </div>

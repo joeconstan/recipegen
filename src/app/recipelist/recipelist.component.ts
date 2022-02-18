@@ -73,6 +73,7 @@ export class RecipelistComponent implements OnInit {
     }
 
     images = []
+    ratings = []
 
     user;
 
@@ -106,6 +107,7 @@ export class RecipelistComponent implements OnInit {
       this.commonService.getRecipes().subscribe(data => {
           this.recipes = data
           this.getImagesS3()
+          this.getRatings()
           this.recipesLoading = false;
       },
           error => console.error(error)
@@ -156,10 +158,50 @@ export class RecipelistComponent implements OnInit {
     )
   }
 
+  getRatings(){
+    this.commonService.getRatings().subscribe(data => {
+      // data is in form:
+      // [recipe_id, numRatings, rating]
+      this.ratings = data
+    },
+        error => console.error(error)
+    )
+  }
+
 
   hasImage(recipe_id){
-    // console.log(this.images.find(x=>x.recipe_id == recipe_id))
     return this.images.find(x=>x.recipe_id == recipe_id)
+  }
+
+  hasRating(recipe_id){
+    if (this.ratings){
+      return this.ratings.filter(x=>x.recipe_id == recipe_id)
+    }
+  }
+
+  getRatingCount(recipe_id){
+    if (this.ratings){
+      let toret
+      let rr = this.ratings.filter(x=>x.recipe_id == recipe_id)
+      if (!rr || rr.length==0){
+        toret = 0
+      }else{
+        toret = rr[0]['numratings']
+      }
+      return toret
+    }
+  }
+  getRating(recipe_id){
+    if (this.ratings){
+      let toret
+      let rr = this.ratings.filter(x=>x.recipe_id == recipe_id)
+      if (!rr || rr.length==0){
+        toret = 0
+      }else{
+        toret = rr[0]['rating']
+      }
+      return toret
+    }
   }
 
   getImgData(recipe){

@@ -158,4 +158,54 @@ mat-card:hover, .card:hover{
   font-weight: bold;
 }
 
+.marginleft{
+    margin-left: 10px !important;
+}
+
+
+/* ratings */
+
+.rating > mat-radio-group {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: left;
+}
+
+.normalsize{
+    font-size: .7em !important;
+}
+
+.rating > mat-radio-group > mat-radio-button{
+  display:none;
+}
+
+.rating > mat-radio-group > label {
+  position: relative;
+  width: .75em;
+  height: .75em;
+  font-size: .6vw;
+  /* color: #FFD700; */
+  cursor: pointer;
+}
+
+.rating > mat-radio-group > label::before{
+  content: "\2605";
+  position: absolute;
+  opacity: 0;
+}
+
+.rating > mat-radio-group > label:hover:before,
+.rating > mat-radio-group > label:hover ~ label:before {
+  opacity: 1 !important;
+}
+
+.rating > mat-radio-group > .mat-radio-checked ~ label:before{
+  opacity:1;
+}
+
+.rating:hover > mat-radio-group > .mat-radio-checked ~ label:before{
+  opacity: 0.4;
+}
+
+
 

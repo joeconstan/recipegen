@@ -43,6 +43,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ExploreComponent } from './explore/explore.component';
 import { ListPageComponent } from './list-page/list-page.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -88,8 +89,9 @@ import { ListPageComponent } from './list-page/list-page.component';
     NgxFlickingModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
+    MatRadioModule,
   ],
-  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule, MatCheckboxModule, MatProgressSpinnerModule ],
+  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule, MatCheckboxModule, MatProgressSpinnerModule,MatRadioModule ],
   providers: [ CookieService, ],
   entryComponents: [
     DialogNewRecipeComponent
