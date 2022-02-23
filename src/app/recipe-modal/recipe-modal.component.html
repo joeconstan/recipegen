@@ -40,27 +40,25 @@
 
 
       <div *ngIf="userSaved()">
-
-        <button mat-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
+        <button class="btnpadding" mat-icon-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
           <mat-icon>share</mat-icon>
         </button>
 
-        <button mat-button (click)="unbookmark_recipe()">
-          <mat-icon>bookmark</mat-icon>
+        <button class="btnpadding" mat-icon-button (click)="unbookmark_recipe()">
+          <mat-icon>favorite</mat-icon>
         </button>
-
+        <label class="valigncenter">{{savedCount}}</label>
       </div>
 
       <div *ngIf="!userSaved()">
+          <button class="btnpadding" mat-icon-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
+            <mat-icon>share</mat-icon>
+          </button>
 
-        <button mat-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
-          <mat-icon>share</mat-icon>
-        </button>
-
-        <button class="modal-header-button" mat-button (click)="bookmark_recipe()">
-          <mat-icon>bookmark_border</mat-icon>
-        </button>
-
+          <button class="btnpadding" mat-icon-button (click)="bookmark_recipe()">
+            <mat-icon>favorite_border</mat-icon>
+          </button>
+          <label class="valigncenter">{{savedCount}}</label>
       </div>
 
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -166,12 +164,15 @@
         </div>
 
         <div class="row">
-          <div class="col-8"><label ngbAutofocus for="ingredientsdiv" class="montst">Ingredients</label></div>
-          <div class="col-4">
+          <!-- <div class="col-8"><label ngbAutofocus for="ingredientsdiv" class="montst">Ingredients</label></div> -->
+          <div class="col-4 col-md-8"><label ngbAutofocus for="ingredientsdiv" class="montst">Ingredients</label></div>
+          <!-- <div class="col-4"> -->
+          <div class="col-8 col-md-4">
                   <div class="floatleft margintop marginright">Scale</div>
-                  <button mat-stroked-button color="primary" class="floatleft" [ngClass]="{'selectedScale': recipe_scale == 1}" (click)="scaleRecipe(1)">1x</button>
-                  <button mat-stroked-button color="primary" class="floatleft" [ngClass]="{'selectedScale': recipe_scale == 2}" (click)="scaleRecipe(2)">2x</button>
-                  <button mat-stroked-button color="primary" class="floatleft" [ngClass]="{'selectedScale': recipe_scale == 3}" (click)="scaleRecipe(3)">3x</button>
+                  <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == .5}" (click)="scaleRecipe(.5)">.5x</button>
+                  <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 1}" (click)="scaleRecipe(1)">1x</button>
+                  <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 2}" (click)="scaleRecipe(2)">2x</button>
+                  <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 3}" (click)="scaleRecipe(3)">3x</button>
           </div>
         </div>
 
@@ -248,7 +249,7 @@
               </mat-expansion-panel-header>
               <div *ngFor="let comment of recipe_comments" id="commentsdiv">
                 <p class="montst-sm"><strong>{{ comment.username }}</strong></p>
-                <p class="montst-sm">&nbsp;&nbsp;{{ comment.text }}</p>
+                <p class="montst-sm">&nbsp;&nbsp;{{ comment.commenttext }}</p>
               </div>
               <div>
                  <input class="floatleft widthtf" matInput [(ngModel)]="newComment" type="text" name="" placeholder="Add a comment..."/>

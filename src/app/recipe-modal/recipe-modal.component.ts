@@ -9,6 +9,9 @@ import { ClipboardService } from 'ngx-clipboard'
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxFlickingModule } from '@egjs/ngx-flicking';
 
+// declare var OrientationFixer: any;
+
+
 @Component({
   selector: 'app-recipe-modal',
   templateUrl: './recipe-modal.component.html',
@@ -50,6 +53,8 @@ export class RecipeModalComponent implements OnInit {
     recipe_scale = 1
     originalIngScale
     scaled_ingredients = []
+    saved = []
+    savedCount
 
   constructor(
       private pantryService: PantryService,
@@ -76,7 +81,11 @@ export class RecipeModalComponent implements OnInit {
       )
 
       this.commonService.getComments(this.recipe_full.id).subscribe(data =>{
-        this.recipe_comments = data;
+        if (data){
+          this.recipe_comments = data;
+        }else{
+          this.recipe_comments = [];
+        }
       },
         error => console.log(error)
       )
@@ -92,6 +101,17 @@ export class RecipeModalComponent implements OnInit {
 
       // storing for use with scaling recipe later
       this.scaled_ingredients = this.recipe_full.ingredients
+
+      if (this.userService.user){
+        this.getSavedRecipes(this.userService.user.id)
+      }
+
+      this.commonService.getSavedCount(this.recipe_full.id).subscribe(data =>{
+        this.savedCount = data;
+      },
+        error => console.log(error)
+      )
+
       // this.originalIngScale = []
       // this.recipe_full.ingredients.forEach(ing => {
         // this.originalIngScale.push(JSON.parse(JSON.stringify(ing)))
@@ -116,6 +136,23 @@ export class RecipeModalComponent implements OnInit {
       // this.recipe_full = this.pantryService.loadRecipe(this.data)
   }
 
+
+  // fixOrientation(img){
+  //   const orientationFixer = new OrientationFixer();
+  //   const orientation = await orientationFixer.determineOrientation(img);
+  // }
+
+
+
+  getSavedRecipes(user_id){
+      this.commonService.getSavedRecipes(user_id).subscribe(data => {
+        data.forEach(record => {
+          this.saved.push(record.id)
+        });
+      },
+            error => console.error(error)
+      )
+  }
 
   getImages(){
     // this.images = this.recipe_full.images
@@ -156,15 +193,15 @@ export class RecipeModalComponent implements OnInit {
       }
 
       var user = this.userService.getUser()
-      if (!user.saved){
-        user.saved = [];
-      }
-      user.saved.push(this.recipe_full.id)
+      // if (!user.saved){
+      //   user.saved = [];
+      // }
+      this.saved.push(this.recipe_full.id)
 
-      this.userService.setUser(user)
+      // this.userService.setUser(user)
 
-      this.commonService.saveRecipe(user).subscribe(data => {
-          this._snackBar.open('Recipe Saved', 'ok', {
+      this.commonService.saveRecipe(user.id, this.recipe_full.id).subscribe(data => {
+          this._snackBar.open('Recipe Saved', 'Ok', {
               duration: 2000,
           });
       },
@@ -176,12 +213,11 @@ export class RecipeModalComponent implements OnInit {
       // if user logged in, add recipe to saved
       if(this.userService.getUser()){
           var user = this.userService.getUser()
-          const index = user.saved.indexOf(this.recipe_full.id);
+          const index = this.saved.indexOf(this.recipe_full.id);
           if (index >= 0) {
-              user.saved.splice(index, 1);
-              console.log(user.saved)
-              this.userService.setUser(user)
-              this.commonService.unSaveRecipe(user).subscribe(data => {
+              this.saved.splice(index, 1);
+              // this.userService.setUser(user)
+              this.commonService.unSaveRecipe(user.id, this.recipe_full.id).subscribe(data => {
                   this._snackBar.open('Recipe removed from saved list', 'ok', {
                       duration: 2000,
                   });
@@ -234,17 +270,15 @@ export class RecipeModalComponent implements OnInit {
           this.router.navigate(['/login'])
       }else{
           var commentObj = {
-              recipeid: this.recipe_full.id,
-              created: new Date(),
-              userid: this.userService.user.id,
+              user_id: this.userService.user.id,
               username: this.userService.user.username,
+              recipe_id: this.recipe_full.id,
               text: this.newComment
           }
 
           this.recipe_comments.push(commentObj)
           this.newComment = ''
 
-          // this.commonService.commentRecipe(this.recipe_full).subscribe(data => {
           this.commonService.commentRecipe(commentObj).subscribe(data => {
                 // console.log(data)
           },
@@ -374,9 +408,8 @@ export class RecipeModalComponent implements OnInit {
 
 
   userSaved(){
-      // console.log(this.userService.user)
       if (this.userService.user && this.userService.user.saved!=null){
-        if (this.userService.user.saved.indexOf(this.recipe_full.id) > -1){
+        if (this.saved.indexOf(this.recipe_full.id) > -1){
             return true
         }
       }
@@ -541,10 +574,9 @@ export class RecipeModalComponent implements OnInit {
     }
   }
 
-
   retrieveAmountFromIngredient(ingredient:string){
     let amount:string
-    let regx = /(\d\s\d|\d|[/]| - |[-])+/g;
+    let regx = /(\d\s\d|\d|[/]|[.]| - |[-])+/g;
     // /(\d\s\d|\d|[/]|[-])+/g;
     // /(\d|[/]|\s|[-])+/g;
     // ((\d)+(|[/]|\s|[-]))+
@@ -552,9 +584,54 @@ export class RecipeModalComponent implements OnInit {
     let res = ingredient.match(regx)
     if (res){
       amount = res[0]
+      // working here
+      // console.log(res)
       return amount
     }
   }
+
+
+  fractionize(decimal){
+    if ((decimal - Math.floor(decimal)) == 0){
+      return decimal
+    }else{
+      // if .5 in it, return predecimal + ' ' + 1/2
+      let splits = decimal.toString().split('.')
+      let predecimal = splits[0]
+      let fract = ''
+      // console.log(splits)
+      if (splits[1] == 5){
+        fract = '1/2'
+      }else if (splits[1] == 25){
+        fract = '1/4'
+      }else if (splits[1] == 75){
+        fract = '3/4'
+      }else if (splits[1] == 13){
+        fract = '1/8'
+      }else if (splits[1] == 63){
+        fract = '5/8'
+      }else if (splits[1] == 34){
+        fract = '1/3'
+      }else if (splits[1].toString() == '01'){
+        fract = ''
+      }else{
+        console.log(splits[1])
+        fract = decimal
+      }
+      let newstr = ''
+
+      if (predecimal == '0'){
+        newstr = fract
+      }else{
+        newstr = predecimal + ' ' + fract
+      }
+      // console.log('converted ', decimal , ' to ', newstr)
+      // console.log('\n')
+      return newstr
+    }
+
+  }
+
 
   scaleAmount(amount:string,multiple:number){
     let scaledAmount:number
@@ -580,7 +657,7 @@ export class RecipeModalComponent implements OnInit {
     }else{
       scaledAmount = Number(amount)*multiple
     }
-    return scaledAmount
+    return this.fractionize(scaledAmount)
   }
 
   scaleRecipe(multiple){
@@ -591,13 +668,11 @@ export class RecipeModalComponent implements OnInit {
         // parse for number at beginning of string
         // if found, multiply it by the scale
         let newing = JSON.parse(JSON.stringify(ing));
-        // let re = /(\d|[/])+/;
-        // let res = newing.match(re)
         let amount = this.retrieveAmountFromIngredient(newing)
         let scaledAmount
         if (amount){
           if (amount.includes('-')){
-            // if theres a range, calculate them separately
+            // if there's a range, calculate them separately
             let resa = amount.split('-')[0].trim()
             let resb = amount.split('-')[1].trim()
             let scaledAmount1 = this.scaleAmount(resa,multiple)
@@ -605,17 +680,9 @@ export class RecipeModalComponent implements OnInit {
             scaledAmount = scaledAmount1 + ' - ' + scaledAmount2
           }
           else{
-          // else if (amount.includes('/')){
             scaledAmount = this.scaleAmount(amount,multiple)
           }
-            // let frac = amount;
-            // let dec = Number((Number(frac.charAt(0))/Number(frac.charAt(2))).toFixed(2))
-            // let newamount = Number((dec*multiple).toFixed(2))
           ing_els.push(newing.replace(amount,scaledAmount+ ' '))
-          // }
-          // else{
-            // ing_els.push(newing.replace(amount,scaledAmount))
-          // }
         }else{
           ing_els.push(newing)
         }

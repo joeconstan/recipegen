@@ -44,6 +44,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ExploreComponent } from './explore/explore.component';
 import { ListPageComponent } from './list-page/list-page.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { HelpComponent } from './help/help.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { MatRadioModule } from '@angular/material/radio';
     ChangelogComponent,
     SinglerecipeComponent,
     ExploreComponent,
-    ListPageComponent
+    ListPageComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,

@@ -18,12 +18,22 @@ export class CommonService {
       return this.http.post('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe', recipe)
   }
 
-  saveRecipe(user){
-       return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
+  saveRecipe(user_id, recipe_id){
+      let info = {
+        'user_id': user_id,
+        'recipe_id':recipe_id
+      }
+       return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/saved-recipes', info)
   }
 
-  unSaveRecipe(user){
-       return this.http.put('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user', user)
+  unSaveRecipe(user_id, recipe_id){
+      var params = new HttpParams().set('user_id', user_id).set('recipe_id', recipe_id)
+
+      return this.http.delete('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/saved-recipes', {params} )
+  }
+
+  getSavedCount(recipe_id){
+    return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/saved-count',{params:{'recipe_id':recipe_id}})
   }
 
   rateRecipe(ratingobj){
@@ -145,23 +155,13 @@ export class CommonService {
 
 
  /* COMMENTS */
- commentRecipe(comment){
-      // if (this.dev){
-          // return this.http.post('http://localhost:8080/api/commentRecipe', comment)
-          return this.http.post('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/comments', comment)
-      // }else{
-      //     return this.http.post('/api/commentRecipe', comment)
-      // }
+  commentRecipe(comment){
+    return this.http.post('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/comments', comment)
   }
 
   getComments(recipeid){
-       var params = new HttpParams().set('recipeid', recipeid)
-       // if (this.dev){
-           // return this.http.get(`http://localhost:8080/api/getComments/${uri_param}`)
-       return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/comments', {params} )
-       // }else{
-           // return this.http.get(`/api/getComments/${uri_param}`)
-       // }
+    var params = new HttpParams().set('recipeid', recipeid)
+    return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/comments', {params} )
   }
 
 
@@ -303,14 +303,11 @@ export class CommonService {
       // }
   }
 
-  getSavedRecipes(user){
-      var params = new HttpParams().set('username', user.username)
-      // if (this.dev){
-          // return this.http.get('http://localhost:8080/user/getSaved', {params})
-          return this.http.get('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/saved-recipes', {params})
-      // }else{
-          // return this.http.get('/user/getSaved', {params})
-      // }
+  getSavedRecipes(user_id){
+      var params = new HttpParams().set('user_id', user_id)
+      return this.http.get<any[]>('https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/saved-recipes', {params})
   }
 
+
 }
+

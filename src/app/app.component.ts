@@ -107,5 +107,14 @@ export class AppComponent implements OnInit{
           this.router.navigate(['/login'])
     }
 
+    navHome(){
+      this.router.navigate(['/'])
+    }
+
+
+    openHelp(){
+      
+    }
+
 
 }

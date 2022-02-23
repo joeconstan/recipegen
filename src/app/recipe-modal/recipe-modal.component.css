@@ -46,6 +46,11 @@
 .modal-header-button{
     margin-right: 25px;
 }
+.btnpadding{
+    margin-left: 15px;
+    margin-right: 5px;
+    margin-top: 10px;
+}
 
 .floatright{
     float: right;
@@ -53,6 +58,11 @@
 
 .floatleft{
     float: left;
+}
+
+.valigncenter{
+  vertical-align: middle;
+  display: inline;
 }
 
 
@@ -147,7 +157,7 @@ justify-content: left;
 .rating > mat-radio-group > label {
   position: relative;
   width: .75em;
-  font-size: .8vw;
+  font-size: 1.4em;
   /* color: #FFD700; */
   cursor: pointer;
 }
@@ -170,4 +180,27 @@ justify-content: left;
 .rating:hover > mat-radio-group > .mat-radio-checked ~ label:before{
   opacity: 0.4;
 }
+
+
+
+/* button scaling for mobile */
+
+@media (max-width: 500px) {
+  .btn-responsive {
+    padding:0px 0px 0px 0px !important;
+    /* width: .5em !important; */
+    /* font-size:80%; */
+    line-height: 25px;
+  }
+}
+
+/* @media (min-width: 769px) and (max-width: 992px) { */
+@media (min-width: 500px) {
+  .btn-responsive {
+    margin-right:8px;
+    /* font-size:90%; */
+    /* line-height: 1.2; */
+  }
+}
+
 

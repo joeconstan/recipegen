@@ -162,6 +162,18 @@ mat-card:hover, .card:hover{
     margin-left: 10px !important;
 }
 
+.addRecipeButton{
+    z-index: 1 !important;
+    /* position: relative !important; */
+}
+
+/* mat-card{
+  z-index: 1 !important;
+} */
+
+.stretched-link,{
+  z-index: 1 !important;
+}
 
 /* ratings */
 
