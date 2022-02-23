@@ -58,7 +58,7 @@ export class SavedComponent implements OnInit {
         centered: true,
         size: 'lg',
         beforeDismiss: () => {
-            this.commonService.getSavedRecipes(this.user).subscribe(data => {
+            this.commonService.getSavedRecipes(this.user.id).subscribe(data => {
                 this.recipes = data
             },
                 error => console.error(error)
@@ -78,7 +78,7 @@ export class SavedComponent implements OnInit {
 
   ngOnInit(): void {
       this.user = this.userService.user
-      this.commonService.getSavedRecipes(this.user).subscribe(data => {
+      this.commonService.getSavedRecipes(this.user.id).subscribe(data => {
           this.recipes = data
           // console.log(data)
           this.getImagesS3()

@@ -1,0 +1,48 @@
+<div class="container">
+<!-- <div class="row"> -->
+  <h2>Get Help / Request a Feature</h2>
+  <form *ngIf="!formSubmitted" class="example-form margintop">
+    <table class="example-full-width" cellspacing="0"><tr>
+      <td><mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input required [(ngModel)]="name" name="name" matInput>
+      </mat-form-field></td>
+    </tr></table>
+    <table class="example-full-width" cellspacing="0"><tr>
+      <td><mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Email (Optional)</mat-label>
+        <input [(ngModel)]="email" name="email" matInput>
+      </mat-form-field></td>
+    </tr></table>
+
+    <p>
+      <mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Issue/Question/Request</mat-label>
+        <textarea required [(ngModel)]="issue" name="issue" class="larger" matInput placeholder="e.g. button doesn't work/can't login/want xyz feature"></textarea>
+      </mat-form-field>
+    </p>
+
+    <!-- <table class="example-full-width" cellspacing="0"><tr>
+      <td><mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>City</mat-label>
+        <input matInput placeholder="Ex. San Francisco">
+      </mat-form-field></td>
+      <td><mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>State</mat-label>
+        <input matInput placeholder="Ex. California">
+      </mat-form-field></td>
+      <td><mat-form-field class="example-full-width" appearance="fill">
+        <mat-label>Postal Code</mat-label>
+        <input matInput #postalCode maxlength="5" placeholder="Ex. 94105" value="94043">
+        <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+      </mat-form-field></td>
+    </tr></table> -->
+
+    <button mat-stroked-button color="primary" (click)="sendEmail()">Submit</button>
+  </form>
+  <div *ngIf="formSubmitted" class="successMessage">Message Sent. Thank you!</div>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>

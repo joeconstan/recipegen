@@ -1,0 +1,26 @@
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.larger{
+  height: 200px;
+}
+
+td {
+  padding-right: 8px;
+}
+
+.margintop{
+  margin-top: 20px;
+}
+
+.successMessage{
+  color: green;
+  font-size: 1.2em;
+}

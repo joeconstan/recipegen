@@ -11,6 +11,7 @@ import { ChangelogComponent } from './changelog/changelog.component'
 import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component'
 import { ExploreComponent } from './explore/explore.component'
 import { ListPageComponent } from './list-page/list-page.component'
+import { HelpComponent } from './help/help.component'
 
 const routes: Routes = [
     { path: '', component: RecipelistComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [
     { path: 'saved', component: SavedComponent },
     { path: 'changelog', component: ChangelogComponent },
     { path: 'recipe/:recipe', component: SinglerecipeComponent },
-    { path: 'list/:list', component: ListPageComponent }
+    { path: 'list/:list', component: ListPageComponent },
+    { path: 'help', component: HelpComponent }
 ];
 
 @NgModule({
