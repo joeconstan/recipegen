@@ -45,6 +45,8 @@ import { ExploreComponent } from './explore/explore.component';
 import { ListPageComponent } from './list-page/list-page.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { HelpComponent } from './help/help.component';
+import { EggsComponent } from './w/eggs/eggs.component';
+import { GrainsComponent } from './w/grains/grains.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +64,9 @@ import { HelpComponent } from './help/help.component';
     SinglerecipeComponent,
     ExploreComponent,
     ListPageComponent,
-    HelpComponent
+    HelpComponent,
+    EggsComponent,
+    GrainsComponent
   ],
   imports: [
     BrowserModule,

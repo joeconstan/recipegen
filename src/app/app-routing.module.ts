@@ -12,12 +12,14 @@ import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component'
 import { ExploreComponent } from './explore/explore.component'
 import { ListPageComponent } from './list-page/list-page.component'
 import { HelpComponent } from './help/help.component'
+import { GrainsComponent } from './w/grains/grains.component'
 
 const routes: Routes = [
     { path: '', component: RecipelistComponent },
     { path: 'explore', component: ExploreComponent },
     { path: 'sc', component: IngredientsComponent },
     { path: 'rb', component: RecipelistComponent },
+    // { path: 'rb/:version', component: RecipelistComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'pending', component: PendingComponent },
@@ -25,7 +27,8 @@ const routes: Routes = [
     { path: 'changelog', component: ChangelogComponent },
     { path: 'recipe/:recipe', component: SinglerecipeComponent },
     { path: 'list/:list', component: ListPageComponent },
-    { path: 'help', component: HelpComponent }
+    { path: 'help', component: HelpComponent },
+    { path: 'w/grains', component: GrainsComponent },
 ];
 
 @NgModule({
@@ -33,6 +36,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forRoot(routes, {useHash: true})
+    // RouterModule.forRoot(routes)
     ],
     exports: [RouterModule]
 })

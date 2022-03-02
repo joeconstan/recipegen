@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CommonService } from '../common.service'
 import { UserService } from '../user.service'
 import { MatSnackBar } from '@angular/material/snack-bar'
+import { ClipboardService } from 'ngx-clipboard'
 
 @Component({
   selector: 'app-singlerecipe',
@@ -25,25 +26,87 @@ export class SinglerecipeComponent implements OnInit {
   editable_ing = false
   editable_dir = false
   images = []
+  rating_count
+  recipe_rating
+  scaled_ingredients = []
+  saved = []
+  savedCount
+  recipe_scale = 1
+  user;
+  fileToUpload = {
+    recipeid:'',
+    filedata:null,
+    filename:'',
+    primary: true
+  };
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private commonService: CommonService,
     private userService: UserService,
-    private _snackBar: MatSnackBar
-  ) { }
+    private _snackBar: MatSnackBar,
+    private _clipboardService: ClipboardService,
 
+  ) {}
   ngOnInit(): void {
+    this.user = this.userService.user
     var recipe_id = this.route.snapshot.paramMap.get('recipe')
 
     this.commonService.getRecipe(recipe_id).subscribe(data => {
         this.recipe_full = data;
         this.getImageNamesS3()
+
+        this.commonService.getRating(this.recipe_full.id).subscribe(data =>{
+          this.rating_count = data[0];
+          this.recipe_rating = data[1];
+        },
+          error => console.log(error)
+        )
+
+        this.commonService.getComments(this.recipe_full.id).subscribe(data =>{
+          if (data){
+            this.recipe_comments = data;
+          }else{
+            this.recipe_comments = [];
+          }
+        },
+          error => console.log(error)
+        )
+
+        this.commonService.getSavedCount(this.recipe_full.id).subscribe(data =>{
+          this.savedCount = data;
+        },
+          error => console.log(error)
+        )
+
+        if (this.userService.user){
+          this.getSavedRecipes(this.userService.user.id)
+        }
+
+        // storing for use with scaling recipe later
+        this.scaled_ingredients = this.recipe_full.ingredients
+
     },
         error => console.error(error)
     )
 
+
+  }
+
+  userAdmin(){
+    return this.userService.user && this.userService.user.adminflag == true
+  }
+
+  getSavedRecipes(user_id){
+      this.commonService.getSavedRecipes(user_id).subscribe(data => {
+        data.forEach(record => {
+          this.saved.push(record.id)
+        });
+      },
+            error => console.error(error)
+      )
   }
 
   getImageNamesS3(){
@@ -61,6 +124,316 @@ export class SinglerecipeComponent implements OnInit {
     });
     return imgs;
   }
+
+
+    retrieveAmountFromIngredient(ingredient:string){
+      let amount:string
+      let regx = /(\d\s\d|\d|[/]|[.]| - |[-])+/g;
+      // /(\d\s\d|\d|[/]|[-])+/g;
+      // /(\d|[/]|\s|[-])+/g;
+      // ((\d)+(|[/]|\s|[-]))+
+
+      let res = ingredient.match(regx)
+      if (res){
+        amount = res[0]
+        // working here
+        // console.log(res)
+        return amount
+      }
+    }
+
+
+    fractionize(decimal){
+      if ((decimal - Math.floor(decimal)) == 0){
+        return decimal
+      }else{
+        // if .5 in it, return predecimal + ' ' + 1/2
+        let splits = decimal.toString().split('.')
+        let predecimal = splits[0]
+        let fract = ''
+        // console.log(splits)
+        if (splits[1] == 5){
+          fract = '1/2'
+        }else if (splits[1] == 25){
+          fract = '1/4'
+        }else if (splits[1] == 75){
+          fract = '3/4'
+        }else if (splits[1] == 13){
+          fract = '1/8'
+        }else if (splits[1] == 63){
+          fract = '5/8'
+        }else if (splits[1] == 34){
+          fract = '1/3'
+        }else if (splits[1].toString() == '01'){
+          fract = ''
+        }else{
+          console.log(splits[1])
+          fract = decimal
+        }
+        let newstr = ''
+
+        if (predecimal == '0'){
+          newstr = fract
+        }else{
+          newstr = predecimal + ' ' + fract
+        }
+        // console.log('converted ', decimal , ' to ', newstr)
+        // console.log('\n')
+        return newstr
+      }
+
+    }
+
+
+    scaleAmount(amount:string,multiple:number){
+      let scaledAmount:number
+      let afterws, beforews
+      if (amount.includes('/')){
+        afterws = amount.split(' ')
+        if (afterws.length>1){
+          beforews = afterws[0]
+          afterws = afterws[1]
+        }else{
+          afterws = amount
+        }
+
+        let numerator = afterws.split('/')[0]
+        let denominator = afterws.split('/')[1]
+        let dec = Number((Number(numerator)/Number(denominator)).toFixed(2))
+        if (beforews){
+          scaledAmount = (Number(beforews)*multiple) + Number((dec*multiple).toFixed(2))
+        }else{
+          scaledAmount = Number((dec*multiple).toFixed(2))
+        }
+
+      }else{
+        scaledAmount = Number(amount)*multiple
+      }
+      return this.fractionize(scaledAmount)
+    }
+
+    scaleRecipe(multiple){
+      this.recipe_scale = multiple
+      if (multiple!=1){
+        let ing_els = []
+        this.recipe_full.ingredients.forEach((ing,index) => {
+          // parse for number at beginning of string
+          // if found, multiply it by the scale
+          let newing = JSON.parse(JSON.stringify(ing));
+          let amount = this.retrieveAmountFromIngredient(newing)
+          let scaledAmount
+          if (amount){
+            if (amount.includes('-')){
+              // if there's a range, calculate them separately
+              let resa = amount.split('-')[0].trim()
+              let resb = amount.split('-')[1].trim()
+              let scaledAmount1 = this.scaleAmount(resa,multiple)
+              let scaledAmount2 = this.scaleAmount(resb,multiple)
+              scaledAmount = scaledAmount1 + ' - ' + scaledAmount2
+            }
+            else{
+              scaledAmount = this.scaleAmount(amount,multiple)
+            }
+            ing_els.push(newing.replace(amount,scaledAmount+ ' '))
+          }else{
+            ing_els.push(newing)
+          }
+        });
+        this.scaled_ingredients = ing_els
+      }
+    }
+
+
+      userSaved(){
+          if (this.saved.indexOf(this.recipe_full.id) > -1){
+              return true
+          }
+          return false
+      }
+
+
+      rateRecipe(event){
+        let rating = event.target.htmlFor
+        // if user not signed in, redirect to sign in
+        if (!this.userService.user || !this.userService.user.username || this.userService.user.username==''){
+            this.router.navigate(['/login'])
+        }else{
+          // otherwise, submit rating
+          let ratingObj = {
+            recipeid: this.recipe_full.id,
+            username: this.userService.user.username,
+            rating: rating
+          }
+          this.commonService.rateRecipe(ratingObj).subscribe(data => {
+            this.commonService.getRating(this.recipe_full.id).subscribe(data =>{
+              this.rating_count = data[0];
+              this.recipe_rating = data[1];
+            },
+              error => console.log(error)
+            )
+          },
+                error => console.error(error)
+          )
+        }
+
+      }
+
+
+      addComment(){
+          if (!this.userService.user || !this.userService.user.username || this.userService.user.username==''){
+              this.router.navigate(['/login'])
+          }else{
+              var commentObj = {
+                  user_id: this.userService.user.id,
+                  username: this.userService.user.username,
+                  recipe_id: this.recipe_full.id,
+                  text: this.newComment
+              }
+
+              this.recipe_comments.push(commentObj)
+              this.newComment = ''
+
+              this.commonService.commentRecipe(commentObj).subscribe(data => {
+                    // console.log(data)
+              },
+                    error => console.error(error)
+              )
+          }
+
+      }
+
+
+
+        bookmark_recipe(){
+            // if user logged in, add recipe to saved
+            // else, close modal & redirect to login page
+            if(!this.userService.getUser()){
+                this.router.navigate(['/login'])
+            }
+
+            var user = this.userService.getUser()
+            // if (!user.saved){
+            //   user.saved = [];
+            // }
+            this.saved.push(this.recipe_full.id)
+
+            // this.userService.setUser(user)
+
+            this.commonService.saveRecipe(user.id, this.recipe_full.id).subscribe(data => {
+                this._snackBar.open('Recipe Saved', 'Ok', {
+                    duration: 2000,
+                });
+            },
+                  error => console.error(error)
+            )
+
+        }
+        unbookmark_recipe(){
+            // if user logged in, add recipe to saved
+            if(this.userService.getUser()){
+                var user = this.userService.getUser()
+                const index = this.saved.indexOf(this.recipe_full.id);
+                if (index >= 0) {
+                    this.saved.splice(index, 1);
+                    // this.userService.setUser(user)
+                    this.commonService.unSaveRecipe(user.id, this.recipe_full.id).subscribe(data => {
+                        this._snackBar.open('Recipe removed from saved list', 'ok', {
+                            duration: 2000,
+                        });
+                    },
+                          error => console.error(error)
+                    )
+                }
+
+
+            }
+            // else, close modal & redirect to login page
+            else{
+                this.router.navigate(['/login'])
+            }
+        }
+
+        shareRecipe(){
+          var uri_param = encodeURIComponent(this.recipe_full.id)
+          let recipe_url = `https://therecipedoc.com/#/recipe/${uri_param}`
+          this._clipboardService.copy(recipe_url)
+        }
+
+
+
+        getBase64(file){
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader()
+                reader.readAsDataURL(file)
+                reader.onload = () => resolve(reader.result)
+                reader.onerror = error => reject(error)
+            })
+        }
+
+
+
+
+        readImage(fileInput: FileList){
+            if (!this.userService.user || this.userService.user.adminflag == false){
+              return;
+            }
+            this.fileToUpload.filedata = fileInput[0];
+            this.fileToUpload.filename = fileInput[0].name.toString();
+            this.fileToUpload.recipeid = this.recipe_full.id.toString();
+            this.fileToUpload.primary = this.images.length < 1;
+            let filetypea = this.fileToUpload.filename.split('.')
+            let filetype = filetypea[filetypea.length-1].toLowerCase()
+            if (filetype!='jpg' && filetype!='png' && filetype!='jpeg' && filetype!='gif'){
+              this._snackBar.open('Incorrect file type', 'ok', {
+                  duration: 2000,
+              });
+              return;
+            }
+
+            // var fileName = fileInput.target.files[0].name
+            this.getBase64(this.fileToUpload.filedata).then(data => {
+              this.fileToUpload.filedata = data
+              // this.commonService.gets3Url().subscribe(data => {
+                // get s3 presigned upload url
+                // use the url to post the image to s3, where it will then move to db (how? some trigger?)
+                // this.commonService.addRecipeImgS3(data['url'], data['fields'], this.fileToUpload).subscribe(data => {
+                this.commonService.addRecipeImgS3(this.fileToUpload).subscribe(data => {
+
+                // this.commonService.addRecipeImg(this.fileToUpload).subscribe(data => {
+                      this._snackBar.open('Image Added!', 'ok', {
+                          duration: 2000,
+                      });
+                      // reload the recipe so the image shows up
+                      this.commonService.getRecipe(this.recipe_full.id).subscribe(data => {
+                          this.recipe_full = data;
+                          this.refreshImages()
+                      },
+                          error => console.error(error)
+                      )
+
+                },
+                      error => console.error(error)
+                )
+
+
+              // },
+                    // error => console.error(error)
+              // )
+              // });
+
+
+
+            });
+        }
+
+        refreshImages(){
+          console.log(this.recipe_full.id)
+          this.commonService.getImages(this.recipe_full.id).subscribe(data => {
+              this.images = data;
+          },
+              error => console.error(error)
+          )
+        }
 
 
 }

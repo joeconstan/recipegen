@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { NgbModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { PantryService } from '../pantry.service'
 import { CommonService } from '../common.service'
@@ -14,7 +14,8 @@ import { UserService } from '../user.service'
 @Component({
   selector: 'app-saved',
   templateUrl: './saved.component.html',
-  styleUrls: ['./saved.component.css']
+  styleUrls: ['./saved.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SavedComponent implements OnInit {
 
@@ -56,7 +57,7 @@ export class SavedComponent implements OnInit {
 
     ngbModalOptions: NgbModalOptions = {
         centered: true,
-        size: 'lg',
+        size: 'xl',
         beforeDismiss: () => {
             this.commonService.getSavedRecipes(this.user.id).subscribe(data => {
                 this.recipes = data
@@ -117,7 +118,6 @@ export class SavedComponent implements OnInit {
     )
   }
 
-
   hasImage(recipe_id){
     return this.images.find(x=>x.recipe_id == recipe_id)
   }
@@ -131,14 +131,11 @@ export class SavedComponent implements OnInit {
      }
   }
 
-
   getImgDataS3(recipe){
      let img = this.images.find(x=>x.recipe_id == recipe.id && x.primary_img == true)
      if (img){
-       // console.log('https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' + img.filename)
        return 'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' + recipe.id+img.filename
      }else{
-       // console.log('no img')
      }
   }
 
@@ -171,19 +168,7 @@ export class SavedComponent implements OnInit {
       }
   }
 
-
   pageChanged(event){}
-
-  // filter(mealtype){
-  //     this.commonService.getRecipesByType(mealtype).subscribe(data => {
-  //         this.recipes = data;
-  //     },
-  //         error => console.error(error)
-  //     )
-  //
-  // }
-
-
 
   getBase64(file){
       return new Promise((resolve, reject) => {
@@ -194,7 +179,6 @@ export class SavedComponent implements OnInit {
       })
   }
 
-
   readImage(fileInput: any){
       var fileName = fileInput.target.files[0].name
       // console.log(fileName)
@@ -203,7 +187,6 @@ export class SavedComponent implements OnInit {
           this.getBase64(file).then(data => this.image_upload = data)
       }
   }
-
 
   search_recipes(){
       this.addFilter(this.search_value,'keywords')

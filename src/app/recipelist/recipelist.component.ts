@@ -11,6 +11,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UserService } from '../user.service'
 import { FormControl, Validators } from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 
 export interface DialogData {
@@ -33,7 +34,7 @@ export interface DialogData {
   selector: 'app-recipelist',
   templateUrl: './recipelist.component.html',
   styleUrls: ['./recipelist.component.css'],
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
 })
 export class RecipelistComponent implements OnInit {
 
@@ -89,7 +90,6 @@ export class RecipelistComponent implements OnInit {
     limitedResults = false;
     modal_images = [];
     dev = true;
-
     // searchIngredients = false
 
   constructor(
@@ -98,7 +98,9 @@ export class RecipelistComponent implements OnInit {
       private commonService: CommonService,
       private userService: UserService,
       public dialog: MatDialog,
-      private _snackBar: MatSnackBar
+      private _snackBar: MatSnackBar,
+      private router: Router,
+      private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -247,12 +249,18 @@ export class RecipelistComponent implements OnInit {
   }
 
   viewRecipeModal(recipe) {
-      this.modal_images = [];
-      this.recipe = recipe;
-      this.recipe_full = recipe;
-      let imgs = this.images.filter(x=>x.recipe_id == recipe.id);
-      this.modal_images = imgs;
-      this.openModal()
+      var uri_param = encodeURIComponent(recipe.id)
+      // let recipe_url = `http://localhost:4200/#/recipe/${uri_param}`
+      let recipe_url = `https://therecipedoc.com/#/recipe/${uri_param}`
+      // window.location.href = recipe_url;
+      this.router.navigate(['/recipe/',recipe.id])
+      //
+      // this.modal_images = [];
+      // this.recipe = recipe;
+      // this.recipe_full = recipe;
+      // let imgs = this.images.filter(x=>x.recipe_id == recipe.id);
+      // this.modal_images = imgs;
+      // this.openModal()
   }
 
 
