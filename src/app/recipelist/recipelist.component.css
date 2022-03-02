@@ -221,3 +221,13 @@ mat-card:hover, .card:hover{
 
 
 
+/* scaling for mobile */
+
+@media (max-width: 500px) {
+  .paginationcontrols {
+    margin-bottom: 3em;
+  }
+}
+
+
+

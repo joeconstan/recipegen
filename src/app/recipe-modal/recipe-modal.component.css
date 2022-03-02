@@ -14,6 +14,12 @@
     font-size: 1.5em;
 }
 
+.montst-lg{
+  font-family: 'Montserrat' !important;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
 .recipetitle{
     font-weight: bold;
     font-size: 2em;
@@ -39,16 +45,23 @@
 
 .montst-bg-it{
     font-family: 'Montserrat' !important;
-    font-size: 1.5em;
+    font-size: 1.7em;
     font-style: italic;
 }
 
 .modal-header-button{
     margin-right: 25px;
 }
+
 .btnpadding{
     margin-left: 15px;
     margin-right: 5px;
+    margin-top: 10px;
+}
+
+.btnpaddingnoright{
+    margin-left: 15px;
+    /* margin-right: 5px; */
     margin-top: 10px;
 }
 
@@ -140,6 +153,105 @@ mat-panel-title{
     margin-left: 10px;
 }
 
+.div_ingredients_header{
+  padding-top: 10px;
+  border-top: 1px solid #dee2e6;
+}
+
+.div_ingredients{
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+  margin-bottom: 3px;
+}
+
+.div_directions{
+  border-top: 1px solid #dee2e6;
+  padding-top: 10px;
+}
+
+.div_image{
+  border-bottom: 1px solid #dee2e6;
+  border-top: 1px solid #dee2e6;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 3px;
+}
+
+.header_div{
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 10px;
+  margin-bottom: 3px;
+  /* padding: 1rem !important; */
+}
+
+.time_div{
+  margin: 0 auto;
+  width: 50%;
+  border-bottom: 1px solid #dee2e6;
+  border-top: 1px solid #dee2e6;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.time_section{
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+}
+
+.modal-header{
+    /* border-bottom: none !important; */
+    /* padding: 1rem !important; */
+}
+
+
+/* .numbered_item{
+  border-radius: 2px;
+  border: 1px solid blue;
+} */
+
+
+ol.directions_list {
+    /* display: block; */
+    /* padding: 0 0 0 26px; */
+    list-style: none;
+    /* background: #ccc; */
+    overflow: hidden;
+    counter-reset: numList;
+}
+.numbered_item {
+    /* width: 176px; */
+    /* margin-right: 44px; */
+    float: left;
+    position: relative
+}
+.numbered_item:before {
+    counter-increment: numList;
+    content: counter(numList);
+
+    float: left;
+    position: absolute;
+    left: -26px;
+
+    font: bold 12px sans-serif;
+    text-align: center;
+    color: #fff;
+    line-height: 18px;
+
+    width: 18px; height: 18px;
+    background: #3f51b5;
+
+    -moz-border-radius: 999px;
+    border-radius: 999px
+}
+
+.heart-icon{
+  color: #f44336;
+}
+
 
 
 /* ratings */
@@ -174,6 +286,7 @@ justify-content: left;
 }
 
 .rating > mat-radio-group > .mat-radio-checked ~ label:before{
+  color: #f7c33b;
   opacity:1;
 }
 
@@ -197,7 +310,7 @@ justify-content: left;
 /* @media (min-width: 769px) and (max-width: 992px) { */
 @media (min-width: 500px) {
   .btn-responsive {
-    margin-right:8px;
+    /* margin-right:8px; */
     /* font-size:90%; */
     /* line-height: 1.2; */
   }
