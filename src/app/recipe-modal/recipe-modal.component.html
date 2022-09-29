@@ -1,87 +1,136 @@
-
 <!-- <div class="header_div"> -->
-  <div class="modal-header" (mouseenter)="editable('name',true)" (mouseleave)="editable('name',false)">
-      <div *ngIf="editing_name == false">
-          <div contenteditable="false"> <h4 class="modal-title montst-bg-it recipetitle" id="modal-basic-title">{{ recipe_full.name }}</h4></div>
-          <div class="rating">
-            <mat-radio-group
-              name="rating"
-              [(ngModel)]="recipe_rating"
-              (click)="rateRecipe($event)">
-              <p *ngIf="recipe_rating && rating_count==1" class="marginleft">{{rating_count}} Rating</p>
-              <p *ngIf="recipe_rating && rating_count!=1" class="marginleft">{{rating_count}} Ratings</p>
-              <p *ngIf="!recipe_rating || recipe_rating==0" class="marginleft">0 Ratings</p>
-              <mat-radio-button name="rating" [value]="5" id="5"></mat-radio-button><label for="5">☆</label>
-              <mat-radio-button name="rating" [value]="4" id="4"></mat-radio-button><label for="4">☆</label>
-              <mat-radio-button name="rating" [value]="3" id="3"></mat-radio-button><label for="3">☆</label>
-              <mat-radio-button name="rating" [value]="2" id="2"></mat-radio-button><label for="2">☆</label>
-              <mat-radio-button name="rating" [value]="1" id="1"></mat-radio-button><label for="1">☆</label>
-            </mat-radio-group>
-            <!-- <input type="radio" [(ngModel)]="ratingtest" name="rating" (click)="rateRecipe(5)" [checked]="recipe_rating==5" value="5" id="5"><label for="5">☆</label>
+<div
+  class="modal-header"
+  (mouseenter)="editable('name', true)"
+  (mouseleave)="editable('name', false)"
+>
+  <div *ngIf="editing_name == false">
+    <div contenteditable="false">
+      <h4 class="modal-title montst-bg-it recipetitle" id="modal-basic-title">
+        {{ recipe_full.name }}
+      </h4>
+    </div>
+    <div class="rating">
+      <mat-radio-group
+        name="rating"
+        [(ngModel)]="recipe_rating"
+        (click)="rateRecipe($event)"
+      >
+        <p *ngIf="recipe_rating && rating_count == 1" class="marginleft">
+          {{ rating_count }} Rating
+        </p>
+        <p *ngIf="recipe_rating && rating_count != 1" class="marginleft">
+          {{ rating_count }} Ratings
+        </p>
+        <p *ngIf="!recipe_rating || recipe_rating == 0" class="marginleft">
+          0 Ratings
+        </p>
+        <mat-radio-button name="rating" [value]="5" id="5"></mat-radio-button
+        ><label for="5">☆</label>
+        <mat-radio-button name="rating" [value]="4" id="4"></mat-radio-button
+        ><label for="4">☆</label>
+        <mat-radio-button name="rating" [value]="3" id="3"></mat-radio-button
+        ><label for="3">☆</label>
+        <mat-radio-button name="rating" [value]="2" id="2"></mat-radio-button
+        ><label for="2">☆</label>
+        <mat-radio-button name="rating" [value]="1" id="1"></mat-radio-button
+        ><label for="1">☆</label>
+      </mat-radio-group>
+      <!-- <input type="radio" [(ngModel)]="ratingtest" name="rating" (click)="rateRecipe(5)" [checked]="recipe_rating==5" value="5" id="5"><label for="5">☆</label>
             <input type="radio" name="rating" (click)="rateRecipe(4)" [checked]="recipe_rating==4" value="4" id="4"><label for="4">☆</label>
             <input type="radio" name="rating" (click)="rateRecipe(3)" [checked]="recipe_rating==3" value="3" id="3"><label for="3">☆</label>
             <input type="radio" name="rating" (click)="rateRecipe(2)" [checked]="recipe_rating==2" value="2" id="2"><label for="2">☆</label>
             <input type="radio" name="rating" (click)="rateRecipe(1)" [checked]="recipe_rating==1" value="1" id="1"><label for="1">☆</label> -->
-          </div>
-          <!-- <div class="rating">
+    </div>
+    <!-- <div class="rating">
           </div> -->
-      </div>
-
-
-      <div *ngIf="editing_name == true">
-        <div contenteditable="true" ngDefaultControl [(ngModel)]="recipe_full.name"> <input type="text" value="{{ recipe_full.name }}" class="modal-title montst-bg-it" id="modal-basic-title"></div>
-      </div>
-
-      <div *ngIf="editable_name == true">
-        <button mat-button (click)="editRecipe('name')">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
-
-
-      <div *ngIf="userSaved()">
-        <button class="btnpadding" mat-icon-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
-          <mat-icon>share</mat-icon>
-        </button>
-
-        <button class="btnpaddingnoright" mat-icon-button (click)="unbookmark_recipe()">
-          <mat-icon class="heart-icon">favorite</mat-icon>
-        </button>
-        <label class="valigncenter">{{savedCount}}</label>
-      </div>
-
-      <div *ngIf="!userSaved()">
-          <button class="btnpadding" mat-icon-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
-            <mat-icon>share</mat-icon>
-          </button>
-
-          <button class="btnpaddingnoright" mat-icon-button (click)="bookmark_recipe()">
-            <mat-icon class="heart-icon">favorite_border</mat-icon>
-          </button>
-          <label class="valigncenter">{{savedCount}}</label>
-      </div>
-
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-
-
-    <!-- </div> -->
   </div>
 
+  <div *ngIf="editing_name == true">
+    <div contenteditable="true" ngDefaultControl [(ngModel)]="recipe_full.name">
+      <input
+        type="text"
+        value="{{ recipe_full.name }}"
+        class="modal-title montst-bg-it"
+        id="modal-basic-title"
+      />
+    </div>
+  </div>
 
-  <!-- modal-body -->
-  <div class="modal-body">
+  <div *ngIf="editable_name == true">
+    <button mat-button (click)="editRecipe('name')">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </div>
 
-      <div (mouseenter)="editable('meta',true)" (mouseleave)="editable('meta',false)">
-        <div *ngIf="editable_meta == true">
-          <button mat-button class="floatright" (click)="editRecipe('meta')">
-              <mat-icon>edit</mat-icon>
-          </button>
-        </div>
+  <div *ngIf="userSaved()">
+    <button
+      class="btnpadding"
+      mat-icon-button
+      (click)="shareRecipe()"
+      ngbTooltip="Link copied"
+      triggers="click:blur"
+    >
+      <mat-icon>share</mat-icon>
+    </button>
 
-        <div *ngIf="editing_meta == false">
-          <div class="time_div">
+    <button
+      class="btnpaddingnoright"
+      mat-icon-button
+      (click)="unbookmark_recipe()"
+    >
+      <mat-icon class="heart-icon">favorite</mat-icon>
+    </button>
+    <label class="valigncenter">{{ savedCount }}</label>
+  </div>
+
+  <div *ngIf="!userSaved()">
+    <button
+      class="btnpadding"
+      mat-icon-button
+      (click)="shareRecipe()"
+      ngbTooltip="Link copied"
+      triggers="click:blur"
+    >
+      <mat-icon>share</mat-icon>
+    </button>
+
+    <button
+      class="btnpaddingnoright"
+      mat-icon-button
+      (click)="bookmark_recipe()"
+    >
+      <mat-icon class="heart-icon">favorite_border</mat-icon>
+    </button>
+    <label class="valigncenter">{{ savedCount }}</label>
+  </div>
+
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="modal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <!-- </div> -->
+</div>
+
+<!-- modal-body -->
+<div class="modal-body">
+  <div
+    (mouseenter)="editable('meta', true)"
+    (mouseleave)="editable('meta', false)"
+  >
+    <div *ngIf="editable_meta == true">
+      <button mat-button class="floatright" (click)="editRecipe('meta')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <div *ngIf="editing_meta == false">
+      <!-- <div class="time_div">
             <div class="time_section">
               <p>Prep Time</p>
               <p>{{ recipe_full.timelength }}</p>
@@ -94,196 +143,362 @@
               <p>Total Time</p>
               <p>{{ recipe_full.timelength }}</p>
             </div>
-          </div>
-          <div class="graysmall">
-            <p class="inline">Type:</p>
-            <p class="inline">{{ recipe_full.type }}</p>
-          </div>
-          <div class="graysmall">
-            <p class="inline">Length:</p>
-            <p class="inline">{{ recipe_full.timelength }}</p>
-            <p class="inline" *ngIf="recipe_full.timeWarning"><span style="color:red">*Overnight Work Required*</span></p>
-          </div>
-          <div class="graysmall">
-            <p class="inline">Difficulty:</p>
-            <p class="inline">{{ recipe_full.difficulty }}</p>
-            <p class="inline" *ngIf="recipe_full.difficultyWarning"><span style="color:red">*Special Equipment Required*</span></p>
-          </div>
-          <div class="graysmall">
-            <p class="inline">Author:</p>
-            <!-- <p class="inline">link</p> -->
-            <p class="inline">{{ recipe_full.author }}</p>
-          </div>
-          <div class="graysmall">
-            <p class="inline">Submitted by:</p>
-            <p class="inline">{{ recipe_full.submittedby }}</p>
-          </div>
-        </div>
-        <div *ngIf="editing_meta == true">
-          <div class="graysmall">
-            <p class="inline">Type:</p>
-              <div name="meta_type" ngDefaultControl [(ngModel)]="recipe_full.type"><input type="text" class="inline" value="{{ recipe_full.Type }}"></div>
-          </div>
-          <div class="graysmall">
-            <p class="inline">Length:</p>
-            <div name="meta_length" ngDefaultControl [(ngModel)]="recipe_full.timelength"><input type="text" class="inline" value="{{ recipe_full.timelength }}"></div>
-            <!-- <p contenteditable="true" class="inline">{{ recipe_full.timelength }}</p> -->
-          </div>
-          <div class="graysmall">
-            <p class="inline">Difficulty:</p>
-            <div name="meta_difficulty" ngDefaultControl [(ngModel)]="recipe_full.difficulty"><input type="text" class="inline" value="{{ recipe_full.Difficulty }}"></div>
-            <!-- <p contenteditable="true" class="inline">{{ recipe_full.Difficulty }}</p> -->
-          </div>
-          <div class="graysmall">
-            <p class="inline">Author:</p>
-            <div name="meta_author" ngDefaultControl [(ngModel)]="recipe_full.author"><input type="text" class="inline" value="{{ recipe_full.author }}"></div>
-            <!-- <p contenteditable="true" class="inline">{{ recipe_full.author }}</p> -->
-          </div>
-          <div class="graysmall">
-            <p class="inline">Submitted by:</p>
-            <div name="meta_submittedby" ngDefaultControl [(ngModel)]="recipe_full.submittedby"><input type="text" class="inline" value="{{ recipe_full.submittedby }}"></div>
-            <!-- <p contenteditable="true" class="inline">{{ recipe_full.submittedby }}</p> -->
-          </div>
-        </div>
-
+          </div> -->
+      <div class="graysmall">
+        <p class="inline">Type:</p>
+        <p class="inline">{{ recipe_full.type }}</p>
       </div>
-      <br>
-      <!-- <hr> -->
+      <div class="graysmall">
+        <p class="inline">Length:</p>
+        <p class="inline">{{ recipe_full.timelength }}</p>
+        <p class="inline" *ngIf="recipe_full.timeWarning">
+          <span style="color: red">*Overnight Work Required*</span>
+        </p>
+      </div>
+      <div class="graysmall">
+        <p class="inline">Difficulty:</p>
+        <p class="inline">{{ recipe_full.difficulty }}</p>
+        <p class="inline" *ngIf="recipe_full.difficultyWarning">
+          <span style="color: red">*Special Equipment Required*</span>
+        </p>
+      </div>
+      <div class="graysmall">
+        <p class="inline">Author:</p>
+        <!-- <p class="inline">link</p> -->
+        <p class="inline">{{ recipe_full.author }}</p>
+      </div>
+      <div class="graysmall">
+        <p class="inline">Submitted by:</p>
+        <p class="inline">{{ recipe_full.submittedby }}</p>
+      </div>
+    </div>
+    <div *ngIf="editing_meta == true">
+      <div class="graysmall">
+        <p class="inline">Type:</p>
+        <div name="meta_type" ngDefaultControl [(ngModel)]="recipe_full.type">
+          <input type="text" class="inline" value="{{ recipe_full.Type }}" />
+        </div>
+      </div>
+      <div class="graysmall">
+        <p class="inline">Length:</p>
+        <div
+          name="meta_length"
+          ngDefaultControl
+          [(ngModel)]="recipe_full.timelength"
+        >
+          <input
+            type="text"
+            class="inline"
+            value="{{ recipe_full.timelength }}"
+          />
+        </div>
+        <!-- <p contenteditable="true" class="inline">{{ recipe_full.timelength }}</p> -->
+      </div>
+      <div class="graysmall">
+        <p class="inline">Difficulty:</p>
+        <div
+          name="meta_difficulty"
+          ngDefaultControl
+          [(ngModel)]="recipe_full.difficulty"
+        >
+          <input
+            type="text"
+            class="inline"
+            value="{{ recipe_full.Difficulty }}"
+          />
+        </div>
+        <!-- <p contenteditable="true" class="inline">{{ recipe_full.Difficulty }}</p> -->
+      </div>
+      <div class="graysmall">
+        <p class="inline">Author:</p>
+        <div
+          name="meta_author"
+          ngDefaultControl
+          [(ngModel)]="recipe_full.author"
+        >
+          <input type="text" class="inline" value="{{ recipe_full.author }}" />
+        </div>
+        <!-- <p contenteditable="true" class="inline">{{ recipe_full.author }}</p> -->
+      </div>
+      <div class="graysmall">
+        <p class="inline">Submitted by:</p>
+        <div
+          name="meta_submittedby"
+          ngDefaultControl
+          [(ngModel)]="recipe_full.submittedby"
+        >
+          <input
+            type="text"
+            class="inline"
+            value="{{ recipe_full.submittedby }}"
+          />
+        </div>
+        <!-- <p contenteditable="true" class="inline">{{ recipe_full.submittedby }}</p> -->
+      </div>
+    </div>
+  </div>
+  <br />
+  <!-- <hr> -->
 
-      <div class="div_image">
+  <div class="div_image">
+    <div>
+      <div
+        class="inlined imagewrap"
+        *ngFor="let image of getImagesS3(recipe_full); let i = index"
+      >
+        <!-- <mat-icon *ngIf="isRemoveable(i)" (click)="removeImage()" class="close">clear</mat-icon> -->
+        <mat-icon
+          (mouseenter)="showprimary(true, i)"
+          *ngIf="user && user.adminflag == true && isHovered(i)"
+          (click)="makePrimary(image)"
+          class="topright clickable"
+          >star</mat-icon
+        >
+        <!-- <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{image.url}}" width="350" alt=""> -->
+        <img
+          class="inlined"
+          (mouseenter)="showprimary(true, i)"
+          (mouseleave)="showprimary(false, i)"
+          src="{{ image.url }}"
+          width="350"
+          alt=""
+        />
+      </div>
+    </div>
+
+    <!-- move the image to the right of the author, submnitted by, etc, stuff -->
+
+    <div
+      *ngIf="user && user.adminflag == true"
+      class="image-upload form-group margintop"
+    >
+      <!-- <label for="fileupload" (click)="upload_image()" ><mat-icon>attach_file</mat-icon></label> -->
+      <input
+        type="file"
+        accept="image/*"
+        name="fileupload"
+        id="fileupload"
+        (change)="readImage($event.target.files)"
+      />
+      <!-- <button>Upload</button> -->
+      <!-- <hr> -->
+    </div>
+  </div>
+
+  <!-- ingredients -->
+  <div
+    (mouseenter)="editable('ingredients', true)"
+    (mouseleave)="editable('ingredients', false)"
+  >
+    <div *ngIf="editable_ing == true">
+      <button mat-button class="floatright" (click)="editRecipe('ingredients')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <div class="div_ingredients_header">
+      <div class="row">
+        <!-- <div class="col-8"><label ngbAutofocus for="ingredientsdiv" class="montst">Ingredients</label></div> -->
+        <div class="col-4 col-md-8">
+          <label ngbAutofocus for="ingredientsdiv" class="montst-lg"
+            >Ingredients</label
+          >
+        </div>
+        <!-- <div class="col-4"> -->
+        <div class="col-8 col-md-4">
+          <div class="floatleft margintop marginright">Scale</div>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="floatleft btn-responsive"
+            [ngClass]="{ selectedScale: recipe_scale == 0.5 }"
+            (click)="scaleRecipe(0.5)"
+          >
+            .5x
+          </button>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="floatleft btn-responsive"
+            [ngClass]="{ selectedScale: recipe_scale == 1 }"
+            (click)="scaleRecipe(1)"
+          >
+            1x
+          </button>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="floatleft btn-responsive"
+            [ngClass]="{ selectedScale: recipe_scale == 2 }"
+            (click)="scaleRecipe(2)"
+          >
+            2x
+          </button>
+          <button
+            mat-stroked-button
+            color="primary"
+            class="floatleft btn-responsive"
+            [ngClass]="{ selectedScale: recipe_scale == 3 }"
+            (click)="scaleRecipe(3)"
+          >
+            3x
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="div_ingredients"
+      *ngIf="editing_ing == false && recipe_scale == 1"
+    >
+      <!-- <div *ngFor="let ingredient of recipe_full.ingredients" id="ingredientsdiv"> -->
+      <!-- <div *ngIf=""> -->
+      <div
+        *ngFor="let ingredient of recipe_full.ingredients"
+        id="ingredientsdiv"
+      >
+        <div contenteditable="false">
+          <p class="montst-sm">{{ ingredient }}</p>
+        </div>
+      </div>
+      <!-- </div> -->
+    </div>
+    <div
+      class="div_ingredients"
+      *ngIf="editing_ing == false && recipe_scale != 1"
+    >
+      <div *ngFor="let ingredient of scaled_ingredients" id="ingredientsdiv">
+        <div contenteditable="false">
+          <p class="montst-sm">{{ ingredient }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="div_ingredients" *ngIf="editing_ing == true">
+      <div
+        *ngFor="
+          let ingredient of recipe_full.ingredients;
+          let i = index;
+          trackBy: trackByIdx
+        "
+        id="ingredientsdiv"
+      >
+        <div
+          name="ingredientslist"
+          ngDefaultControl
+          [(ngModel)]="recipe_full.ingredients[i]"
+          class="editable montst-sm"
+        >
+          <input
+            type="text"
+            value="{{ recipe_full.ingredients[i] }}"
+            class="montst-sm"
+          />
+        </div>
+      </div>
+      <button mat-button (click)="addIngredient()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <!-- <br> -->
+  </div>
+
+  <!-- <hr> -->
+
+  <!-- directions -->
+  <div
+    class="div_directions"
+    (mouseenter)="editable('directions', true)"
+    (mouseleave)="editable('directions', false)"
+  >
+    <div *ngIf="editable_dir == true">
+      <button mat-button class="floatright" (click)="editRecipe('directions')">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <label for="directionsdiv" class="montst-lg">Directions</label>
+    <div *ngIf="editing_dir == false">
+      <ol class="directions_list" id="directionsdiv">
+        <li
+          *ngFor="let direction of recipe_full.directions; let i = index"
+          class="montst-sm numbered_item"
+        >
+          {{ direction }}
+        </li>
+      </ol>
+    </div>
+    <div *ngIf="editing_dir == true">
+      <div
+        *ngFor="let direction of recipe_full.directions; let i = index"
+        id="directionsdiv"
+      >
+        <div
+          ngDefaultControl
+          [(ngModel)]="recipe_full.directions[i]"
+          class="editable montst-sm"
+        >
+          <input
+            type="text"
+            value="{{ recipe_full.directions[i] }}"
+            class="montst-sm"
+          />
+        </div>
+      </div>
+      <button mat-button (click)="addDirection()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- modal-footer -->
+<div class="modal-footer">
+  <div *ngIf="recipe_full.pending">
+    <button mat-button (click)="approveRecipe()" color="primary">
+      Approve
+    </button>
+    <button mat-button (click)="rejectRecipe()" color="primary">Reject</button>
+    <!-- <mat-form-field> -->
+    <!-- <mat-label>Add a comment</mat-label> -->
+    <!-- <input matInput value="" placeholder="Enter text..."> -->
+    <!-- </mat-form-field> -->
+  </div>
+  <div
+    *ngIf="editing_ing == true || editing_dir == true || editing_meta == true"
+  >
+    <button mat-button (click)="cancelEdits()" color="basic">Cancel</button>
+    <button mat-button (click)="saveEdits()" color="primary">
+      Save Changes
+    </button>
+  </div>
+
+  <div *ngIf="!recipe_full.pending" class="tilefix">
+    <mat-accordion>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title><mat-icon>forum</mat-icon></mat-panel-title>
+          <mat-panel-description></mat-panel-description>
+        </mat-expansion-panel-header>
+        <div *ngFor="let comment of recipe_comments" id="commentsdiv">
+          <p class="montst-sm">
+            <strong>{{ comment.username }}</strong>
+          </p>
+          <p class="montst-sm">&nbsp;&nbsp;{{ comment.commenttext }}</p>
+        </div>
         <div>
-          <div class="inlined imagewrap" *ngFor="let image of getImagesS3(recipe_full);let i = index">
-            <!-- <mat-icon *ngIf="isRemoveable(i)" (click)="removeImage()" class="close">clear</mat-icon> -->
-            <mat-icon (mouseenter)="showprimary(true,i)" *ngIf="user && user.adminflag==true && isHovered(i)" (click)="makePrimary(image)"class="topright clickable">star</mat-icon>
-            <!-- <img class="inlined" (mouseenter)="showremove(true,i)" (mouseleave)="showremove(false,i)" src="{{image.url}}" width="350" alt=""> -->
-            <img class="inlined" (mouseenter)="showprimary(true,i)" (mouseleave)="showprimary(false,i)" src="{{image.url}}" width="350" alt="">
-          </div>
+          <input
+            class="floatleft widthtf"
+            matInput
+            [(ngModel)]="newComment"
+            type="text"
+            name=""
+            placeholder="Add a comment..."
+          />
+          <a class="floatright widthof" (click)="addComment()" role="button"
+            ><mat-icon>send</mat-icon></a
+          >
         </div>
-
-<!-- move the image to the right of the author, submnitted by, etc, stuff -->
-
-
-        <div *ngIf="user && user.adminflag==true" class="image-upload form-group margintop">
-          <!-- <label for="fileupload" (click)="upload_image()" ><mat-icon>attach_file</mat-icon></label> -->
-          <input type="file" accept="image/*" name="fileupload" id="fileupload" (change)="readImage($event.target.files)">
-          <!-- <button>Upload</button> -->
-          <!-- <hr> -->
-        </div>
-      </div>
-
-
-
-
-      <!-- ingredients -->
-      <div (mouseenter)="editable('ingredients',true)" (mouseleave)="editable('ingredients',false)">
-        <div *ngIf="editable_ing == true">
-          <button mat-button class="floatright" (click)="editRecipe('ingredients')">
-              <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-
-        <div class="div_ingredients_header">
-          <div class="row">
-            <!-- <div class="col-8"><label ngbAutofocus for="ingredientsdiv" class="montst">Ingredients</label></div> -->
-            <div class="col-4 col-md-8"><label ngbAutofocus for="ingredientsdiv" class="montst-lg">Ingredients</label></div>
-            <!-- <div class="col-4"> -->
-            <div class="col-8 col-md-4">
-                    <div class="floatleft margintop marginright">Scale</div>
-                    <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == .5}" (click)="scaleRecipe(.5)">.5x</button>
-                    <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 1}" (click)="scaleRecipe(1)">1x</button>
-                    <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 2}" (click)="scaleRecipe(2)">2x</button>
-                    <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 3}" (click)="scaleRecipe(3)">3x</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="div_ingredients" *ngIf="editing_ing == false && recipe_scale==1">
-          <!-- <div *ngFor="let ingredient of recipe_full.ingredients" id="ingredientsdiv"> -->
-          <!-- <div *ngIf=""> -->
-            <div *ngFor="let ingredient of recipe_full.ingredients" id="ingredientsdiv">
-              <div contenteditable="false"> <p class="montst-sm">{{ ingredient }}</p></div>
-            </div>
-          <!-- </div> -->
-
-        </div>
-        <div class="div_ingredients" *ngIf="editing_ing == false && recipe_scale!=1">
-            <div *ngFor="let ingredient of scaled_ingredients" id="ingredientsdiv">
-              <div contenteditable="false"> <p class="montst-sm">{{ ingredient }}</p></div>
-            </div>
-        </div>
-
-        <div class="div_ingredients" *ngIf="editing_ing == true">
-          <div *ngFor="let ingredient of recipe_full.ingredients;let i = index;trackBy:trackByIdx" id="ingredientsdiv">
-            <div name="ingredientslist" ngDefaultControl [(ngModel)]="recipe_full.ingredients[i]" class="editable montst-sm"> <input type="text" value="{{recipe_full.ingredients[i]}}" class="montst-sm"></div>
-          </div>
-          <button mat-button (click)="addIngredient()" ><mat-icon>add</mat-icon></button>
-        </div>
-        <!-- <br> -->
-      </div>
-
-      <!-- <hr> -->
-
-      <!-- directions -->
-      <div class="div_directions" (mouseenter)="editable('directions',true)" (mouseleave)="editable('directions',false)">
-        <div *ngIf="editable_dir == true">
-          <button mat-button class="floatright" (click)="editRecipe('directions')">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-        <label for="directionsdiv" class="montst-lg">Directions</label>
-        <div *ngIf="editing_dir == false">
-          <ol class="directions_list" id="directionsdiv">
-            <li *ngFor="let direction of recipe_full.directions;let i = index;" class="montst-sm numbered_item">
-              {{ direction }}
-            </li>
-          </ol>
-        </div>
-        <div *ngIf="editing_dir == true">
-          <div *ngFor="let direction of recipe_full.directions;let i = index;" id="directionsdiv">
-            <div ngDefaultControl [(ngModel)]="recipe_full.directions[i]" class="editable montst-sm"> <input type="text" value="{{recipe_full.directions[i]}}" class="montst-sm"></div>
-          </div>
-          <button mat-button (click)="addDirection()" ><mat-icon>add</mat-icon></button>
-        </div>
-      </div>
-
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
-
-  <!-- modal-footer -->
-  <div class="modal-footer">
-      <div *ngIf="recipe_full.pending">
-          <button mat-button (click)="approveRecipe()" color="primary">Approve</button>
-          <button mat-button (click)="rejectRecipe()" color="primary">Reject</button>
-          <!-- <mat-form-field> -->
-              <!-- <mat-label>Add a comment</mat-label> -->
-            <!-- <input matInput value="" placeholder="Enter text..."> -->
-          <!-- </mat-form-field> -->
-      </div>
-      <div *ngIf="editing_ing == true || editing_dir == true || editing_meta == true">
-        <button mat-button (click)="cancelEdits()" color="basic">Cancel</button>
-        <button mat-button (click)="saveEdits()" color="primary">Save Changes</button>
-      </div>
-
-      <div *ngIf="!recipe_full.pending" class="tilefix">
-          <mat-accordion>
-            <mat-expansion-panel hideToggle>
-              <mat-expansion-panel-header>
-                <mat-panel-title><mat-icon>forum</mat-icon></mat-panel-title>
-                <mat-panel-description></mat-panel-description>
-              </mat-expansion-panel-header>
-              <div *ngFor="let comment of recipe_comments" id="commentsdiv">
-                <p class="montst-sm"><strong>{{ comment.username }}</strong></p>
-                <p class="montst-sm">&nbsp;&nbsp;{{ comment.commenttext }}</p>
-              </div>
-              <div>
-                 <input class="floatleft widthtf" matInput [(ngModel)]="newComment" type="text" name="" placeholder="Add a comment..."/>
-                 <a class="floatright widthof" (click)="addComment()" role="button"><mat-icon>send</mat-icon></a>
-              </div>
-            </mat-expansion-panel>
-          </mat-accordion>
-
-
-
-
-      </div>
-  </div>
-
+</div>

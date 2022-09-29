@@ -1,50 +1,79 @@
-<!-- <nav mat-tab-nav-bar [color]="tabcolor" [backgroundColor]="background">
-  <a mat-tab-link *ngFor="let link of links"
-     (click)="active = link.route"
-     [active]="active == link.route"
-     routerLink="{{ link.route }}"> {{ link.label }} </a>
-     <a mat-tab-link routerLink="pending"> <mat-icon>list</mat-icon></a>
-     <a mat-tab-link disabled></a>
-     <a mat-tab-link disabled></a>
-     <a mat-tab-link disabled></a>
-     <a mat-tab-link disabled class="trdbanner">The Recipe Doc</a>
-     <a mat-tab-link class="trdbanner" routerLink="login" ><mat-icon>person</mat-icon></a>
-</nav> -->
+<nav class="nav-underline nav-links bg-white box-shadow flex">
+  <div class="alignLeft">
+    <a
+      class="nav-link"
+      routerLink=""
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >All Recipes</a
+    >
+    <a
+      class="nav-link"
+      routerLink="new/new"
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >New</a
+    >
+    <a
+      class="nav-link"
+      routerLink="/veganref"
+      routerLinkActive="router-link-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Helpful Info</a
+    >
+  </div>
+  <!-- <a class="nav-link" routerLink="explore" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{exact:true}">Explore</a> -->
+  <!-- <a class="nav-link" routerLink="/ip" routerLinkActive="router-link-active">IP Recipes</a> -->
 
-<!-- <a mat-tab-link (click)="active = pending" [active]="active == pending" routerLink="pending"> <mat-icon>list</mat-icon></a> -->
-<!-- <a mat-tab-link *ngIf="user.adminflag == true" routerLink="pending"> <mat-icon>list</mat-icon></a> -->
-<!-- <a mat-tab-link *ngIf="user.adminflag == false" disabled></a> -->
+  <!-- <a class="nav-link floatright" routerLink="/login" routerLinkActive="router-link-active"><mat-icon>person</mat-icon></a> -->
+  <div class="alignRight">
+    <div ngbDropdown class="nav-item d-inline-block username">
+      <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle role="button">
+        <mat-icon>person</mat-icon>
+        <p class="userNametext mobile-hide" *ngIf="getUserFromService()">
+          {{ user.username.toUpperCase() }}
+        </p>
+      </a>
+      <div
+        class="dropdown-menu dropdown-menu-right"
+        ngbDropdownMenu
+        aria-labelledby="dropdownBasic1"
+      >
+        <div *ngIf="getAdmin() == true">
+          <button routerLink="/pending" ngbDropdownItem>Approvals</button>
+        </div>
+        <button *ngIf="getUser()" routerLink="/saved" ngbDropdownItem>
+          Saved
+        </button>
+        <button *ngIf="!getUser()" routerLink="/login" ngbDropdownItem>
+          Login
+        </button>
+        <button *ngIf="getUser()" (click)="logout()" ngbDropdownItem>
+          Logout
+        </button>
+      </div>
+    </div>
 
+    <img
+      (click)="navHome()"
+      class="nav-link floatright nav-img clickable mobile-hide"
+      src="../assets/img/recipedoctext.png"
+    />
 
-<nav class="nav-underline nav-links bg-white box-shadow">
-    <a class="nav-link mobile-hide" routerLink="" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{exact:true}">Recipe Book</a>
-    <!-- <a class="nav-link" routerLink="explore" routerLinkActive="router-link-active" [routerLinkActiveOptions]="{exact:true}">Explore</a> -->
-    <!-- <a class="nav-link" routerLink="/ip" routerLinkActive="router-link-active">IP Recipes</a> -->
-
-    <div ngbDropdown class="nav-item d-inline-block">
-     <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle role="button"><mat-icon>person</mat-icon><p class="userNametext mobile-hide" *ngIf="getUserFromService()">{{user.username.toUpperCase()}}</p></a>
-     <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu aria-labelledby="dropdownBasic1">
-       <div *ngIf="getAdmin() == true"><button routerLink="/pending" ngbDropdownItem>Approvals</button></div>
-       <button routerLink="/saved" ngbDropdownItem>Saved</button>
-       <button *ngIf="!getUser()" routerLink="/login" ngbDropdownItem>Login</button>
-       <button *ngIf="getUser()"(click)="logout()" ngbDropdownItem>Logout</button>
-     </div>
-     </div>
-    <!-- <a class="nav-link floatright" routerLink="/login" routerLinkActive="router-link-active"><mat-icon>person</mat-icon></a> -->
-    <!-- <a class="nav-link floatright">The Recipe Doc</a> -->
-
-    <img (click)="navHome()" class="nav-link floatright nav-img clickable" src="../assets/img/recipedoctext.png" />
-
-    <button routerLink="/help" class="nav-link floatright clickable help-img" mat-icon-button (click)="openHelp()" >
+    <button
+      routerLink="/help"
+      class="nav-link clickable help-img"
+      mat-icon-button
+      (click)="openHelp()"
+    >
       <mat-icon>help_outline</mat-icon>
     </button>
+  </div>
 </nav>
-
-
 
 <router-outlet></router-outlet>
 
-<footer>
-    <!-- <a routerLink="/changelog">v0.17</a> -->
-    <a>v0.23</a>
+<footer class="bottom">
+  <!-- <a routerLink="/changelog">v0.17</a> -->
+  <a>v0.25</a>
 </footer>

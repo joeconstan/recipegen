@@ -19,3 +19,12 @@
 .btn{
   line-height: 1.15 !important;
 }
+
+.error-msg{
+  color: red;
+  margin-bottom: 10px;
+}
+
+.margin-top-sm{
+  margin-top: 10px;
+}

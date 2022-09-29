@@ -1,136 +1,271 @@
-<br>
-<br>
-  <div class="container margintopmd" *ngIf="recipe_full">
-    <div class="row">
+<br />
+<br />
+<div class="container margintopmd" *ngIf="recipe_full">
+  <div class="row">
+    <div class="col"></div>
 
-      <div class="col"></div>
-
-      <div class="col-12 col-md-9">
-        <mat-card class="example-card">
-          <div mat-card-avatar class="flexrow">
-            <div *ngFor="let image of getImagesS3(recipe_full)">
-              <img *ngIf="image.primary_img" class="round-image" src="{{image.url}}" alt="">
-            </div>
+    <div id="single-recipe-card" class="col-12 col-md-9">
+      <mat-card class="example-card">
+        <div *ngIf="userAdmin()">
+          <button mat-button (click)="openEditRecipeDialog()" class="no-print">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div mat-card-avatar class="flexrow">
+          <div *ngFor="let image of getImagesS3(recipe_full)">
+            <img
+              *ngIf="image.primary_img"
+              class="round-image"
+              src="{{ image.url }}"
+              alt=""
+            />
           </div>
-          <div class="floatright">
-            <div *ngIf="userSaved()">
-              <button class="btnpaddingnoright" mat-icon-button (click)="unbookmark_recipe()">
-                <mat-icon class="heart-icon">favorite</mat-icon>
-              </button>
-              <label class="valigncenter">{{savedCount}}</label>
-            </div>
+        </div>
+        <div class="floatright">
+          <div *ngIf="userSaved()">
+            <button
+              class="btnpaddingnoright"
+              mat-icon-button
+              (click)="unbookmark_recipe()"
+            >
+              <mat-icon class="heart-icon">favorite</mat-icon>
+            </button>
+            <label class="valigncenter">{{ savedCount }}</label>
+          </div>
 
-            <div *ngIf="!userSaved()">
-              <button class="btnpaddingnoright" mat-icon-button (click)="bookmark_recipe()">
-                <mat-icon class="heart-icon">favorite_border</mat-icon>
-              </button>
-              <label class="valigncenter">{{savedCount}}</label>
-            </div>
+          <div *ngIf="!userSaved()">
+            <button
+              class="btnpaddingnoright"
+              mat-icon-button
+              (click)="bookmark_recipe()"
+            >
+              <mat-icon class="heart-icon">favorite_border</mat-icon>
+            </button>
+            <label class="valigncenter">{{ savedCount }}</label>
+          </div>
 
-            <!-- <button class="btnpadding" mat-icon-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
+          <!-- <button class="btnpadding" mat-icon-button (click)="shareRecipe()" ngbTooltip="Link copied" triggers="click:blur">
               <mat-icon>share</mat-icon>
             </button> -->
+        </div>
 
-          </div>
+        <div class="clearfix"></div>
 
-          <div class="clearfix"></div>
+        <div *ngIf="userAdmin()" class="no-print">
+          <input
+            type="file"
+            accept="image/*"
+            name="fileupload"
+            id="fileupload"
+            (change)="readImage($event.target.files)"
+          />
+        </div>
 
-          <div *ngIf="userAdmin()">
-            <input type="file" accept="image/*" name="fileupload" id="fileupload" (change)="readImage($event.target.files)">
-          </div>
+        <mat-card-header>
+          <mat-card-title class="margintoplg">
+            <div class="recipetitle">{{ recipe_full.name }}</div>
 
-          <mat-card-header>
-
-
-
-            <mat-card-title class="margintoplg">
-              <div class="recipetitle">{{recipe_full.name}}</div>
-
-
-              <div class="rating margintopmd2">
-                <mat-radio-group
+            <div class="rating margintopmd2">
+              <mat-radio-group
+                name="rating"
+                [(ngModel)]="recipe_rating"
+                (click)="rateRecipe($event)"
+              >
+                <p
+                  *ngIf="recipe_rating && rating_count == 1"
+                  class="marginleftsm text_md"
+                >
+                  {{ rating_count }} Rating
+                </p>
+                <p
+                  *ngIf="recipe_rating && rating_count != 1"
+                  class="marginleftsm text_md"
+                >
+                  {{ rating_count }} Ratings
+                </p>
+                <p
+                  *ngIf="!recipe_rating || recipe_rating == 0"
+                  class="marginleftsm text_md"
+                >
+                  0 Ratings
+                </p>
+                <mat-radio-button
                   name="rating"
-                  [(ngModel)]="recipe_rating"
-                  (click)="rateRecipe($event)">
-                  <p *ngIf="recipe_rating && rating_count==1" class="marginleftsm text_md">{{rating_count}} Rating</p>
-                  <p *ngIf="recipe_rating && rating_count!=1" class="marginleftsm text_md">{{rating_count}} Ratings</p>
-                  <p *ngIf="!recipe_rating || recipe_rating==0" class="marginleftsm text_md">0 Ratings</p>
-                  <mat-radio-button name="rating" [value]="5" id="5"></mat-radio-button><label for="5">☆</label>
-                  <mat-radio-button name="rating" [value]="4" id="4"></mat-radio-button><label for="4">☆</label>
-                  <mat-radio-button name="rating" [value]="3" id="3"></mat-radio-button><label for="3">☆</label>
-                  <mat-radio-button name="rating" [value]="2" id="2"></mat-radio-button><label for="2">☆</label>
-                  <mat-radio-button name="rating" [value]="1" id="1"></mat-radio-button><label for="1">☆</label>
-                </mat-radio-group>
+                  [value]="5"
+                  id="5"
+                ></mat-radio-button
+                ><label for="5">☆</label>
+                <mat-radio-button
+                  name="rating"
+                  [value]="4"
+                  id="4"
+                ></mat-radio-button
+                ><label for="4">☆</label>
+                <mat-radio-button
+                  name="rating"
+                  [value]="3"
+                  id="3"
+                ></mat-radio-button
+                ><label for="3">☆</label>
+                <mat-radio-button
+                  name="rating"
+                  [value]="2"
+                  id="2"
+                ></mat-radio-button
+                ><label for="2">☆</label>
+                <mat-radio-button
+                  name="rating"
+                  [value]="1"
+                  id="1"
+                ></mat-radio-button
+                ><label for="1">☆</label>
+              </mat-radio-group>
+            </div>
+          </mat-card-title>
+
+          <mat-card-subtitle>
+            <div class="div_metainfo">
+              <div class="small">
+                <p class="gray inline italics">Type:</p>
+                <p class="black inline">{{ recipe_full.type }}</p>
+                <p class="gray inline italics">Length:</p>
+                <p class="black inline">{{ recipe_full.timelength }}</p>
               </div>
-
-
-            </mat-card-title>
-
-            <mat-card-subtitle>
-              <div class="div_metainfo">
-                <div class="small">
-                  <p class="gray inline italics">Type:</p>
-                  <p class="black inline">{{ recipe_full.type }}</p>
-                  <p class="gray inline italics">Length:</p>
-                  <p class="black inline">{{ recipe_full.timelength }}</p>
-                </div>
-                <div class="small">
-                  <p class="gray inline italics">Difficulty:</p>
-                  <p class="black inline">{{ recipe_full.difficulty }}</p>
-                  <p class="gray inline italics">Author:</p>
-                  <p class="black inline">{{ recipe_full.author }}</p>
-                </div>
+              <div class="small">
+                <p class="gray inline italics">Difficulty:</p>
+                <p class="black inline">{{ recipe_full.difficulty }}</p>
+                <p *ngIf="recipe_full.author" class="gray inline italics">
+                  Author:
+                </p>
+                <p *ngIf="recipe_full.author" class="black inline">
+                  {{ recipe_full.author }}
+                </p>
               </div>
-            </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content class="container">
-
-            <div class="row div_ingredients">
-              <div class="col-12 col-md-6 lesspadding"><label ngbAutofocus for="ingredientsdiv" class="montst-lg margintop">Ingredients</label></div>
-              <!-- <div class="col-4 col-md-0"></div> -->
-              <div class="floatright marginbottommobile">
-                      <div class="floatleft margintop marginright">Scale</div>
-                      <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == .5}" (click)="scaleRecipe(.5)">.5x</button>
-                      <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 1}" (click)="scaleRecipe(1)">1x</button>
-                      <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 2}" (click)="scaleRecipe(2)">2x</button>
-                      <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': recipe_scale == 3}" (click)="scaleRecipe(3)">3x</button>
+              <div class="small">
+                <p *ngIf="recipe_full.yield" class="gray inline italics">
+                  Yield:
+                </p>
+                <p *ngIf="recipe_full.yield" class="black inline">
+                  {{ recipe_full.yield }}
+                </p>
+                <!-- <p *ngIf="recipe_full.author" class="gray inline italics">Author:</p> -->
+                <!-- <p *ngIf="recipe_full.author" class="black inline">{{ recipe_full.author }}</p> -->
               </div>
-
-
-              <div class="marginleft margintop" *ngIf="recipe_scale==1">
-                  <div *ngFor="let ingredient of recipe_full.ingredients" id="ingredientsdiv">
-                    <div> <p class="montst-sm">{{ ingredient }}</p></div>
-                  </div>
-              </div>
-              <div class="marginleft margintop" *ngIf="recipe_scale!=1">
-                  <div *ngFor="let ingredient of scaled_ingredients" id="ingredientsdiv">
-                    <div> <p class="montst-sm">{{ ingredient }}</p></div>
-                  </div>
-              </div>
-
-
+            </div>
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="container">
+          <div class="row div_ingredients">
+            <div class="col-12 col-md-6 lesspadding">
+              <label
+                ngbAutofocus
+                for="ingredientsdiv"
+                class="montst-lg margintop"
+                >Ingredients</label
+              >
+            </div>
+            <!-- <div class="col-4 col-md-0"></div> -->
+            <div class="floatright marginbottommobile marginright no-print">
+              <div class="floatleft margintop marginright">Scale</div>
+              <button
+                mat-stroked-button
+                color="primary"
+                class="floatleft btn-responsive"
+                [ngClass]="{ selectedScale: recipe_scale == 0.5 }"
+                (click)="scaleRecipe(0.5)"
+              >
+                .5x
+              </button>
+              <button
+                mat-stroked-button
+                color="primary"
+                class="floatleft btn-responsive"
+                [ngClass]="{ selectedScale: recipe_scale == 1 }"
+                (click)="scaleRecipe(1)"
+              >
+                1x
+              </button>
+              <button
+                mat-stroked-button
+                color="primary"
+                class="floatleft btn-responsive"
+                [ngClass]="{ selectedScale: recipe_scale == 2 }"
+                (click)="scaleRecipe(2)"
+              >
+                2x
+              </button>
+              <button
+                mat-stroked-button
+                color="primary"
+                class="floatleft btn-responsive"
+                [ngClass]="{ selectedScale: recipe_scale == 3 }"
+                (click)="scaleRecipe(3)"
+              >
+                3x
+              </button>
+            </div>
+            <div class="floatright marginbottommobile">
+              <!-- <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': measure_system == 'us'}" (click)="toggleMeasureSystem('us')">US</button> -->
+              <!-- <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': measure_system == 'metric'}" (click)="toggleMeasureSystem('metric')">metric</button> -->
+            </div>
+            <div class="floatright marginbottommobile marginright no-print">
+              <button
+                mat-button
+                color="primary"
+                class="floatleft btn-responsive"
+                (click)="openPrintDialog()"
+              >
+                Print
+              </button>
             </div>
 
-            <!-- directions -->
-            <div class="row div_directions">
-              <label for="directionsdiv" class="montst-lg margintop">Directions</label>
+            <div class="marginleft margintop" *ngIf="recipe_scale == 1">
+              <div
+                *ngFor="let ingredient of recipe_full.ingredients"
+                id="ingredientsdiv"
+              >
+                <div>
+                  <p class="montst-sm">{{ ingredient }}</p>
+                </div>
               </div>
-              <div class="row">
-              <div>
-                <ol class="directions_list" id="directionsdiv">
-                  <li *ngFor="let direction of recipe_full.directions;let i = index;" class="montst-sm numbered_item">
-                    {{ direction }}
-                  </li>
-                </ol>
-              </div>
-
             </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
+            <div class="marginleft margintop" *ngIf="recipe_scale != 1">
+              <div
+                *ngFor="let ingredient of scaled_ingredients"
+                id="ingredientsdiv"
+              >
+                <div>
+                  <p class="montst-sm">{{ ingredient }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <div class="col"></div>
+          <!-- directions -->
+          <div class="row div_directions">
+            <label for="directionsdiv" class="montst-lg margintop"
+              >Directions</label
+            >
+          </div>
+          <div class="row">
+            <div>
+              <ol class="directions_list" id="directionsdiv">
+                <li
+                  *ngFor="
+                    let direction of recipe_full.directions;
+                    let i = index
+                  "
+                  class="montst-sm numbered_item"
+                >
+                  {{ direction }}
+                </li>
+              </ol>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
 
+    <div class="col"></div>
+  </div>
 </div>
-
