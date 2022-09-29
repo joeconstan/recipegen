@@ -8,6 +8,8 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 import { ClipboardService } from 'ngx-clipboard'
 import { DomSanitizer } from '@angular/platform-browser';
 import { NgxFlickingModule } from '@egjs/ngx-flicking';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-new-recipe-component.component'
 
 // declare var OrientationFixer: any;
 
@@ -64,7 +66,8 @@ export class RecipeModalComponent implements OnInit {
       private router: Router,
       private _snackBar: MatSnackBar,
       private _clipboardService: ClipboardService,
-      private _sanitizer: DomSanitizer
+      private _sanitizer: DomSanitizer,
+      public dialog: MatDialog
   ) {
   }
 

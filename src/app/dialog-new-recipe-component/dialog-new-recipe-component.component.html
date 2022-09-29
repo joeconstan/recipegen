@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add a Recipe</h1>
+<h1 mat-dialog-title>{{data.title?data.title:'Add a Recipe'}}</h1>
 <div mat-dialog-content>
   <!-- <a role="button" class="clickable link" *ngIf="!import" (click)="import=!import">Import</a>
   <mat-form-field *ngIf="import">
@@ -68,7 +68,7 @@
 <p>
     <mat-form-field>
       <mat-label>Difficulty</mat-label>
-    <mat-select [(ngModel)]="dialogue_difficulty" (selectionChange)="dialogue_addDifficulty()" matInput>
+    <mat-select [(ngModel)]="data.difficulty" matInput>
       <mat-option value="Easy">Easy</mat-option>
       <mat-option value="Moderate">Moderate</mat-option>
       <mat-option value="Hard">Hard</mat-option>
@@ -76,6 +76,16 @@
     </mat-form-field>
 
     <mat-checkbox [(ngModel)]="data.difficultyWarning" value="True">Requires Special Equipment (e.g. Ice cream maker)</mat-checkbox>
+</p>
+<br>
+<p>
+  <mat-form-field>
+    <mat-label>Tags</mat-label>
+  <mat-select [(ngModel)]="dialogue_tags" (selectionChange)="dialogue_addTags()" matInput multiple>
+    <mat-option value="Nut Free">Nut Free</mat-option>
+    <mat-option value="Gluten Free">Gluten Free</mat-option>
+  </mat-select>
+  </mat-form-field>
 </p>
 <br>
 <p>
@@ -105,6 +115,6 @@
         <button mat-button disabled [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
     </div>
     <div *ngIf="data.name != '' && data.timelength != 0">
-        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
+        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{data.submitText?data.submitText:'Submit Suggestion'}}</button>
     </div>
 </div>

@@ -1,225 +1,201 @@
-.montst{
-    font-family: 'Montserrat' !important;
-    font-size: 1.20em;
-    font-weight: bold;
+.montst {
+  font-family: "Montserrat" !important;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
-.montst-bg{
-    font-family: 'Montserrat' !important;
-    font-size: 1.5em;
+.montst-bg {
+  font-family: "Montserrat" !important;
+  font-size: 1.5em;
 }
 
-.pedna{
-    font-family: peddana;
-    font-weight: 50 !important;
+.pedna {
+  font-family: peddana;
+  font-weight: 50 !important;
 }
 
-
-.montst-bg-it{
-    font-family: 'Montserrat' !important;
-    font-size: 1.5em;
-    font-style: italic;
+.montst-bg-it {
+  font-family: "Montserrat" !important;
+  font-size: 1.5em;
+  font-style: italic;
 }
 
-
-.floatright{
-    float: right;
+.floatright {
+  float: right;
 }
 
-.floatleft{
-    float: left;
+.floatleft {
+  float: left;
 }
 
-.lesspadding{
+.lesspadding {
   padding-left: 0px;
 }
 
-
-mat-accordion, mat-expansion-panel{
-    width: 100% !important;
-    box-shadow: none;
+mat-accordion,
+mat-expansion-panel {
+  width: 100% !important;
+  box-shadow: none;
 }
 
-.tilefix{
-    /* position: absolute; */
-    width: 100%;
-    /* height: 100%; */
-    box-shadow: none;
+.tilefix {
+  /* position: absolute; */
+  width: 100%;
+  /* height: 100%; */
+  box-shadow: none;
 }
 
-mat-panel-title{
-    float:right;
+mat-panel-title {
+  float: right;
 }
 
-
-.widthtf{
-    width: 75%;
+.widthtf {
+  width: 75%;
 }
 
-.inline{
-    display: inline-block;
-    padding-left: 10px;
+.inline {
+  display: inline-block;
+  padding-left: 10px;
 }
 
-
-.editable:hover  {
-  background: #FFF;
+.editable:hover {
+  background: #fff;
   border-color: #69c773;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
-  padding: .5em;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) inset;
+  padding: 0.5em;
   border-radius: 3px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.montst{
-    font-family: 'Montserrat' !important;
-    font-size: 1.20em;
-    font-weight: bold;
+.montst {
+  font-family: "Montserrat" !important;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
-.montst-sm{
-    font-family: 'Montserrat' !important;
-    font-size: .95em;
+.montst-sm {
+  font-family: "Montserrat" !important;
+  font-size: 0.95em;
 }
 
-.montst-bg{
-    font-family: 'Montserrat' !important;
-    font-size: 1.5em;
+.montst-bg {
+  font-family: "Montserrat" !important;
+  font-size: 1.5em;
 }
 
-.montst-lg{
-  font-family: 'Montserrat' !important;
+.montst-lg {
+  font-family: "Montserrat" !important;
   font-size: 1.5em;
   font-weight: bold;
 }
 
-.italics{
-    font-style: italic;
+.italics {
+  font-style: italic;
 }
 
-
-.pedna{
-    font-family: peddana;
-    font-weight: 50 !important;
+.pedna {
+  font-family: peddana;
+  font-weight: 50 !important;
 }
 
-.selectedScale{
+.selectedScale {
   background-color: #eeeeee;
 }
 
-
-.montst-bg-it{
-    font-family: 'Montserrat' !important;
-    font-size: 1.7em;
-    font-style: italic;
+.montst-bg-it {
+  font-family: "Montserrat" !important;
+  font-size: 1.7em;
+  font-style: italic;
 }
 
-.modal-header-button{
-    margin-right: 25px;
+.modal-header-button {
+  margin-right: 25px;
 }
 
-.btnpadding{
-    margin-left: 15px;
-    margin-right: 5px;
-    margin-top: 10px;
+.btnpadding {
+  margin-left: 15px;
+  margin-right: 5px;
+  margin-top: 10px;
 }
 
-.btnpaddingnoright{
-    margin-left: 15px;
-    /* margin-right: 5px; */
-    margin-top: 10px;
+.btnpaddingnoright {
+  margin-left: 15px;
+  /* margin-right: 5px; */
+  margin-top: 10px;
 }
 
-
-.valigncenter{
+.valigncenter {
   vertical-align: middle;
   display: inline;
 }
 
-
-mat-accordion, mat-expansion-panel{
-    width: 100% !important;
-    box-shadow: none;
+mat-accordion,
+mat-expansion-panel {
+  width: 100% !important;
+  box-shadow: none;
 }
 
-.tilefix{
-    /* position: absolute; */
-    width: 100%;
-    /* height: 100%; */
-    box-shadow: none;
+.tilefix {
+  /* position: absolute; */
+  width: 100%;
+  /* height: 100%; */
+  box-shadow: none;
 }
 
-mat-panel-title{
-    float:right;
+mat-panel-title {
+  float: right;
 }
 
-
-.widthtf{
-    width: 75%;
+.widthtf {
+  width: 75%;
 }
 
-.inlined{
-    display: inline-block;
-    padding-right: 5px;
+.inlined {
+  display: inline-block;
+  padding-right: 5px;
 }
 
-.small p{
-    font-size: 1em;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    margin-top: 0px;
+.small p {
+  font-size: 1em;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
-.div_metainfo{
+.div_metainfo {
   /* margin-left: 10%; */
   /* margin: 0 auto; */
 }
 
-mat-card-subtitle{
+mat-card-subtitle {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-mat-card-header{
+mat-card-header {
   border-bottom: 1px solid #dee2e6;
   padding-bottom: 10px;
   margin-bottom: 3px;
 }
 
-.gray{
-    color:gray;
+.gray {
+  color: gray;
 }
 
-.black{
-    color:black;
+.black {
+  color: black;
 }
 
-
-.editable:hover  {
-  background: #FFF;
+.editable:hover {
+  background: #fff;
   border-color: #69c773;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.15) inset;
-  padding: .5em;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15) inset;
+  padding: 0.5em;
   border-radius: 3px;
 }
 
-.imagewrap{
+.imagewrap {
   display: inline-block;
   position: relative;
 }
@@ -240,12 +216,12 @@ mat-card-header{
   z-index: 100;
 }
 
-.div_ingredients_header{
+.div_ingredients_header {
   padding-top: 10px;
   border-top: 1px solid #dee2e6;
 }
 
-.div_ingredients{
+.div_ingredients {
   border-bottom: 1px solid #dee2e6;
   padding-bottom: 10px;
   margin-bottom: 3px;
@@ -253,12 +229,12 @@ mat-card-header{
   padding-top: 10px;
 }
 
-.div_directions{
+.div_directions {
   border-top: 1px solid #dee2e6;
   padding-top: 10px;
 }
 
-.div_image{
+.div_image {
   border-bottom: 1px solid #dee2e6;
   border-top: 1px solid #dee2e6;
   padding-bottom: 10px;
@@ -266,13 +242,13 @@ mat-card-header{
   margin-bottom: 3px;
 }
 
-.header_div{
+.header_div {
   border-bottom: 1px solid #dee2e6;
   padding-bottom: 10px;
   margin-bottom: 3px;
 }
 
-.time_div{
+.time_div {
   margin: 0 auto;
   width: 50%;
   border-bottom: 1px solid #dee2e6;
@@ -285,92 +261,90 @@ mat-card-header{
   justify-content: space-around;
 }
 
-.time_section{
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
+.time_section {
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
 }
 
 ol.directions_list {
-    list-style: none;
-    overflow: hidden;
-    counter-reset: numList;
+  list-style: none;
+  overflow: hidden;
+  counter-reset: numList;
 }
 
 .numbered_item {
-    /* float: left; */
-    position: relative;
-    margin-top:10px;
+  /* float: left; */
+  position: relative;
+  margin-top: 10px;
 }
 
 .numbered_item:before {
-    counter-increment: numList;
-    content: counter(numList);
+  counter-increment: numList;
+  content: counter(numList);
 
-    float: left;
-    position: absolute;
-    left: -26px;
+  float: left;
+  position: absolute;
+  left: -26px;
 
-    font: bold 12px sans-serif;
-    text-align: center;
-    color: #fff;
-    line-height: 18px;
+  font: bold 12px sans-serif;
+  text-align: center;
+  color: #fff;
+  line-height: 18px;
 
-    width: 18px; height: 18px;
-    background: #3f51b5;
+  width: 18px;
+  height: 18px;
+  background: #3f51b5;
 
-    -moz-border-radius: 999px;
-    border-radius: 999px
+  -moz-border-radius: 999px;
+  border-radius: 999px;
 }
 
-.heart-icon{
+.heart-icon {
   color: #f44336;
 }
 
-mat-card-header{
-  justify-content: center
+mat-card-header {
+  justify-content: center;
 }
 
-.marginright{
+.marginright {
   margin-right: 5px;
 }
 
-.marginleft{
-    margin-left: 25px;
+.marginleft {
+  margin-left: 25px;
 }
 
-.marginleftsm{
-    margin-left: 10px;
+.marginleftsm {
+  margin-left: 10px;
 }
 
-.margintop{
+.margintop {
   margin-top: 8px;
 }
 
-.margintopmd{
+.margintopmd {
   margin-top: 100px;
 }
 
-.margintopmd2{
+.margintopmd2 {
   margin-top: 20px;
 }
 
-
-.flexrow{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+.flexrow {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 
-
-mat-card{
+mat-card {
   border: 4px double #dee2e6;
 }
 
-.text_md{
-    font-size: .75em;
+.text_md {
+  font-size: 0.75em;
 }
-
 
 /* ratings */
 
@@ -380,19 +354,19 @@ mat-card{
   justify-content: center;
 }
 
-.rating > mat-radio-group > mat-radio-button{
-  display:none;
+.rating > mat-radio-group > mat-radio-button {
+  display: none;
 }
 
 .rating > mat-radio-group > label {
   position: relative;
-  width: .75em;
+  width: 0.75em;
   font-size: 1.1em;
   /* color: #FFD700; */
   cursor: pointer;
 }
 
-.rating > mat-radio-group > label::before{
+.rating > mat-radio-group > label::before {
   content: "\2605";
   position: absolute;
   opacity: 0;
@@ -403,26 +377,24 @@ mat-card{
   opacity: 1 !important;
 }
 
-.rating > mat-radio-group > .mat-radio-checked ~ label:before{
+.rating > mat-radio-group > .mat-radio-checked ~ label:before {
   color: #f7c33b;
-  opacity:1;
+  opacity: 1;
 }
 
-.rating:hover > mat-radio-group > .mat-radio-checked ~ label:before{
+.rating:hover > mat-radio-group > .mat-radio-checked ~ label:before {
   opacity: 0.4;
 }
 
-.clearfix{
+.clearfix {
   clear: both;
 }
-
-
 
 /* button scaling for mobile */
 
 @media (max-width: 500px) {
   .btn-responsive {
-    padding:0px 0px 0px 0px !important;
+    padding: 0px 0px 0px 0px !important;
     /* width: .5em !important; */
     /* font-size:80%; */
     line-height: 25px;
@@ -439,20 +411,19 @@ mat-card{
     -moz-border-radius: 125px;
     margin-top: -60%;
   }
-  .recipetitle{
-      font-weight: bold;
-      font-size: 1.2em;
-      text-align: center;
+  .recipetitle {
+    font-weight: bold;
+    font-size: 1.2em;
+    text-align: center;
   }
 
-  .marginbottommobile{
+  .marginbottommobile {
     margin-bottom: 10px;
   }
 
-  .margintoplg{
+  .margintoplg {
     margin-top: 25px;
   }
-
 }
 
 /* @media (min-width: 769px) and (max-width: 992px) { */
@@ -475,18 +446,24 @@ mat-card{
     -moz-border-radius: 125px;
     margin-top: -55%;
   }
-  .recipetitle{
-      font-weight: bold;
-      font-size: 1.8em;
+  .recipetitle {
+    font-weight: bold;
+    font-size: 1.8em;
   }
 
-  .margintoplg{
+  .margintoplg {
     margin-top: 65px;
   }
-
-
 }
 
+@media print {
+  .no-print {
+    display: none;
+  }
 
-
-
+  .directions_list {
+    max-width: 785px;
+    flex-wrap: wrap;
+    display: flex;
+  }
+}

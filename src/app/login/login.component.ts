@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   submitted = false;
   user: any;
   loggedIn: boolean;
+  errorMsg: String;
 
   constructor(
       private formBuilder: FormBuilder,
@@ -117,7 +118,8 @@ export class LoginComponent implements OnInit {
        // this.loading = true;
        this.commonService.getUser(this.f.username.value, this.f.password.value).subscribe(data => {
             if (!data){
-                console.log('user does not exist or wrong pswd')
+                console.log('user does not exist or wrong pswd');
+                this.errorMsg = 'Username or password is incorrect';
             }else{
                 this.userService.setUser(data)
                 localStorage.setItem('user', JSON.stringify(data));

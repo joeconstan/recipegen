@@ -2,13 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { IngredientsComponent } from './ingredients/ingredients.component';
 import { RecipelistComponent } from './recipelist/recipelist.component';
 import { RecipeModalComponent } from './recipe-modal/recipe-modal.component';
-import { DialogNewRecipeComponent } from './recipelist/recipelist.component';
 
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -47,6 +46,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { HelpComponent } from './help/help.component';
 import { EggsComponent } from './w/eggs/eggs.component';
 import { GrainsComponent } from './w/grains/grains.component';
+import { DialogNewRecipeComponent } from './dialog-new-recipe-component/dialog-new-recipe-component.component';
+import { VeganReferenceComponent } from './vegan-reference/vegan-reference.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,6 @@ import { GrainsComponent } from './w/grains/grains.component';
     RecipelistComponent,
     RecipeModalComponent,
     AlphaPipe,
-    DialogNewRecipeComponent,
     RegisterComponent,
     LoginComponent,
     PendingComponent,
@@ -66,7 +66,9 @@ import { GrainsComponent } from './w/grains/grains.component';
     ListPageComponent,
     HelpComponent,
     EggsComponent,
-    GrainsComponent
+    GrainsComponent,
+    DialogNewRecipeComponent,
+    VeganReferenceComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,11 +99,25 @@ import { GrainsComponent } from './w/grains/grains.component';
     MatProgressSpinnerModule,
     MatRadioModule,
   ],
-  exports: [ MatButtonModule, MatCardModule, MatTabsModule, MatInputModule, MatIconModule, MatChipsModule, MatDialogModule, MatFormFieldModule, MatSnackBarModule, MatSelectModule, MatExpansionModule, MatTooltipModule, MatCheckboxModule, MatProgressSpinnerModule,MatRadioModule ],
-  providers: [ CookieService, ],
-  entryComponents: [
-    DialogNewRecipeComponent
+  exports: [
+    MatButtonModule,
+    MatCardModule,
+    MatTabsModule,
+    MatInputModule,
+    MatIconModule,
+    MatChipsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatSnackBarModule,
+    MatSelectModule,
+    MatExpansionModule,
+    MatTooltipModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatRadioModule,
   ],
-  bootstrap: [ AppComponent ]
+  providers: [CookieService],
+  entryComponents: [DialogNewRecipeComponent],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

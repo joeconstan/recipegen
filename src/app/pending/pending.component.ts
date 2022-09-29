@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../common.service'
 import { NgbModule, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component'
+import { UserService } from '../user.service'
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
 
 @Component({
   selector: 'app-pending',
@@ -26,24 +29,34 @@ export class PendingComponent implements OnInit {
 
   constructor(
       private commonService: CommonService,
-      private modalService: NgbModal
+      private modalService: NgbModal,
+      private userService: UserService,
+      private router: Router,
   ) { }
 
   ngOnInit(): void {
-      this.commonService.getPendingRecipes().subscribe(data => {
-          this.pending_recipes = data;
+      if (!this.loggedIn()){
+        this.router.navigate(['/login'])
+      }else{
+        this.commonService.getPendingRecipes().subscribe(data => {
+            this.pending_recipes = data;
 
-          if(typeof data === 'object'){
-              this.empty = false // doesn't work
-          }else{
-              this.empty = true
-          }
+            if(typeof data === 'object'){
+                this.empty = false // doesn't work
+            }else{
+                this.empty = true
+            }
 
-          this.getImagesS3()
+            this.getImagesS3()
 
-      },
-          error => console.error(error)
-      )
+        },
+            error => console.error(error)
+        )
+      }
+  }
+
+  loggedIn(){
+    return this.userService.getUser()
   }
 
   hasImage(recipe_id){
