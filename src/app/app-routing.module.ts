@@ -14,6 +14,7 @@ import { ListPageComponent } from './list-page/list-page.component';
 import { HelpComponent } from './help/help.component';
 import { GrainsComponent } from './w/grains/grains.component';
 import { VeganReferenceComponent } from './vegan-reference/vegan-reference.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', component: RecipelistComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'sc', component: IngredientsComponent },
   { path: 'rb', component: RecipelistComponent },
   { path: 'new/:sort', component: RecipelistComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'pending', component: PendingComponent },
@@ -31,6 +33,7 @@ const routes: Routes = [
   { path: 'help', component: HelpComponent },
   { path: 'w/grains', component: GrainsComponent },
   { path: 'veganref', component: VeganReferenceComponent },
+  { path: '404', component: NotFoundComponent },
 ];
 
 @NgModule({

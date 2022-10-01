@@ -1,0 +1,44 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+/* @import '@angular/material/prebuilt-themes/deeppurple-amber.css'; */
+/* @import '@angular/material/prebuilt-themes/indigo-pink.css'; */
+@import "theme.scss";
+
+// @import "~@angular/material/theming";
+// @import "./app.theme";
+
+.accent-color {
+  color: mat-color($my-app-accent) !important;
+}
+.primary-color {
+  color: mat-color($my-app-primary) !important;
+}
+.warn-color {
+  color: mat-color($my-app-warn) !important;
+}
+
+.hide {
+  display: none;
+}
+
+.lightertext {
+  font-weight: lighter;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.cdk-overlay-container {
+  position: fixed;
+  z-index: 10000;
+}
+
+.modalClass {
+  /* max-width: 1000px; */
+  /* width: 80%; */
+}

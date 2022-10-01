@@ -1,24 +1,45 @@
 <div class="container">
-<!-- <div class="row"> -->
+  <div id="about-section">
+    <!-- <h2>About</h2> -->
+    <!-- <p> -->
+    <!-- Hi! Welcome to The Recipe Doc. This site is an aggregation of all of our favorite vegan recipes - either made up by us, passed down through our families, or discovered online or in cookbooks! -->
+    <!-- Feel free to submit a recipe, and one of us will take a look at it before approving it to go on the site! -->
+    <!-- </p> -->
+  </div>
   <h2>Get Help / Request a Feature</h2>
   <form *ngIf="!formSubmitted" class="example-form margintop">
-    <table class="example-full-width" cellspacing="0"><tr>
-      <td><mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Name</mat-label>
-        <input required [(ngModel)]="name" name="name" matInput>
-      </mat-form-field></td>
-    </tr></table>
-    <table class="example-full-width" cellspacing="0"><tr>
-      <td><mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Email (Optional)</mat-label>
-        <input [(ngModel)]="email" name="email" matInput>
-      </mat-form-field></td>
-    </tr></table>
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Name</mat-label>
+            <input required [(ngModel)]="name" name="name" matInput />
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
+    <table class="example-full-width" cellspacing="0">
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Email (Optional)</mat-label>
+            <input [(ngModel)]="email" name="email" matInput />
+          </mat-form-field>
+        </td>
+      </tr>
+    </table>
 
     <p>
       <mat-form-field class="example-full-width" appearance="fill">
         <mat-label>Issue/Question/Request</mat-label>
-        <textarea required [(ngModel)]="issue" name="issue" class="larger" matInput placeholder="e.g. button doesn't work/can't login/want xyz feature"></textarea>
+        <textarea
+          required
+          [(ngModel)]="issue"
+          name="issue"
+          class="larger"
+          matInput
+          placeholder="e.g. button doesn't work/can't login/want xyz feature"
+        ></textarea>
       </mat-form-field>
     </p>
 
@@ -38,11 +59,15 @@
       </mat-form-field></td>
     </tr></table> -->
 
-    <button mat-stroked-button color="primary" (click)="sendEmail()">Submit</button>
+    <button mat-stroked-button color="primary" (click)="sendEmail()">
+      Submit
+    </button>
   </form>
-  <div *ngIf="formSubmitted" class="successMessage">Message Sent. Thank you!</div>
-  <br>
-  <br>
-  <br>
-  <br>
+  <div *ngIf="formSubmitted" class="successMessage">
+    Message Sent. Thank you!
+  </div>
+  <br />
+  <br />
+  <br />
+  <br />
 </div>
