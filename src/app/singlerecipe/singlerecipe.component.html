@@ -5,7 +5,7 @@
     <div class="col"></div>
 
     <div id="single-recipe-card" class="col-12 col-md-9">
-      <mat-card class="example-card">
+      <mat-card>
         <div *ngIf="userAdmin()">
           <button mat-button (click)="openEditRecipeDialog()" class="no-print">
             <mat-icon>edit</mat-icon>
@@ -61,9 +61,15 @@
           />
         </div>
 
-        <mat-card-header>
+        <mat-card-header class="recipeheader">
           <mat-card-title class="margintoplg">
-            <div class="recipetitle">{{ recipe_full.name }}</div>
+            <div
+              [ngClass]="{ deleted: recipe_full.deleted == true }"
+              class="recipetitle"
+            >
+              {{ recipe_full.name }}
+              {{ recipe_full.deleted ? " - deleted" : null }}
+            </div>
 
             <div class="rating margintopmd2">
               <mat-radio-group
@@ -132,13 +138,19 @@
                 <p class="black inline">{{ recipe_full.timelength }}</p>
               </div>
               <div class="small">
-                <p class="gray inline italics">Difficulty:</p>
-                <p class="black inline">{{ recipe_full.difficulty }}</p>
+                <!-- <p class="gray inline italics">Difficulty:</p>
+                <p class="black inline">{{ recipe_full.difficulty }}</p> -->
                 <p *ngIf="recipe_full.author" class="gray inline italics">
                   Author:
                 </p>
                 <p *ngIf="recipe_full.author" class="black inline">
                   {{ recipe_full.author }}
+                </p>
+                <p *ngIf="recipe_full.submittedby" class="gray inline italics">
+                  Submitted By:
+                </p>
+                <p *ngIf="recipe_full.submittedby" class="black inline">
+                  {{ recipe_full.submittedby }}
                 </p>
               </div>
               <div class="small">
@@ -155,6 +167,9 @@
           </mat-card-subtitle>
         </mat-card-header>
         <mat-card-content class="container">
+          <div *ngIf="recipe_full.blurb" class="flexrow div_blurb">
+            <p class="montst-md blurb">{{ recipe_full.blurb }}</p>
+          </div>
           <div class="row div_ingredients">
             <div class="col-12 col-md-6 lesspadding">
               <label
@@ -260,6 +275,31 @@
                   {{ direction }}
                 </li>
               </ol>
+            </div>
+          </div>
+        </mat-card-content>
+        <div *ngIf="recipe_full.pending">
+          <button mat-button (click)="approveRecipe()" color="primary">
+            Approve
+          </button>
+          <button mat-button (click)="rejectRecipe()" color="warn">
+            Reject
+          </button>
+        </div>
+      </mat-card>
+      <mat-card id="comments-card">
+        <mat-card-header>
+          <mat-card-title class="margintopmd2">
+            <div class="commentsHeader">Comments</div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="container">
+          <div class="comments" *ngFor="let comment of recipe_comments">
+            <div class="comment">
+              <mat-icon class="commentinline"> person</mat-icon>
+              <p class="commentinline">{{ comment.username }}</p>
+              <!-- <p>{{ comment.create_date }}</p> -->
+              <p class="commenttext">{{ comment.commenttext }}</p>
             </div>
           </div>
         </mat-card-content>

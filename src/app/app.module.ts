@@ -48,6 +48,7 @@ import { EggsComponent } from './w/eggs/eggs.component';
 import { GrainsComponent } from './w/grains/grains.component';
 import { DialogNewRecipeComponent } from './dialog-new-recipe-component/dialog-new-recipe-component.component';
 import { VeganReferenceComponent } from './vegan-reference/vegan-reference.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { VeganReferenceComponent } from './vegan-reference/vegan-reference.compo
     GrainsComponent,
     DialogNewRecipeComponent,
     VeganReferenceComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

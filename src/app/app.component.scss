@@ -1,3 +1,5 @@
+@import "../theme.scss";
+
 nav {
   padding-bottom: 12px;
   padding-top: 3px;
@@ -15,7 +17,6 @@ nav .alignRight {
   margin-left: auto;
   align-items: center;
 }
-
 
 nav .alignLeft {
   margin-right: auto;
@@ -42,7 +43,9 @@ nav a:hover {
 }
 
 nav .router-link-active {
-  color: red !important;
+  // color: red !important;
+  color: mat-color($my-app-primary) !important;
+  // color: mat-color($primary);
 }
 
 .nav-img {
@@ -51,7 +54,6 @@ nav .router-link-active {
   /* vertical-align: middle; */
   margin-top: 10px;
 }
-
 
 .help-img {
   width: 55px;
@@ -72,9 +74,8 @@ nav .router-link-active {
   }
 }
 
-
 .box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
 }
 
 .trdbanner {
@@ -88,18 +89,17 @@ nav .router-link-active {
   cursor: pointer !important;
 }
 
-
 .floatright {
   float: right;
 }
 
-#dropdownBasic1>mat-icon {
+#dropdownBasic1 > mat-icon {
   vertical-align: middle;
   display: inline-block;
   /* bottom: px; */
 }
 
-#dropdownBasic1>p {
+#dropdownBasic1 > p {
   display: inline-block;
   padding-left: 5px;
   padding-top: 15px;
@@ -117,7 +117,6 @@ nav .router-link-active {
 .clickable {
   cursor: pointer;
 }
-
 
 /* hide elements on mobile */
 

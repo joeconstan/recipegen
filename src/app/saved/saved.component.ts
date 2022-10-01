@@ -22,7 +22,7 @@ import { UserService } from '../user.service';
 @Component({
   selector: 'app-saved',
   templateUrl: './saved.component.html',
-  styleUrls: ['./saved.component.css'],
+  styleUrls: ['./saved.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class SavedComponent implements OnInit {

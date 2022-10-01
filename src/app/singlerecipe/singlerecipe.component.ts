@@ -5,6 +5,7 @@ import { CommonService } from '../common.service';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClipboardService } from 'ngx-clipboard';
+import { recipeObject } from '../../types';
 
 import {
   MatDialog,
@@ -17,7 +18,7 @@ import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 @Component({
   selector: 'app-singlerecipe',
   templateUrl: './singlerecipe.component.html',
-  styleUrls: ['./singlerecipe.component.css'],
+  styleUrls: ['./singlerecipe.component.scss'],
 })
 export class SinglerecipeComponent implements OnInit {
   recipe_full: any;
@@ -63,42 +64,53 @@ export class SinglerecipeComponent implements OnInit {
     var recipe_id = this.route.snapshot.paramMap.get('recipe');
 
     this.commonService.getRecipe(recipe_id).subscribe(
-      (data) => {
-        this.recipe_full = data;
-        this.getImageNamesS3();
+      (data: recipeObject) => {
+        if ((data.pending || data.deleted) && !this.userAdmin()) {
+          // if deleted or pending and user is not admin, redirect to 404
+          this.router.navigate(['/404']);
+        } else {
+          this.recipe_full = data;
+          this.getImageNamesS3();
 
-        this.commonService.getRating(this.recipe_full.id).subscribe(
-          (data) => {
-            this.rating_count = data[0];
-            this.recipe_rating = data[1];
-          },
-          (error) => console.log(error)
-        );
+          this.commonService.getRating(this.recipe_full.id).subscribe(
+            (data) => {
+              this.rating_count = data[0];
+              this.recipe_rating = data[1];
+            },
+            (error) => console.log(error)
+          );
 
-        this.commonService.getComments(this.recipe_full.id).subscribe(
-          (data) => {
-            if (data) {
-              this.recipe_comments = data;
-            } else {
-              this.recipe_comments = [];
-            }
-          },
-          (error) => console.log(error)
-        );
+          this.commonService.getComments(this.recipe_full.id).subscribe(
+            (data) => {
+              if (data) {
+                this.recipe_comments = data;
+              } else {
+                this.recipe_comments = [];
+              }
+            },
+            (error) => console.log(error)
+          );
 
-        this.commonService.getSavedCount(this.recipe_full.id).subscribe(
-          (data) => {
-            this.savedCount = data;
-          },
-          (error) => console.log(error)
-        );
+          this.commonService.getSavedCount(this.recipe_full.id).subscribe(
+            (data) => {
+              this.savedCount = data;
+            },
+            (error) => console.log(error)
+          );
 
-        if (this.userService.user) {
-          this.getSavedRecipes(this.userService.user.id);
+          if (this.userService.user) {
+            this.getSavedRecipes(this.userService.user.id);
+          } else {
+            setTimeout(() => {
+              if (this.userService.user) {
+                this.getSavedRecipes(this.userService.user.id);
+              }
+            }, 150);
+          }
+
+          // storing for use with scaling recipe later
+          this.scaled_ingredients = this.recipe_full.ingredients;
         }
-
-        // storing for use with scaling recipe later
-        this.scaled_ingredients = this.recipe_full.ingredients;
       },
       (error) => console.error(error)
     );
@@ -128,6 +140,7 @@ export class SinglerecipeComponent implements OnInit {
         title: 'Edit Recipe',
         submitText: 'Submit Edits',
         id: this.recipe_full.id,
+        blurb: this.recipe_full.blurb,
       },
     });
 
@@ -342,7 +355,7 @@ export class SinglerecipeComponent implements OnInit {
     // if user not signed in, redirect to sign in
     if (
       !this.userService.user ||
-      !this.userService.user.username ||
+      (this.userService.user && !this.userService.user.username) ||
       this.userService.user.username == ''
     ) {
       this.router.navigate(['/login']);
@@ -459,7 +472,10 @@ export class SinglerecipeComponent implements OnInit {
   }
 
   readImage(fileInput: FileList) {
-    if (!this.userService.user || this.userService.user.adminflag == false) {
+    if (
+      !this.userService.user ||
+      (this.userService.user && this.userService.user.adminflag == false)
+    ) {
       return;
     }
     this.fileToUpload.filedata = fileInput[0];
@@ -516,6 +532,32 @@ export class SinglerecipeComponent implements OnInit {
     this.commonService.getImages(this.recipe_full.id).subscribe(
       (data) => {
         this.images = data;
+      },
+      (error) => console.error(error)
+    );
+  }
+
+  approveRecipe() {
+    this.recipe_full.pending = false;
+    this.commonService.updateRecipe(this.recipe_full).subscribe(
+      (data) => {
+        this._snackBar.open('Recipe Approved', 'ok', {
+          duration: 2000,
+        });
+        this.router.navigate(['/pending']);
+      },
+      (error) => console.error(error)
+    );
+  }
+
+  rejectRecipe() {
+    this.recipe_full.pending = false;
+    this.commonService.deleteRecipe(this.recipe_full.id).subscribe(
+      (data) => {
+        this._snackBar.open('Recipe Deleted', 'ok', {
+          duration: 2000,
+        });
+        this.router.navigate(['/pending']);
       },
       (error) => console.error(error)
     );

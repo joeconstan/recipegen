@@ -1,3 +1,5 @@
+@import "../../theme.scss";
+
 .montst {
   font-family: "Montserrat" !important;
   font-size: 1.2em;
@@ -76,6 +78,10 @@ mat-panel-title {
   font-family: "Montserrat" !important;
   font-size: 0.95em;
 }
+.montst-md {
+  font-family: "Montserrat" !important;
+  font-size: 1em;
+}
 
 .montst-bg {
   font-family: "Montserrat" !important;
@@ -86,6 +92,11 @@ mat-panel-title {
   font-family: "Montserrat" !important;
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.blurb {
+  margin: 25px 0px;
+  text-align: center;
 }
 
 .italics {
@@ -177,6 +188,28 @@ mat-card-header {
   border-bottom: 1px solid #dee2e6;
   padding-bottom: 10px;
   margin-bottom: 3px;
+}
+
+.comments .commentinline {
+  display: inline;
+  vertical-align: middle;
+}
+.comment {
+  // display: flex;
+  // flex-direction: row;
+}
+
+.comments mat-icon {
+  width: 50px;
+  height: 50px;
+  // text-align: center;
+}
+
+.commenttext {
+  margin-top: 10px;
+}
+
+.comments p {
 }
 
 .gray {
@@ -293,7 +326,8 @@ ol.directions_list {
 
   width: 18px;
   height: 18px;
-  background: #3f51b5;
+  // background: #3f51b5;
+  background: mat-color($my-app-primary);
 
   -moz-border-radius: 999px;
   border-radius: 999px;
@@ -303,7 +337,7 @@ ol.directions_list {
   color: #f44336;
 }
 
-mat-card-header {
+mat-card-header.recipeheader {
   justify-content: center;
 }
 
@@ -340,6 +374,10 @@ mat-card-header {
 
 mat-card {
   border: 4px double #dee2e6;
+}
+
+#comments-card {
+  margin-top: 40px;
 }
 
 .text_md {
@@ -390,6 +428,14 @@ mat-card {
   clear: both;
 }
 
+mat-card-header.recipeheader {
+  text-align: center;
+}
+
+.deleted {
+  color: mat-color($my-app-warn);
+}
+
 /* button scaling for mobile */
 
 @media (max-width: 500px) {
@@ -415,6 +461,12 @@ mat-card {
     font-weight: bold;
     font-size: 1.2em;
     text-align: center;
+  }
+
+  .commentsHeader {
+    font-weight: 500;
+    font-size: 1em;
+    text-align: left;
   }
 
   .marginbottommobile {

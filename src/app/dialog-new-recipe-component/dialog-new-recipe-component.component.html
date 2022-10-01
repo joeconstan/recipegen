@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{data.title?data.title:'Add a Recipe'}}</h1>
+<h1 mat-dialog-title>{{ data.title ? data.title : "Add a Recipe" }}</h1>
 <div mat-dialog-content>
   <!-- <a role="button" class="clickable link" *ngIf="!import" (click)="import=!import">Import</a>
   <mat-form-field *ngIf="import">
@@ -7,114 +7,158 @@
   </mat-form-field>
     <button *ngIf="import" mat-button (click)="importRecipe()">Ok</button> -->
   <!-- <br> -->
-  <br>
+  <br />
 
-<!-- <p>Recipe Name</p> -->
-<!-- <p>
+  <!-- <p>Recipe Name</p> -->
+  <!-- <p>
   <mat-form-field>
     <mat-label>Picture (optional)</mat-label>
     <input matInput>
   </mat-form-field>
 </p> -->
-<p>
-  <mat-form-field>
-    <mat-label>Recipe Name</mat-label>
-    <input matInput [(ngModel)]="data.name" >
-  </mat-form-field>
-</p>
-<p>
-  <mat-form-field>
-    <mat-label>Original Author/Link (Optional)</mat-label>
-    <input matInput [(ngModel)]="data.author" >
-  </mat-form-field>
-</p>
-<p>
-  <mat-form-field>
-    <mat-label>Ingredients (newline-separated)</mat-label>
-    <!-- <input matInput value="" [matChipInputFor]="chipList" (matChipInputTokenEnd)="dialogue_addIngredient()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient"> -->
-    <textarea matInput value="" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient"></textarea>
-    <!-- <mat-chip-list #chipList>
+  <p>
+    <mat-form-field>
+      <mat-label>Recipe Name</mat-label>
+      <input matInput [(ngModel)]="data.name" required />
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <mat-label>Original Author/Link (Optional)</mat-label>
+      <input matInput [(ngModel)]="data.author" />
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <mat-label>Short Description of Recipe(Optional)</mat-label>
+      <input matInput [(ngModel)]="data.blurb" />
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <mat-label>Ingredients (newline-separated)</mat-label>
+      <!-- <input matInput value="" [matChipInputFor]="chipList" (matChipInputTokenEnd)="dialogue_addIngredient()" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (change)="dialogue_addIngredient()" name="d_ingredient_field" [(ngModel)]="dialogue_ingredient"> -->
+      <textarea
+        matInput
+        value=""
+        (change)="dialogue_addIngredient()"
+        name="d_ingredient_field"
+        [(ngModel)]="dialogue_ingredient"
+        required
+      ></textarea>
+      <!-- <mat-chip-list #chipList>
         <mat-chip *ngFor="let ingredient of data.Ingredients" (removed)="dialogue_removeIngredient(ingredient)">
           {{ ingredient }}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
     </mat-chip-list> -->
-  </mat-form-field>
-</p>
-
-<p>
-    <mat-form-field>
-      <mat-label>Directions - Add one step per line. Press enter to start a new step.</mat-label>
-      <textarea matInput value="" (change)="dialogue_addDirection()" name="d_direction_field" [(ngModel)]="dialogue_direction"></textarea>
     </mat-form-field>
-</p>
-<p>
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label
+        >Directions - Add one step per line. Press enter to start a new
+        step.</mat-label
+      >
+      <textarea
+        matInput
+        value=""
+        (change)="dialogue_addDirection()"
+        name="d_direction_field"
+        [(ngModel)]="dialogue_direction"
+        required
+      ></textarea>
+    </mat-form-field>
+  </p>
+  <p>
     <mat-form-field>
       <mat-label>Type</mat-label>
-    <mat-select [(ngModel)]="dialogue_type" (selectionChange)="dialogue_addType()" matInput multiple>
-      <mat-option value="Breakfast">Breakfast</mat-option>
-      <mat-option value="Lunch/Dinner">Lunch/Dinner</mat-option>
-      <mat-option value="Dessert">Desserts</mat-option>
-      <mat-option value="Sauces/Spices">Sauces/Spices</mat-option>
-      <mat-option value="Sides">Sides</mat-option>
-      <mat-option value="Holiday">Holiday</mat-option>
-      <mat-option value="Breads">Breads</mat-option>
-      <mat-option value="Salads">Salads</mat-option>
-      <mat-option value="Soups">Soups</mat-option>
-    </mat-select>
-
+      <mat-select
+        [(ngModel)]="dialogue_type"
+        (selectionChange)="dialogue_addType()"
+        matInput
+        multiple
+        required
+      >
+        <mat-option value="Breakfast">Breakfast</mat-option>
+        <mat-option value="Lunch/Dinner">Lunch/Dinner</mat-option>
+        <mat-option value="Dessert">Desserts</mat-option>
+        <mat-option value="Sauces/Spices">Sauces/Spices</mat-option>
+        <mat-option value="Sides">Sides</mat-option>
+        <mat-option value="Holiday">Holiday</mat-option>
+        <mat-option value="Breads">Breads</mat-option>
+        <mat-option value="Salads">Salads</mat-option>
+        <mat-option value="Soups">Soups</mat-option>
+      </mat-select>
     </mat-form-field>
-</p>
-<p>
+  </p>
+  <p>
     <mat-form-field>
       <mat-label>Difficulty</mat-label>
-    <mat-select [(ngModel)]="data.difficulty" matInput>
-      <mat-option value="Easy">Easy</mat-option>
-      <mat-option value="Moderate">Moderate</mat-option>
-      <mat-option value="Hard">Hard</mat-option>
-    </mat-select>
+      <mat-select [(ngModel)]="data.difficulty" matInput>
+        <mat-option value="Easy">Easy</mat-option>
+        <mat-option value="Moderate">Moderate</mat-option>
+        <mat-option value="Hard">Hard</mat-option>
+      </mat-select>
     </mat-form-field>
 
-    <mat-checkbox [(ngModel)]="data.difficultyWarning" value="True">Requires Special Equipment (e.g. Ice cream maker)</mat-checkbox>
-</p>
-<br>
-<p>
-  <mat-form-field>
-    <mat-label>Tags</mat-label>
-  <mat-select [(ngModel)]="dialogue_tags" (selectionChange)="dialogue_addTags()" matInput multiple>
-    <mat-option value="Nut Free">Nut Free</mat-option>
-    <mat-option value="Gluten Free">Gluten Free</mat-option>
-  </mat-select>
-  </mat-form-field>
-</p>
-<br>
-<p>
+    <mat-checkbox [(ngModel)]="data.difficultyWarning" value="True"
+      >Requires Special Equipment (e.g. Ice cream maker)</mat-checkbox
+    >
+  </p>
+  <br />
+  <p>
+    <mat-form-field>
+      <mat-label>Tags</mat-label>
+      <mat-select
+        [(ngModel)]="dialogue_tags"
+        (selectionChange)="dialogue_addTags()"
+        matInput
+        multiple
+      >
+        <mat-option value="Nut Free">Nut Free</mat-option>
+        <mat-option value="Gluten Free">Gluten Free</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </p>
+  <br />
+  <p>
     <mat-form-field>
       <mat-label>Time (in minutes)</mat-label>
-      <input matInput [(ngModel)]="data.timelength">
+      <input required pattern="\d+" matInput [(ngModel)]="data.timelength" />
     </mat-form-field>
 
-    <mat-checkbox [(ngModel)]="data.timeWarning" value="True">Must Sit Overnight</mat-checkbox>
-</p>
-<br>
+    <mat-checkbox [(ngModel)]="data.timeWarning" value="True"
+      >Must Sit Overnight</mat-checkbox
+    >
+  </p>
+  <br />
 
-<p>
+  <p>
     <mat-form-field>
       <mat-label>Yield</mat-label>
-      <input matInput placeholder="e.g. 16 cookies" [(ngModel)]="data.yield">
+      <input matInput placeholder="e.g. 16 cookies" [(ngModel)]="data.yield" />
     </mat-form-field>
-
-</p>
-<br>
-
-
+  </p>
+  <br />
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-    <div *ngIf="data.name == '' || data.timelength == 0" >
-        <button mat-button disabled [mat-dialog-close]="data" cdkFocusInitial>Submit Suggestion</button>
-    </div>
-    <div *ngIf="data.name != '' && data.timelength != 0">
-        <button mat-button [mat-dialog-close]="data" cdkFocusInitial>{{data.submitText?data.submitText:'Submit Suggestion'}}</button>
-    </div>
+  <div>
+    <button
+      mat-button
+      [disabled]="!newRecipeFieldsComplete()"
+      [mat-dialog-close]="data"
+      cdkFocusInitial
+    >
+      {{ data.submitText ? data.submitText : "Submit Suggestion" }}
+    </button>
+  </div>
+  <!-- <div *ngIf="data.name != '' && data.timelength != 0"> -->
+  <!-- <div *ngIf="newRecipeFieldsComplete()">
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>
+      {{ data.submitText ? data.submitText : "Submit Suggestion" }}
+    </button>
+  </div> -->
 </div>

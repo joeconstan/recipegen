@@ -2,14 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ThemePalette } from '@angular/material/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {
+  Router,
+  ActivatedRoute,
+  RouterEvent,
+  NavigationStart,
+} from '@angular/router';
 import { UserService } from './user.service';
 import { CommonService } from './common.service';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { NavigationService } from './navigation.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   constructor(
@@ -18,10 +26,12 @@ export class AppComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private navigationService: NavigationService
   ) {}
 
   active = 1;
+  private readonly destroy$ = new Subject<boolean>();
   user;
   background: ThemePalette = undefined;
   tabcolor: ThemePalette = undefined;
@@ -40,8 +50,13 @@ export class AppComponent implements OnInit {
     },
   ];
 
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
   public ngOnInit(): void {
-    this.titleService.setTitle('The Recipe Doc');
+    this.titleService.setTitle('The Recipe Doc - Community Vegan Recipes');
     this.tabcolor = this.tabcolor ? undefined : 'accent';
 
     // retrieve the locally stored user
@@ -63,10 +78,16 @@ export class AppComponent implements OnInit {
       );
     }
 
-    // if (user){
-    //     this.user=user
-    //     this.userService.setUser(user)
-    // }
+    this.router.events
+      .pipe(
+        filter((event: RouterEvent) => event instanceof NavigationStart),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((event: NavigationStart) => {
+        if (event.navigationTrigger) {
+          this.navigationService.setTrigger(event.navigationTrigger);
+        }
+      });
   }
 
   getAdmin() {

@@ -7,6 +7,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 import {
   MatDialog,
   MatDialogRef,
@@ -15,19 +16,27 @@ import {
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UserService } from '../user.service';
 import { FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import {
+  Router,
+  ActivatedRoute,
+  ParamMap,
+  RouterEvent,
+  NavigationStart,
+} from '@angular/router';
 import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-new-recipe-component.component';
+import { NavigationService } from '../navigation.service';
 
 @Component({
   selector: 'app-recipelist',
   templateUrl: './recipelist.component.html',
-  styleUrls: ['./recipelist.component.css'],
+  styleUrls: ['./recipelist.component.scss'],
   // encapsulation: ViewEncapsulation.None,
 })
 export class RecipelistComponent implements OnInit {
   public recipes: any;
   recipe_full;
   recipe;
+  headerText = 'All Recipes';
   p: number = 1;
   mealtypes = [
     'Breakfast',
@@ -68,6 +77,7 @@ export class RecipelistComponent implements OnInit {
     rating: 0,
     tags: [],
     yield: '',
+    blurb: '',
   };
 
   images = [];
@@ -88,6 +98,7 @@ export class RecipelistComponent implements OnInit {
   modal_images = [];
   dev = true;
   recipes_sort: string;
+  navtrigger: string;
   // searchIngredients = false
 
   constructor(
@@ -98,22 +109,33 @@ export class RecipelistComponent implements OnInit {
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit(): void {
-    this.user = this.userService.user;
-
-    // get user's filters,searches,sorts,pagination
-    let filters = JSON.parse(localStorage.getItem('filters'));
-    let pagination = JSON.parse(localStorage.getItem('pagination'));
-    if (filters) {
-      this.filters = filters;
-    }
-    if (pagination) {
-      this.p = pagination;
+    // get user's filters,searches,sorts,pagination ONLY if navtrigger is not imperative (imperative = router link clicked)
+    if (
+      this.navigationService.getTrigger() &&
+      this.navigationService.getTrigger() !== 'imperative'
+    ) {
+      let filters = JSON.parse(localStorage.getItem('filters'));
+      let pagination = JSON.parse(localStorage.getItem('pagination'));
+      if (filters) {
+        this.filters = filters;
+      }
+      if (pagination) {
+        this.p = pagination;
+      }
+    } else {
+      // else clear filters
+      localStorage.removeItem('filters');
+      localStorage.removeItem('pagination');
     }
     this.recipes_sort = this.route.snapshot.paramMap.get('sort');
+    if (this.recipes_sort == 'new') {
+      this.headerText = 'Latest Recipes';
+    }
     this.query_recipes(true);
 
     // this.commonService.getRecipes(this.recipes_sort).subscribe(
@@ -546,6 +568,7 @@ export class RecipelistComponent implements OnInit {
         rating: 0,
         tags: [],
         yield: this.new_recipe.yield,
+        blurb: this.new_recipe.blurb,
       },
     });
 
@@ -583,12 +606,13 @@ export class RecipelistComponent implements OnInit {
   random_recipe() {
     this.commonService.getRandomRecipe().subscribe(
       (data) => {
-        this.recipe_full = data;
-        this.modal_images = this.images.filter(
-          (x) => x.recipe_id == data['id']
-        );
+        // this.recipe_full = data;
+        // this.modal_images = this.images.filter(
+        //   (x) => x.recipe_id == data['id']
+        // );
 
-        this.openModal();
+        // this.openModal();
+        this.viewRecipeModal(data);
       },
       (error) => console.error(error)
     );
