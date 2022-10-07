@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import "../theme.scss";
 
 nav {
@@ -44,7 +45,7 @@ nav a:hover {
 
 nav .router-link-active {
   // color: red !important;
-  color: mat-color($my-app-primary) !important;
+  color: mat.get-color-from-palette($my-app-primary) !important;
   // color: mat-color($primary);
 }
 
