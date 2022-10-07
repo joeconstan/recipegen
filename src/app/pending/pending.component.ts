@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../common.service';
-import {
-  NgbModule,
-  NgbModal,
-  NgbModalOptions,
-} from '@ng-bootstrap/ng-bootstrap';
-import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../user.service';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pending',
@@ -121,15 +116,15 @@ export class PendingComponent implements OnInit {
     );
   }
 
-  get_full_recipe() {
-    this.commonService.getRecipe(this.recipe._id).subscribe(
-      (data) => {
-        this.recipe_full = data;
-        this.openModal();
-      },
-      (error) => console.error(error)
-    );
-  }
+  // get_full_recipe() {
+  //   this.commonService.getRecipe(this.recipe._id).subscribe(
+  //     (data) => {
+  //       this.recipe_full = data;
+  //       this.openModal();
+  //     },
+  //     (error) => console.error(error)
+  //   );
+  // }
 
   viewRecipeModal(recipe) {
     // this.modal_images = [];
@@ -142,43 +137,43 @@ export class PendingComponent implements OnInit {
     this.router.navigate(['/recipe/', recipe.id]);
   }
 
-  openModal() {
-    this.modalRef = this.modalService.open(
-      RecipeModalComponent,
-      this.ngbModalOptions
-    );
-    // this.modalRef.componentInstance.data = this.recipe_full
-    this.modalRef.componentInstance.data = {
-      recipe: this.recipe_full,
-      images: this.modal_images,
-    };
-    this.modalRef.result.then(
-      (result) => {
-        this.commonService.getPendingRecipes().subscribe(
-          (data) => {
-            this.pending_recipes = data;
-            if (typeof data === 'object') {
-              this.empty = false;
-            } else {
-              this.empty = true;
-            }
-          },
-          (error) => console.error(error)
-        );
-      },
-      (reason) => {
-        this.commonService.getPendingRecipes().subscribe(
-          (data) => {
-            this.pending_recipes = data;
-            if (typeof data === 'object') {
-              this.empty = true;
-            } else {
-              this.empty = false;
-            }
-          },
-          (error) => console.error(error)
-        );
-      }
-    );
-  }
+  // openModal() {
+  //   this.modalRef = this.modalService.open(
+  //     RecipeModalComponent,
+  //     this.ngbModalOptions
+  //   );
+  //   // this.modalRef.componentInstance.data = this.recipe_full
+  //   this.modalRef.componentInstance.data = {
+  //     recipe: this.recipe_full,
+  //     images: this.modal_images,
+  //   };
+  //   this.modalRef.result.then(
+  //     (result) => {
+  //       this.commonService.getPendingRecipes().subscribe(
+  //         (data) => {
+  //           this.pending_recipes = data;
+  //           if (typeof data === 'object') {
+  //             this.empty = false;
+  //           } else {
+  //             this.empty = true;
+  //           }
+  //         },
+  //         (error) => console.error(error)
+  //       );
+  //     },
+  //     (reason) => {
+  //       this.commonService.getPendingRecipes().subscribe(
+  //         (data) => {
+  //           this.pending_recipes = data;
+  //           if (typeof data === 'object') {
+  //             this.empty = true;
+  //           } else {
+  //             this.empty = false;
+  //           }
+  //         },
+  //         (error) => console.error(error)
+  //       );
+  //     }
+  //   );
+  // }
 }

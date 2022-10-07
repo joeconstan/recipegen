@@ -60,6 +60,15 @@ nav .router-link-active {
   height: 55px;
   margin-top: 5px;
 }
+.usericon {
+  height: 26px;
+  width: 26px;
+}
+
+.soupicon {
+  height: 120px;
+  width: 120px;
+}
 
 /* remove margin from img if on mobile */
 @media (max-width: 500px) {

@@ -1,21 +1,23 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  private user: any;
 
-  user: any;
+  constructor() {}
 
-  constructor() { }
-
-  setUser(user){
-      // this should also save the user to local storage
-      this.user = user
+  setUser(user) {
+    // this should also save the user to local storage
+    this.user = {
+      id: user.id,
+      username: user.username,
+      adminflag: user.adminflag,
+    };
   }
 
-  getUser(){
-      return this.user
+  getUser() {
+    return this.user;
   }
-
 }

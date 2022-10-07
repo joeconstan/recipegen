@@ -6,6 +6,7 @@ import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClipboardService } from 'ngx-clipboard';
 import { recipeObject } from '../../types';
+import { DatePipe } from '@angular/common';
 
 import {
   MatDialog,
@@ -47,8 +48,11 @@ export class SinglerecipeComponent implements OnInit {
     filename: '',
     primary: true,
   };
+  recipeLoading = true;
 
   measure_system = 'us';
+
+  newCommentText = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -60,7 +64,7 @@ export class SinglerecipeComponent implements OnInit {
     public dialog: MatDialog
   ) {}
   ngOnInit(): void {
-    this.user = this.userService.user;
+    this.user = this.userService.getUser();
     var recipe_id = this.route.snapshot.paramMap.get('recipe');
 
     this.commonService.getRecipe(recipe_id).subscribe(
@@ -70,6 +74,7 @@ export class SinglerecipeComponent implements OnInit {
           this.router.navigate(['/404']);
         } else {
           this.recipe_full = data;
+          this.recipeLoading = false;
           this.getImageNamesS3();
 
           this.commonService.getRating(this.recipe_full.id).subscribe(
@@ -98,12 +103,12 @@ export class SinglerecipeComponent implements OnInit {
             (error) => console.log(error)
           );
 
-          if (this.userService.user) {
-            this.getSavedRecipes(this.userService.user.id);
+          if (this.userService.getUser()) {
+            this.getSavedRecipes(this.userService.getUser().id);
           } else {
             setTimeout(() => {
-              if (this.userService.user) {
-                this.getSavedRecipes(this.userService.user.id);
+              if (this.userService.getUser()) {
+                this.getSavedRecipes(this.userService.getUser().id);
               }
             }, 150);
           }
@@ -126,10 +131,11 @@ export class SinglerecipeComponent implements OnInit {
       height: '700px',
       autoFocus: false,
       data: {
+        edit: true,
         name: this.recipe_full.name,
         ingredients: this.recipe_full.ingredients,
         directions: this.recipe_full.directions,
-        pending: false,
+        pending: this.recipe_full.pending,
         timelength: this.recipe_full.timelength,
         difficulty: this.recipe_full.difficulty,
         type: this.recipe_full.type,
@@ -141,6 +147,15 @@ export class SinglerecipeComponent implements OnInit {
         submitText: 'Submit Edits',
         id: this.recipe_full.id,
         blurb: this.recipe_full.blurb,
+        submittedby: this.recipe_full.submittedby,
+        deleted: this.recipe_full.deleted,
+        fileToUpload: {
+          recipeid: '',
+          filedata: null,
+          filename: '',
+          primary: true,
+          dbinsert: false,
+        },
       },
     });
 
@@ -148,7 +163,7 @@ export class SinglerecipeComponent implements OnInit {
       this.recipe_full.Ingredients = [];
       if (result) {
         // result.Ingredients = this.parseIngredients(result.Ingredients)
-        result.submittedby = this.userService.user.username;
+        // result.submittedby = this.userService.getUser().username;
         let nutFree = true;
         result.ingredients.forEach((ing) => {
           if (
@@ -163,6 +178,7 @@ export class SinglerecipeComponent implements OnInit {
         if (nutFree) {
           result.tags.push('Nut Free');
         }
+        console.log({ result });
         this.commonService.newRecipe(result).subscribe(
           (data) => {
             this._snackBar.open('Changes saved', 'ok', {
@@ -180,7 +196,9 @@ export class SinglerecipeComponent implements OnInit {
   }
 
   userAdmin() {
-    return this.userService.user && this.userService.user.adminflag == true;
+    return (
+      this.userService.getUser() && this.userService.getUser().adminflag == true
+    );
   }
 
   getSavedRecipes(user_id) {
@@ -354,16 +372,16 @@ export class SinglerecipeComponent implements OnInit {
     let rating = event.target.htmlFor;
     // if user not signed in, redirect to sign in
     if (
-      !this.userService.user ||
-      (this.userService.user && !this.userService.user.username) ||
-      this.userService.user.username == ''
+      !this.userService.getUser() ||
+      (this.userService.getUser() && !this.userService.getUser().username) ||
+      this.userService.getUser().username == ''
     ) {
       this.router.navigate(['/login']);
     } else {
       // otherwise, submit rating
       let ratingObj = {
         recipeid: this.recipe_full.id,
-        username: this.userService.user.username,
+        username: this.userService.getUser().username,
         rating: rating,
       };
       this.commonService.rateRecipe(ratingObj).subscribe(
@@ -383,15 +401,15 @@ export class SinglerecipeComponent implements OnInit {
 
   addComment() {
     if (
-      !this.userService.user ||
-      !this.userService.user.username ||
-      this.userService.user.username == ''
+      !this.userService.getUser() ||
+      !this.userService.getUser().username ||
+      this.userService.getUser().username == ''
     ) {
       this.router.navigate(['/login']);
     } else {
       var commentObj = {
-        user_id: this.userService.user.id,
-        username: this.userService.user.username,
+        user_id: this.userService.getUser().id,
+        username: this.userService.getUser().username,
         recipe_id: this.recipe_full.id,
         text: this.newComment,
       };
@@ -472,10 +490,7 @@ export class SinglerecipeComponent implements OnInit {
   }
 
   readImage(fileInput: FileList) {
-    if (
-      !this.userService.user ||
-      (this.userService.user && this.userService.user.adminflag == false)
-    ) {
+    if (!this.userService.getUser() || !this.userAdmin()) {
       return;
     }
     this.fileToUpload.filedata = fileInput[0];
@@ -552,14 +567,65 @@ export class SinglerecipeComponent implements OnInit {
 
   rejectRecipe() {
     this.recipe_full.pending = false;
-    this.commonService.deleteRecipe(this.recipe_full.id).subscribe(
+    this.recipe_full.deleted = true;
+    this.commonService.newRecipe(this.recipe_full).subscribe(
       (data) => {
-        this._snackBar.open('Recipe Deleted', 'ok', {
+        this._snackBar.open('Recipe Rejected', 'ok', {
           duration: 2000,
         });
         this.router.navigate(['/pending']);
       },
       (error) => console.error(error)
     );
+  }
+
+  submitComment() {
+    console.log(this.newCommentText);
+    let new_comment = {
+      user_id: this.userService.getUser().id,
+      username: this.userService.getUser().username,
+      recipe_id: this.recipe_full.id,
+      commenttext: this.newCommentText,
+    };
+    this.commonService.commentRecipe(new_comment).subscribe(
+      (data) => {
+        this._snackBar.open('Saved!', 'ok', {
+          duration: 2000,
+        });
+        this.newCommentText = '';
+        this.commonService.getComments(this.recipe_full.id).subscribe(
+          (data) => {
+            if (data) {
+              this.recipe_comments = data;
+            } else {
+              this.recipe_comments = [];
+            }
+          },
+          (error) => console.log(error)
+        );
+      },
+      (error) => console.error(error)
+    );
+  }
+
+  loggedIn() {
+    return this.userService.getUser();
+  }
+
+  getUserIcon() {
+    let username = this.userService.getUser().username;
+    return username.split(' ').length > 1
+      ? username.split(' ')[0].slice(0, 1).toUpperCase() +
+          username.split(' ')[1].slice(0, 1).toUpperCase()
+      : username.slice(0, 1).toUpperCase();
+  }
+  formatDate(datestr) {
+    const datepipe: DatePipe = new DatePipe('en-US');
+    let formattedDate = datepipe.transform(datestr, 'MMM dd');
+    let formattedDateWithYear = datepipe.transform(datestr, 'MMM dd yyyy');
+    if (datestr.substr(0, 4) !== datepipe.transform(Date.now(), 'yyyy')) {
+      return formattedDateWithYear;
+    }
+    return formattedDate;
   }
 }

@@ -1,14 +1,38 @@
 <br />
 <br />
+<div *ngIf="recipeLoading" id="spinnercontainer">
+  <svg viewBox="0 0 100 100" width="50%" height="50%">
+    <defs>
+      <filter id="shadow">
+        <feDropShadow dx="0" dy="0" stdDeviation="1.5" flood-color="#fc6767" />
+      </filter>
+    </defs>
+    <circle
+      id="spinner"
+      style="
+        fill: transparent;
+        stroke: #21f3e9;
+        stroke-width: 6px;
+        stroke-linecap: round;
+        filter: url(#shadow);
+      "
+      cx="50"
+      cy="50"
+      r="45"
+    />
+  </svg>
+</div>
+
 <div class="container margintopmd" *ngIf="recipe_full">
-  <div class="row">
+  <div *ngIf="!recipeLoading" class="row">
     <div class="col"></div>
 
     <div id="single-recipe-card" class="col-12 col-md-9">
       <mat-card>
         <div *ngIf="userAdmin()">
           <button mat-button (click)="openEditRecipeDialog()" class="no-print">
-            <mat-icon>edit</mat-icon>
+            <!-- <mat-icon>edit</mat-icon> -->
+            <img src="../../assets/img/edit.svg" class="editicon" />
           </button>
         </div>
         <div mat-card-avatar class="flexrow">
@@ -135,11 +159,9 @@
                 <p class="gray inline italics">Type:</p>
                 <p class="black inline">{{ recipe_full.type }}</p>
                 <p class="gray inline italics">Length:</p>
-                <p class="black inline">{{ recipe_full.timelength }}</p>
+                <p class="black inline">{{ recipe_full.timelength }} min</p>
               </div>
               <div class="small">
-                <!-- <p class="gray inline italics">Difficulty:</p>
-                <p class="black inline">{{ recipe_full.difficulty }}</p> -->
                 <p *ngIf="recipe_full.author" class="gray inline italics">
                   Author:
                 </p>
@@ -160,8 +182,6 @@
                 <p *ngIf="recipe_full.yield" class="black inline">
                   {{ recipe_full.yield }}
                 </p>
-                <!-- <p *ngIf="recipe_full.author" class="gray inline italics">Author:</p> -->
-                <!-- <p *ngIf="recipe_full.author" class="black inline">{{ recipe_full.author }}</p> -->
               </div>
             </div>
           </mat-card-subtitle>
@@ -179,7 +199,6 @@
                 >Ingredients</label
               >
             </div>
-            <!-- <div class="col-4 col-md-0"></div> -->
             <div class="floatright marginbottommobile marginright no-print">
               <div class="floatleft margintop marginright">Scale</div>
               <button
@@ -294,11 +313,63 @@
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="container">
+          <div class="newComment">
+            <span *ngIf="loggedIn()"
+              ><button
+                mat-fab
+                color="primary"
+                class="commentinline usericon nopaddingfab"
+              >
+                {{ getUserIcon() }}
+              </button>
+            </span>
+            <span *ngIf="!loggedIn()">
+              <img
+                src="../../assets/img/user.svg"
+                class="commentinline usericon"
+              />
+            </span>
+
+            <mat-form-field class="commentinput flex">
+              <mat-label>Leave a comment</mat-label>
+              <input
+                matInput
+                [(ngModel)]="newCommentText"
+                placeholder="Leave a comment..."
+              />
+            </mat-form-field>
+            <button
+              (click)="submitComment()"
+              [disabled]="newCommentText.trim() === ''"
+              class="submitbutton"
+              matSuffix
+              mat-stroked-button
+              color="primary"
+            >
+              Submit
+            </button>
+          </div>
+
+          <!-- <input matInput type="text" placeholder="Write a Comment" /> -->
           <div class="comments" *ngFor="let comment of recipe_comments">
             <div class="comment">
-              <mat-icon class="commentinline"> person</mat-icon>
-              <p class="commentinline">{{ comment.username }}</p>
-              <!-- <p>{{ comment.create_date }}</p> -->
+              <span *ngIf="loggedIn()"
+                ><button
+                  mat-fab
+                  color="primary"
+                  class="commentinline usericon nopaddingfab"
+                >
+                  {{ getUserIcon() }}
+                </button>
+              </span>
+              <span *ngIf="!loggedIn()">
+                <img
+                  src="../../assets/img/user.svg"
+                  class="commentinline usericon"
+                />
+              </span>
+              <p class="commentinline">{{ comment.username | titlecase }}</p>
+              <p class="commentdate">{{ formatDate(comment.create_date) }}</p>
               <p class="commenttext">{{ comment.commenttext }}</p>
             </div>
           </div>

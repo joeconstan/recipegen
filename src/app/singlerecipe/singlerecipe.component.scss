@@ -1,23 +1,19 @@
 @import "../../theme.scss";
 
 .montst {
-  font-family: "Montserrat" !important;
   font-size: 1.2em;
   font-weight: bold;
 }
 
 .montst-bg {
-  font-family: "Montserrat" !important;
   font-size: 1.5em;
 }
 
 .pedna {
-  font-family: peddana;
   font-weight: 50 !important;
 }
 
 .montst-bg-it {
-  font-family: "Montserrat" !important;
   font-size: 1.5em;
   font-style: italic;
 }
@@ -69,27 +65,22 @@ mat-panel-title {
 }
 
 .montst {
-  font-family: "Montserrat" !important;
   font-size: 1.2em;
   font-weight: bold;
 }
 
 .montst-sm {
-  font-family: "Montserrat" !important;
   font-size: 0.95em;
 }
 .montst-md {
-  font-family: "Montserrat" !important;
   font-size: 1em;
 }
 
 .montst-bg {
-  font-family: "Montserrat" !important;
   font-size: 1.5em;
 }
 
 .montst-lg {
-  font-family: "Montserrat" !important;
   font-size: 1.5em;
   font-weight: bold;
 }
@@ -104,7 +95,6 @@ mat-panel-title {
 }
 
 .pedna {
-  font-family: peddana;
   font-weight: 50 !important;
 }
 
@@ -113,7 +103,6 @@ mat-panel-title {
 }
 
 .montst-bg-it {
-  font-family: "Montserrat" !important;
   font-size: 1.7em;
   font-style: italic;
 }
@@ -173,11 +162,6 @@ mat-panel-title {
   margin-top: 0px;
 }
 
-.div_metainfo {
-  /* margin-left: 10%; */
-  /* margin: 0 auto; */
-}
-
 mat-card-subtitle {
   display: flex;
   flex-direction: row;
@@ -190,26 +174,61 @@ mat-card-header {
   margin-bottom: 3px;
 }
 
+.flex div div {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
 .comments .commentinline {
   display: inline;
   vertical-align: middle;
 }
-.comment {
-  // display: flex;
-  // flex-direction: row;
+.newComment .commentinline {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.usericon {
+  width: 32px;
+  height: 32px;
+}
+
+.editicon {
+  width: 32px;
+  height: 32px;
+}
+
+.newComment .commentinput {
+  width: 80%;
+}
+
+::ng-deep .nopaddingfab span {
+  padding: 0px 0px !important;
+}
+
+.newComment .submitbutton {
+  margin-left: 10px;
+  vertical-align: top;
+  margin-top: 4px;
+}
+
+.comment .usericon {
+  margin-right: 10px;
 }
 
 .comments mat-icon {
   width: 50px;
   height: 50px;
-  // text-align: center;
 }
 
 .commenttext {
   margin-top: 10px;
+  margin-left: 42px;
 }
 
-.comments p {
+.commentdate {
+  margin-left: 42px;
 }
 
 .gray {
@@ -436,6 +455,10 @@ mat-card-header.recipeheader {
   color: mat-color($my-app-warn);
 }
 
+.newComment {
+  margin-top: 20px !important;
+}
+
 /* button scaling for mobile */
 
 @media (max-width: 500px) {
@@ -518,4 +541,44 @@ mat-card-header.recipeheader {
     flex-wrap: wrap;
     display: flex;
   }
+}
+
+@keyframes animation {
+  0% {
+    stroke-dasharray: 1 98;
+    stroke-dashoffset: -105;
+  }
+  50% {
+    stroke-dasharray: 80 10;
+    stroke-dashoffset: -160;
+  }
+  100% {
+    stroke-dasharray: 1 98;
+    stroke-dashoffset: -300;
+  }
+}
+
+#spinner {
+  transform-origin: center;
+  animation-name: animation;
+  animation-duration: 1.2s;
+  animation-timing-function: cubic-bezier;
+  animation-iteration-count: infinite;
+}
+
+#spinnercontainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#spinnercontainer {
+  width: 200px;
+  height: 200px;
+}
+
+.spinner {
+  margin: 0 auto;
+  margin-top: 500px;
 }
