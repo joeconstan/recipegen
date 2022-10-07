@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@use '~@angular/material' as mat;
 @import "~bootstrap/dist/css/bootstrap.css";
 /* @import '@angular/material/prebuilt-themes/deeppurple-amber.css'; */
 /* @import '@angular/material/prebuilt-themes/indigo-pink.css'; */
@@ -9,13 +10,13 @@
 // @import "./app.theme";
 
 .accent-color {
-  color: mat-color($my-app-accent) !important;
+  color: mat.get-color-from-palette($my-app-accent) !important;
 }
 .primary-color {
-  color: mat-color($my-app-primary) !important;
+  color: mat.get-color-from-palette($my-app-primary) !important;
 }
 .warn-color {
-  color: mat-color($my-app-warn) !important;
+  color: mat.get-color-from-palette($my-app-warn) !important;
 }
 
 .hide {
