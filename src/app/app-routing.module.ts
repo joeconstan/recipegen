@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
-import { IngredientsComponent } from './ingredients/ingredients.component';
 import { RecipelistComponent } from './recipelist/recipelist.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -19,7 +18,6 @@ import { NotFoundComponent } from './not-found/not-found.component';
 const routes: Routes = [
   { path: '', component: RecipelistComponent },
   { path: 'explore', component: ExploreComponent },
-  { path: 'sc', component: IngredientsComponent },
   { path: 'rb', component: RecipelistComponent },
   { path: 'new/:sort', component: RecipelistComponent },
   { path: 'login', component: LoginComponent },

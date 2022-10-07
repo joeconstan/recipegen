@@ -1,30 +1,216 @@
-.card{
-    width: 35rem;
-    margin: 0 auto;
-    top:5%;
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap");
+.card {
+  width: 32rem;
+  margin: 0 auto;
+  height: 60%;
+  top: 5%;
 }
 
-#gsigninbutton{
-    font-size: 13px;
-    border: 1px solid gray;
+#gsigninbutton {
+  font-size: 13px;
+  border: 1px solid gray;
 }
 
-#gsigninbutton svg{
+#gsigninbutton svg {
   vertical-align: baseline;
   margin-top: -0.3em;
   margin-bottom: -0.3em;
   margin-right: 2px;
 }
 
-.btn{
+.btn {
   line-height: 1.15 !important;
 }
 
-.error-msg{
+.card-header {
+  background-color: #fff;
+}
+
+.error-msg {
   color: red;
   margin-bottom: 10px;
 }
 
-.margin-top-sm{
+.margin-top-sm {
   margin-top: 10px;
+}
+.margin-top-lg {
+  margin-top: 30px;
+}
+
+.hidden-input {
+  // background-color: #fff;
+  border: 0;
+  // color: #2194f3;
+  // font-family: monospace;
+  font-size: 1em;
+  height: 100%;
+  outline: none;
+  width: 100%;
+}
+
+.hiddenpswddiv {
+  // background-color: #e4fefc;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0 86px 0 60px;
+  position: absolute;
+  width: 100%;
+  border: 0;
+}
+
+.inputcontainer {
+  background-color: black;
+  border: 0;
+
+  // background-color: #fff;
+  border-radius: 10px;
+  height: calc(1.3em + 0.75rem + 2px);
+  overflow: hidden;
+  position: relative;
+  // width: 340px;
+}
+
+* {
+  font-family: "Noto Sans JP", sans-serif !important;
+}
+
+.loginform label {
+  color: #1d8cf1;
+}
+.loginform input {
+  color: #90caf9;
+  border: 0;
+  font-weight: 200;
+  vertical-align: middle;
+  // width: 90%;
+}
+
+.headerimage {
+  margin-top: 25px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.headerimage img {
+  width: 100px;
+  height: 100px;
+}
+
+.card {
+  border-radius: 15px;
+  padding: 0px 20px;
+}
+
+.card-body {
+  margin-top: 50px;
+}
+
+.height100 {
+  height: 100%;
+}
+
+.icon {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  margin-left: 60px/5;
+  margin-right: 60px/5;
+  border-radius: 60px * 0.5;
+  overflow: hidden;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transition: all 0.25s ease;
+    border-radius: 60px * 0.5;
+  }
+  i {
+    position: relative;
+    color: #fff;
+    font-size: 60px/2;
+    margin-top: 60px/4;
+    transition: all 0.25s ease;
+  }
+}
+
+.icon-fill {
+  &::before {
+    transition-duration: 0.5s;
+    box-shadow: inset 0 0 0 1px #16a085;
+  }
+  &:hover::before {
+    box-shadow: inset 0 0 0 60px #16a085;
+  }
+}
+
+.icon-enter {
+  &::after {
+    box-shadow: inset 0 0 0 1px #eb9532;
+  }
+  &::before {
+    border-radius: 0;
+    margin-left: -100%;
+    box-shadow: inset 0 0 0 60px #eb9532;
+  }
+  &:hover::before {
+    margin-left: 0;
+  }
+}
+
+.icon-expand {
+  &::after {
+    box-shadow: inset 0 0 0 1px #c82647;
+  }
+  &::before {
+    background: #c82647;
+    box-shadow: inset 0 0 0 60px #2d2c3e;
+  }
+  &:hover::before {
+    box-shadow: inset 0 0 0 1px #2d2c3e;
+  }
+}
+
+.icon-collapse {
+  &::before {
+    border-radius: 0;
+  }
+  &:hover::before {
+    box-shadow: inset 0 60px/2 0 0 #8cc63f, inset 0 60px/-2 0 0 #8cc63f;
+  }
+  &::after {
+    box-shadow: inset 0 0 0 1px #8cc63f;
+  }
+}
+
+.icon-rotate {
+  box-shadow: inset 0 0 0 1px #7e3661;
+  &::after,
+  &::before {
+    border: 0px solid transparent;
+  }
+  &:hover::before {
+    transition: border-top-width 0.3s ease, border-top-color 0.3s ease;
+    border-width: 60px;
+    border-top-color: #7e3661;
+  }
+  &:hover::after {
+    transition: border-left-width 0.3s ease, border-left-color 0.3s ease;
+    border-width: 60px;
+    border-left-color: #7e3661;
+  }
+  &:hover {
+    transition: background 0.001s ease 0.3s;
+    background: #7e3661;
+  }
+  i {
+    z-index: 1;
+  }
 }

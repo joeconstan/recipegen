@@ -91,22 +91,22 @@ export class AppComponent implements OnInit {
   }
 
   getAdmin() {
-    if (this.userService.user) {
-      return this.userService.user.adminflag == true;
+    if (this.userService.getUser()) {
+      return this.userService.getUser().adminflag == true;
     }
     return false;
   }
 
   getUser() {
-    if (this.userService.user) {
-      return this.userService.user != {};
+    if (this.userService.getUser()) {
+      return this.userService.getUser() != {};
     }
     return false;
   }
 
   getUserFromService() {
-    if (this.userService.user && this.userService.user.username) {
-      this.user = this.userService.user;
+    if (this.userService.getUser() && this.userService.getUser().username) {
+      this.user = this.userService.getUser();
       return true;
     } else {
       return false;

@@ -18,3 +18,10 @@ export interface recipeObject {
   blurb: string;
   deleted: boolean;
 }
+
+export interface userObject {
+  id: number;
+  username: string;
+  password: string;
+  adminflag: boolean;
+}

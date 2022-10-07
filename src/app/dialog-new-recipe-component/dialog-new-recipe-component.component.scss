@@ -1,23 +1,58 @@
 mat-form-field {
-    width: 100%;
-  }
-  
-  #chipList{
-      display: inline-block;
-  }
-  
-  .link{
-    color: blue;
-  }
-  
-  .clickable{
-    cursor: pointer;
-  }
-  
-  .directionsstep{
-    border: 1px solid black;
-  }
-  
-  .marginsm{
-    margin: 5px 5px 5px 5px;
-  }
+  width: 100%;
+}
+
+#chipList {
+  display: inline-block;
+}
+
+.link {
+  color: blue;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.directionsstep {
+  border: 1px solid black;
+}
+
+.marginsm {
+  margin: 5px 5px 5px 5px;
+}
+
+.select-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  vertical-align: bottom;
+  margin-right: 5px;
+}
+
+.noimg {
+  background: url("../../assets/img/photo.svg") no-repeat;
+  background-size: contain;
+}
+
+.hasimg {
+  background: url("../../assets/img/photo-filled.svg") no-repeat;
+  background-size: contain;
+}
+
+#fileupload {
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  opacity: 0;
+  filter: alpha(opacity=0); /* IE 5-7 */
+}
+
+.recipe-fields {
+  margin: 10px 0px;
+}
+
+* {
+  // overflow: hidden;
+}

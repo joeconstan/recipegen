@@ -1,45 +1,134 @@
 <head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css"
+    integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7"
+    crossorigin="anonymous"
+  />
 </head>
-  <!-- <p>
-  <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput [(ngModel)]="email">
-  </mat-form-field>
-</p>
-<p>
-  <mat-form-field>
-    <mat-label>Password</mat-label>
-    <input matInput [(ngModel)]="password">
-  </mat-form-field>
-</p>
-
-<button mat-button (click)="login_user()">Login</button> -->
-
-
 
 <div class="card">
-    <h4 class="card-header">Login</h4>
-    <div class="card-body">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                    <div *ngIf="f.username.errors.required">Username is required</div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                    <div *ngIf="f.password.errors.required">Password is required</div>
-                </div>
-            </div>
-            <span class="error-msg">{{errorMsg}}</span>
-            <!-- <div class="form-group"> -->
-              <!-- <div class="card-block"> -->
-               <!-- <button id="gsigninbutton" class="btn btn-social-icon btn-google mx-1" (click)="signInWithGoogle()">
+  <div class="headerimage">
+    <!-- <img class="animetarget" src="../../assets/img/animated/recipe-book.svg" /> -->
+
+    <!-- <svg
+      class="animetarget"
+      width="34"
+      height="42"
+      viewBox="0 0 34 42"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        stroke="#2194f3"
+        stroke-width="1px"
+        d="M1 36H0.5H1ZM6 31L6 30.5L6 31ZM33 31.5C33.2761 31.5 33.5 31.2761 33.5 31C33.5 30.7239 33.2761 30.5 33 30.5V31.5ZM6 1V0.5V1ZM33 1H33.5C33.5 0.723858 33.2761 0.5 33 0.5V1ZM33 41V41.5C33.2761 41.5 33.5 41.2761 33.5 41H33ZM1 6H0.5H1ZM1.5 36C1.5 34.8065 1.97411 33.6619 2.81802 32.818L2.11091 32.1109C1.07946 33.1424 0.5 34.5413 0.5 36H1.5ZM2.81802 32.818C3.66193 31.9741 4.80653 31.5 6 31.5L6 30.5C4.54131 30.5 3.14236 31.0795 2.11091 32.1109L2.81802 32.818ZM6 31.5H33V30.5H6V31.5ZM6 1.5H33V0.5H6V1.5ZM32.5 1V41H33.5V1H32.5ZM33 40.5H6V41.5H33V40.5ZM6 40.5C4.80653 40.5 3.66193 40.0259 2.81802 39.182L2.11091 39.8891C3.14236 40.9205 4.54131 41.5 6 41.5V40.5ZM2.81802 39.182C1.97411 38.3381 1.5 37.1935 1.5 36H0.5C0.5 37.4587 1.07946 38.8576 2.11091 39.8891L2.81802 39.182ZM1.5 36V6H0.5V36H1.5ZM1.5 6C1.5 4.80653 1.97411 3.66193 2.81802 2.81802L2.11091 2.11091C1.07946 3.14236 0.5 4.54131 0.5 6L1.5 6ZM2.81802 2.81802C3.66193 1.97411 4.80653 1.5 6 1.5V0.5C4.54131 0.5 3.14236 1.07946 2.11091 2.11091L2.81802 2.81802ZM3.63968 5.55113C5.63405 7.62409 8.12392 8.33386 10.7504 8.33167C13.36 8.32949 16.1391 7.62519 18.7676 6.84288C21.4276 6.05121 23.9064 5.19006 26.0262 4.80812C28.1644 4.42285 29.7045 4.57343 30.6387 5.55008L31.3613 4.85885C30.0455 3.48329 28.0231 3.43221 25.8488 3.82396C23.6561 4.21904 21.0724 5.11359 18.4824 5.88442C15.8609 6.66461 13.2025 7.32962 10.7496 7.33167C8.31358 7.33371 6.11595 6.68264 4.36032 4.85781L3.63968 5.55113ZM3.63968 14.4388C5.63405 16.5117 8.12392 17.2215 10.7504 17.2193C13.36 17.2171 16.1391 16.5128 18.7676 15.7305C21.4276 14.9389 23.9064 14.0777 26.0262 13.6958C28.1644 13.3105 29.7045 13.4611 30.6387 14.4377L31.3613 13.7465C30.0455 12.371 28.0231 12.3199 25.8488 12.7116C23.6561 13.1067 21.0724 14.0012 18.4824 14.7721C15.8609 15.5523 13.2025 16.2173 10.7496 16.2193C8.31358 16.2214 6.11595 15.5703 4.36032 13.7455L3.63968 14.4388ZM3.63968 23.4388C5.63405 25.5117 8.12392 26.2215 10.7504 26.2193C13.36 26.2171 16.1391 25.5128 18.7676 24.7305C21.4276 23.9389 23.9064 23.0777 26.0262 22.6958C28.1644 22.3105 29.7045 22.4611 30.6387 23.4377L31.3613 22.7465C30.0455 21.371 28.0231 21.3199 25.8488 21.7116C23.6561 22.1067 21.0724 23.0012 18.4824 23.7721C15.8609 24.5523 13.2025 25.2173 10.7496 25.2193C8.31358 25.2214 6.11595 24.5703 4.36032 22.7455L3.63968 23.4388Z"
+        fill="black"
+      />
+    </svg> -->
+
+    <svg
+      class="animetarget"
+      width="90"
+      height="90"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M8 39C8 37.6739 8.52678 36.4021 9.46447 35.4645C10.4021 34.5268 11.6739 34 13 34H40"
+        stroke="#2194f3"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M13 4H40V44H13C11.6739 44 10.4021 43.4732 9.46447 42.5355C8.52678 41.5979 8 40.3261 8 39V9C8 7.67392 8.52678 6.40215 9.46447 5.46447C10.4021 4.52678 11.6739 4 13 4V4Z"
+        stroke="#2194f3"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+
+    <!-- <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon icon-tabler icon-tabler-user"
+      width="44"
+      height="44"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="#2194f3"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <circle cx="12" cy="7" r="4" />
+      <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+    </svg> -->
+  </div>
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="loginform">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <div class="inputcontainer">
+          <input
+            type="text"
+            formControlName="username"
+            class="form-control height100"
+            [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="inputcontainer">
+          <div>
+            <!-- <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-lock lock"
+              width="44"
+              height="44"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="#000"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <rect x="5" y="11" width="14" height="10" rx="2" />
+              <circle cx="12" cy="16" r="1" />
+              <path d="M8 11v-4a4 4 0 0 1 8 0v4" />
+            </svg> -->
+
+            <!-- <svg class="lock" width="30" height="40" viewBox="0 0 30 40">
+              <path
+                class="lock-white"
+                d="M 12.519565,0 C 6.7072359,0 2.0282227,4.622895 2.0282227,10.365511 V 19.386852 C 0.81380849,20.12592 0,21.438885 0,22.957364 V 40 H 30 V 22.957364 C 30,21.444973 29.193452,20.135235 27.987171,19.394457 V 10.365511 C 27.987171,4.622895 23.308158,0 17.495831,0 Z M 12.519565,4.384239 H 17.495831 C 20.923632,4.384239 23.682489,7.111909 23.682489,10.498597 V 19.002803 H 6.3309823 V 10.498597 C 6.3309823,7.111909 9.091764,4.384239 12.519565,4.384239 Z"
+              />
+            </svg> -->
+            <input
+              formControlName="password"
+              type="password"
+              [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+              class="form-control hidden-input"
+            />
+          </div>
+        </div>
+        <!-- <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" /> -->
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">Password is required</div>
+        </div>
+      </div>
+      <span class="error-msg">{{ errorMsg }}</span>
+      <!-- <div class="form-group"> -->
+      <!-- <div class="card-block"> -->
+      <!-- <button id="gsigninbutton" class="btn btn-social-icon btn-google mx-1" (click)="signInWithGoogle()">
                  <svg aria-hidden="true" class="native svg-icon iconGoogle" width="18" height="18" viewBox="0 0 18 18">
                    <path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 002.38-5.88c0-.57-.05-.66-.15-1.18Z" fill="#4285F4"></path>
                    <path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 01-7.18-2.54H1.83v2.07A8 8 0 008.98 17Z" fill="#34A853"></path>
@@ -48,16 +137,19 @@
                  </svg>
                  <span class="signintext">Log in with Google</span>
                </button> -->
-               <!-- <button class="btn btn-social-icon btn-facebook mx-1" (click)="signInWithFB()"><span class="fab fa-facebook"></span></button> -->
-             <!-- </div> -->
-            <!-- </div> -->
-            <div class="margin-top-sm form-group">
-                <button [disabled]="loading" class="btn btn-primary">
-                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                    Login
-                </button>
-                <a routerLink="../register" class="btn btn-link">Register</a>
-            </div>
-        </form>
-    </div>
+      <!-- <button class="btn btn-social-icon btn-facebook mx-1" (click)="signInWithFB()"><span class="fab fa-facebook"></span></button> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <div class="margin-top-lg form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+          <span
+            *ngIf="loading"
+            class="spinner-border spinner-border-sm mr-1"
+          ></span>
+          Login
+        </button>
+        <a routerLink="../register" class="btn btn-link">Register</a>
+      </div>
+    </form>
+  </div>
 </div>

@@ -1,98 +1,96 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 
 nav {
-    padding-bottom: 6px;
+  padding-bottom: 6px;
 }
 
-nav a{
-    /* padding: 5px 10px; */
-    text-decoration: none;
-    margin-left: 10px;
-    margin-bottom: 0px;
-    display: inline-block;
-    /* border-radius: 4px; */
-    color: #578fc1;
+nav a {
+  /* padding: 5px 10px; */
+  text-decoration: none;
+  margin-left: 10px;
+  margin-bottom: 0px;
+  display: inline-block;
+  /* border-radius: 4px; */
+  color: #578fc1;
 }
 
-nav a:hover{
-    background-color: #f2f2f2;
+nav a:hover {
+  background-color: #f2f2f2;
 }
 
-nav .router-link-active{
-    color:red;
+nav .router-link-active {
+  color: red;
 }
-.box-shadow{
-    /* box-shadow: 0 .25rem .75rem rgba(0,0,0,.05); */
-}
-
-.card-text{
-    font-family: peddana;
+.box-shadow {
+  /* box-shadow: 0 .25rem .75rem rgba(0,0,0,.05); */
 }
 
-h4,.montst{
-    font-family: 'Montserrat' !important;
+.card-text {
+  font-family: "Noto Sans JP", sans-serif !important;
 }
 
-mat-card-header{
-    /* font-family: DavidLibre; */
-    font-family: 'Montserrat' !important;
-    text-align: center !important;
-    font-size: 1.75em;
-    /* background-color: grey; */
-    /* font-weight: 250; */
-    /* font-size: rem; */
-    /* font-weight: lighter; */
-}
-mat-card:hover, .card:hover{
-    cursor: pointer;
+h4,
+.montst {
+  font-family: "Noto Sans JP", sans-serif !important;
 }
 
-.inlined{
-    display: inline-block;
-    padding-left: 10px;
-    padding-top: 10px;
+mat-card-header {
+  /* font-family: DavidLibre; */
+  font-family: "Noto Sans JP", sans-serif !important;
+  text-align: center !important;
+  font-size: 1.75em;
+  /* background-color: grey; */
+  /* font-weight: 250; */
+  /* font-size: rem; */
+  /* font-weight: lighter; */
+}
+mat-card:hover,
+.card:hover {
+  cursor: pointer;
 }
 
-
-.btnz{
-    z-index: 2;
-    position: relative;
+.inlined {
+  display: inline-block;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 
-
-.recipe-img{
-    height: 300px;
-    /* max-height: 350px; */
-    /* width: 400px;     */
+.btnz {
+  z-index: 2;
+  position: relative;
 }
 
-
-.samesize{
-    min-width: 120px;
+.recipe-img {
+  height: 300px;
+  /* max-height: 350px; */
+  /* width: 400px;     */
 }
 
+.samesize {
+  min-width: 120px;
+}
 
 .bg-custom1 {
-    background-color: #F8F5F8;
+  background-color: #f8f5f8;
 }
 
-mat-card{
-    /* border: 1px solid black; */
+mat-card {
+  /* border: 1px solid black; */
 }
 
-#chipList{
-    display: inline-block;
+#chipList {
+  display: inline-block;
 }
 
-.floatright{
-    float:right;
+.floatright {
+  float: right;
 }
 
-.footer{
-    /* margin: auto auto 0 auto; */
-    /* width: 100% !important; */
-    position: fixed;
-    /* flex: none; */
-    bottom:3.5%;
-    right: 3% !important;
+.footer {
+  /* margin: auto auto 0 auto; */
+  /* width: 100% !important; */
+  position: fixed;
+  /* flex: none; */
+  bottom: 3.5%;
+  right: 3% !important;
 }

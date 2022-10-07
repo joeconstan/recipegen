@@ -1,22 +1,8 @@
-import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import {
-  NgbModule,
-  NgbModal,
-  NgbModalOptions,
-} from '@ng-bootstrap/ng-bootstrap';
-import { PantryService } from '../pantry.service';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { CommonService } from '../common.service';
-import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../user.service';
 
 @Component({
@@ -27,8 +13,6 @@ import { UserService } from '../user.service';
 })
 export class SavedComponent implements OnInit {
   public recipes: any;
-  recipe_full;
-  recipe;
   p: number = 1;
   mealtypes = [
     'Breakfast',
@@ -61,33 +45,26 @@ export class SavedComponent implements OnInit {
     Pending: Boolean,
   };
 
-  user;
-  _subscription;
-
   images = [];
   modal_images = [];
-
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-
-  private modalRef;
 
   ngbModalOptions: NgbModalOptions = {
     centered: true,
     size: 'xl',
     beforeDismiss: () => {
-      this.commonService.getSavedRecipes(this.user.id).subscribe(
-        (data) => {
-          this.recipes = data;
-        },
-        (error) => console.error(error)
-      );
+      this.commonService
+        .getSavedRecipes(this.userService.getUser().id)
+        .subscribe(
+          (data) => {
+            this.recipes = data;
+          },
+          (error) => console.error(error)
+        );
       return true;
     },
   };
 
   constructor(
-    private pantryService: PantryService,
-    private modalService: NgbModal,
     private commonService: CommonService,
     private userService: UserService,
     public dialog: MatDialog,
@@ -95,14 +72,31 @@ export class SavedComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user = this.userService.user;
-    this.commonService.getSavedRecipes(this.user.id).subscribe(
-      (data) => {
-        this.recipes = data;
-        this.getImagesS3();
-      },
-      (error) => console.error(error)
-    );
+    if (this.userService.getUser()) {
+      this.commonService
+        .getSavedRecipes(this.userService.getUser().id)
+        .subscribe(
+          (data) => {
+            this.recipes = data;
+            this.getImagesS3();
+          },
+          (error) => console.error(error)
+        );
+    } else {
+      setTimeout(() => {
+        if (this.userService.getUser()) {
+          this.commonService
+            .getSavedRecipes(this.userService.getUser().id)
+            .subscribe(
+              (data) => {
+                this.recipes = data;
+                this.getImagesS3();
+              },
+              (error) => console.error(error)
+            );
+        }
+      }, 150);
+    }
   }
 
   getImages(recipeid = '') {
@@ -164,15 +158,15 @@ export class SavedComponent implements OnInit {
     }
   }
 
-  get_full_recipe() {
-    this.commonService.getRecipe(this.recipe.name).subscribe(
-      (data) => {
-        this.recipe_full = data;
-        this.openModal();
-      },
-      (error) => console.error(error)
-    );
-  }
+  // get_full_recipe() {
+  //   this.commonService.getRecipe(this.recipe.name).subscribe(
+  //     (data) => {
+  //       this.recipe_full = data;
+  //       this.openModal();
+  //     },
+  //     (error) => console.error(error)
+  //   );
+  // }
 
   viewRecipeModal(recipe) {
     var uri_param = encodeURIComponent(recipe.id);
@@ -180,17 +174,17 @@ export class SavedComponent implements OnInit {
     this.router.navigate(['/recipe/', recipe.id]);
   }
 
-  openModal() {
-    this.modalRef = this.modalService.open(
-      RecipeModalComponent,
-      this.ngbModalOptions
-    );
-    this.modalRef.componentInstance.data = this.recipe_full;
-    this.modalRef.componentInstance.data = {
-      recipe: this.recipe_full,
-      images: this.modal_images,
-    };
-  }
+  // openModal() {
+  //   this.modalRef = this.modalService.open(
+  //     RecipeModalComponent,
+  //     this.ngbModalOptions
+  //   );
+  //   this.modalRef.componentInstance.data = this.recipe_full;
+  //   this.modalRef.componentInstance.data = {
+  //     recipe: this.recipe_full,
+  //     images: this.modal_images,
+  //   };
+  // }
 
   pageChanged(event) {}
 
@@ -269,13 +263,13 @@ export class SavedComponent implements OnInit {
     this.p = 1;
   }
 
-  random_recipe() {
-    this.commonService.getRandomRecipe().subscribe(
-      (data) => {
-        this.recipe_full = data[0];
-        this.openModal();
-      },
-      (error) => console.error(error)
-    );
-  }
+  // random_recipe() {
+  //   this.commonService.getRandomRecipe().subscribe(
+  //     (data) => {
+  //       this.recipe_full = data[0];
+  //       this.openModal();
+  //     },
+  //     (error) => console.error(error)
+  //   );
+  // }
 }

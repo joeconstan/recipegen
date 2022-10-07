@@ -1,23 +1,11 @@
-import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PantryService } from '../pantry.service';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CommonService } from '../common.service';
-import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { MatChipInputEvent } from '@angular/material/chips';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { UserService } from '../user.service';
-import { FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface DialogData {
+  edit: boolean;
   name: string;
   ingredients: string[];
   directions: string[];
@@ -35,6 +23,15 @@ export interface DialogData {
   submitText: string;
   id: number;
   blurb: string;
+  submittedby: string;
+  deleted: boolean;
+  fileToUpload: {
+    recipeid: string;
+    filedata: any;
+    filename: string;
+    primary: boolean;
+    dbinsert: boolean;
+  };
 }
 
 @Component({
@@ -52,10 +49,18 @@ export class DialogNewRecipeComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   import = false;
   recipeurl: string;
-
+  fileToUpload = {
+    recipeid: '',
+    filedata: null,
+    filename: '',
+    primary: true,
+    dbinsert: false,
+  };
+  hasFile = false;
   constructor(
     public dialogRef: MatDialogRef<DialogNewRecipeComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private _snackBar: MatSnackBar
   ) {}
 
   onNoClick(): void {
@@ -129,10 +134,6 @@ export class DialogNewRecipeComponent implements OnInit {
   // this.data.timeWarning = this.di
   // }
 
-  // dialogue_addDifficulty(){
-  //  this.data.difficulty = this.dialogue_difficulty;
-  // }
-
   dialogue_removeIngredient(ingredient) {
     var index = this.data.ingredients.indexOf(ingredient, 0);
     if (index > -1) {
@@ -144,8 +145,39 @@ export class DialogNewRecipeComponent implements OnInit {
     this.import = true;
   }
 
-  // dialogue_addLength(){
-  //     console.log('testing addlength')
-  //    this.data.Length = this.dialogue_length;
-  // }
+  getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
+  readImage(fileInput: FileList) {
+    this.hasFile = true;
+    this.data.fileToUpload.filename = fileInput[0].name.toString();
+    this.data.fileToUpload.primary = true;
+    let filetypea = this.data.fileToUpload.filename.split('.');
+    let filetype = filetypea[filetypea.length - 1].toLowerCase();
+    if (
+      filetype != 'jpg' &&
+      filetype != 'png' &&
+      filetype != 'jpeg' &&
+      filetype != 'gif'
+    ) {
+      this._snackBar.open('Incorrect file type', 'ok', {
+        duration: 2000,
+      });
+      return;
+    }
+
+    this.getBase64(fileInput[0]).then((data: string) => {
+      this.data.fileToUpload.filedata = data;
+      this.data.fileToUpload.dbinsert = false;
+      this._snackBar.open('Image Added!', 'ok', {
+        duration: 2000,
+      });
+    });
+  }
 }

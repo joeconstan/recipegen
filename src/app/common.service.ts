@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpParams,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -76,9 +70,9 @@ export class CommonService {
     );
   }
 
-  editRecipe(recipe) {
-    return this.http.post('http://localhost:8080/api/editRecipe', recipe);
-  }
+  // editRecipe(recipe) {
+  //   return this.http.post('http://localhost:8080/api/editRecipe', recipe);
+  // }
 
   getRecipes(sort?: string) {
     if (sort) {

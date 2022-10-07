@@ -5,18 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { IngredientsComponent } from './ingredients/ingredients.component';
 import { RecipelistComponent } from './recipelist/recipelist.component';
-import { RecipeModalComponent } from './recipe-modal/recipe-modal.component';
-
-import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AlphaPipe } from './alpha.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -37,7 +32,6 @@ import { ChangelogComponent } from './changelog/changelog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SinglerecipeComponent } from './singlerecipe/singlerecipe.component';
 import { ClipboardModule } from 'ngx-clipboard';
-import { NgxFlickingModule } from '@egjs/ngx-flicking';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ExploreComponent } from './explore/explore.component';
@@ -53,10 +47,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 @NgModule({
   declarations: [
     AppComponent,
-    IngredientsComponent,
     RecipelistComponent,
-    RecipeModalComponent,
-    AlphaPipe,
     RegisterComponent,
     LoginComponent,
     PendingComponent,
@@ -75,7 +66,6 @@ import { NotFoundComponent } from './not-found/not-found.component';
   imports: [
     BrowserModule,
     FormsModule,
-    AutocompleteLibModule,
     NgbModule,
     AppRoutingModule,
     HttpClientModule,
@@ -96,7 +86,6 @@ import { NotFoundComponent } from './not-found/not-found.component';
     MatExpansionModule,
     MatTooltipModule,
     ClipboardModule,
-    NgxFlickingModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatRadioModule,

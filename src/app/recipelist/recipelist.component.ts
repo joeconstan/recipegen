@@ -1,28 +1,9 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
-import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PantryService } from '../pantry.service';
 import { CommonService } from '../common.service';
-import { RecipeModalComponent } from '../recipe-modal/recipe-modal.component';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '../user.service';
-import { FormControl, Validators } from '@angular/forms';
-import {
-  Router,
-  ActivatedRoute,
-  ParamMap,
-  RouterEvent,
-  NavigationStart,
-} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-new-recipe-component.component';
 import { NavigationService } from '../navigation.service';
 
@@ -30,12 +11,9 @@ import { NavigationService } from '../navigation.service';
   selector: 'app-recipelist',
   templateUrl: './recipelist.component.html',
   styleUrls: ['./recipelist.component.scss'],
-  // encapsulation: ViewEncapsulation.None,
 })
 export class RecipelistComponent implements OnInit {
   public recipes: any;
-  recipe_full;
-  recipe;
   headerText = 'All Recipes';
   p: number = 1;
   mealtypes = [
@@ -83,27 +61,11 @@ export class RecipelistComponent implements OnInit {
   images = [];
   ratings = [];
 
-  user;
-
-  private modalRef;
-
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-
   recipesLoading = true;
-  // imagesLoading = true;
-
-  // recipeCount = 100;
-
   limitedResults = false;
-  modal_images = [];
-  dev = true;
   recipes_sort: string;
-  navtrigger: string;
-  // searchIngredients = false
 
   constructor(
-    private pantryService: PantryService,
-    private modalService: NgbModal,
     private commonService: CommonService,
     private userService: UserService,
     public dialog: MatDialog,
@@ -137,16 +99,6 @@ export class RecipelistComponent implements OnInit {
       this.headerText = 'Latest Recipes';
     }
     this.query_recipes(true);
-
-    // this.commonService.getRecipes(this.recipes_sort).subscribe(
-    //   (data) => {
-    //     this.recipes = data;
-    //     this.getImagesS3();
-    //     this.getRatings();
-    //     this.recipesLoading = false;
-    //   },
-    //   (error) => console.error(error)
-    // );
   }
 
   getImages(recipeid = '') {
@@ -272,93 +224,10 @@ export class RecipelistComponent implements OnInit {
     return this.userService.getUser();
   }
 
-  get_full_recipe() {
-    this.commonService.getRecipe(this.recipe._id).subscribe(
-      (data) => {
-        this.recipe_full = data;
-        this.openModal();
-      },
-      (error) => console.error(error)
-    );
-  }
-
-  viewRecipeModal(recipe) {
+  viewSingleRecipe(recipe) {
     var uri_param = encodeURIComponent(recipe.id);
-    // let recipe_url = `http://localhost:4200/#/recipe/${uri_param}`
     let recipe_url = `https://therecipedoc.com/#/recipe/${uri_param}`;
-    // window.location.href = recipe_url;
     this.router.navigate(['/recipe/', recipe.id]);
-    //
-    // this.modal_images = [];
-    // this.recipe = recipe;
-    // this.recipe_full = recipe;
-    // let imgs = this.images.filter(x=>x.recipe_id == recipe.id);
-    // this.modal_images = imgs;
-    // this.openModal()
-  }
-
-  addedimgs() {}
-
-  openModal() {
-    this.modalRef = this.modalService.open(RecipeModalComponent, {
-      centered: true,
-      size: 'xl',
-    });
-    this.modalRef.componentInstance.data = {
-      recipe: this.recipe_full,
-      images: this.modal_images,
-    };
-    this.modalRef.result.then(
-      (result) => {
-        // ON CLOSE
-        // this.query_recipes doesnt sort the recipe results, while getRecipes() does, so gotta check. kinda messy tho
-        if (
-          this.filters.keywords.length < 1 &&
-          this.filters.type == '' &&
-          this.filters.time == '' &&
-          this.filters.difficulty == ''
-        ) {
-          // this.commonService.getRecipes('5f7dfef63317963e9c042bdd').subscribe(data => {
-          // this.recipes = data['Items']
-          // this.lastEvaluatedKey = data['LastEvaluatedKey']['_id']
-          // this.recipesByPage.push({
-          // 'page': this.p,
-          // 'recipes': this.recipes
-          // })
-          // },
-          // error => console.error(error)
-          // )
-          // this.recipes = this.recipesByPage.find(x=>x.page == this.p).recipes
-        } else {
-          this.query_recipes();
-        }
-      },
-      (reason) => {
-        // ON DISMISS
-        if (
-          this.filters.keywords.length < 1 &&
-          this.filters.type == '' &&
-          this.filters.time == '' &&
-          this.filters.difficulty == ''
-        ) {
-          // this.commonService.getRecipes('5f7dfef63317963e9c042bdd').subscribe(data => {
-          //     this.recipes = data['Items']
-          //     this.lastEvaluatedKey = data['LastEvaluatedKey']['_id']
-          //     this.recipesByPage.push({
-          //       'page': this.p,
-          //       'recipes': this.recipes
-          //     })
-          // },
-          //     error => console.error(error)
-          // )
-          // this.recipes = this.recipesByPage.find(x=>x.page == this.p).recipes
-          // this.getImages(this.recipe_full.id)
-          this.getImagesS3(this.recipe_full.id);
-        } else {
-          this.query_recipes();
-        }
-      }
-    );
   }
 
   pageChanged(event) {
@@ -391,15 +260,6 @@ export class RecipelistComponent implements OnInit {
       // );
     }
   }
-
-  // filter(mealtype){
-  //     this.commonService.getRecipesByType(mealtype).subscribe(data => {
-  //         this.recipes = data;
-  //     },
-  //         error => console.error(error)
-  //     )
-  //
-  // }
 
   getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -538,25 +398,14 @@ export class RecipelistComponent implements OnInit {
     // this.p = 1;
   }
 
-  // parseIngredients(res_ings){
-  //     //
-  //     var ings = res_ings.split('\n')
-  //     if (ings.length == 0){
-  //       ings = ings.split(', ')
-  //       if (ings.length == 0){
-  //         ings = ings.split(',')
-  //       }
-  //     }
-  //     return ings
-  // }
-
   openNewRecipeDialog() {
     // show new-recipe-form
     const dialogRef = this.dialog.open(DialogNewRecipeComponent, {
       width: '600px',
-      height: '700px',
+      height: 'auto',
       autoFocus: false,
       data: {
+        edit: false,
         name: this.new_recipe.name,
         ingredients: this.new_recipe.ingredients,
         directions: this.new_recipe.directions,
@@ -569,6 +418,14 @@ export class RecipelistComponent implements OnInit {
         tags: [],
         yield: this.new_recipe.yield,
         blurb: this.new_recipe.blurb,
+        submittedby: this.new_recipe.submittedby,
+        fileToUpload: {
+          recipeid: '',
+          filedata: null,
+          filename: '',
+          primary: true,
+          dbinsert: false,
+        },
       },
     });
 
@@ -576,9 +433,9 @@ export class RecipelistComponent implements OnInit {
       this.new_recipe.ingredients = [];
       if (result) {
         // result.Ingredients = this.parseIngredients(result.Ingredients)
-        result.submittedby = this.userService.user.username;
+        result.submittedby = this.userService.getUser().username;
         let nutFree = true;
-        result.ingredients.forEach((ing) => {
+        result.ingredients.forEach((ing: string) => {
           if (
             ing.toLowerCase().includes('nut') ||
             ing.toLowerCase().includes('cashew') ||
@@ -606,13 +463,7 @@ export class RecipelistComponent implements OnInit {
   random_recipe() {
     this.commonService.getRandomRecipe().subscribe(
       (data) => {
-        // this.recipe_full = data;
-        // this.modal_images = this.images.filter(
-        //   (x) => x.recipe_id == data['id']
-        // );
-
-        // this.openModal();
-        this.viewRecipeModal(data);
+        this.viewSingleRecipe(data);
       },
       (error) => console.error(error)
     );
@@ -620,5 +471,9 @@ export class RecipelistComponent implements OnInit {
 
   scrollTop() {
     window.scroll(0, 0);
+  }
+
+  toLogin() {
+    this.router.navigate(['/login/']);
   }
 }
