@@ -9,7 +9,6 @@ import { UserService } from '../user.service';
   selector: 'app-saved',
   templateUrl: './saved.component.html',
   styleUrls: ['./saved.component.scss'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class SavedComponent implements OnInit {
   public recipes: any;
@@ -24,6 +23,8 @@ export class SavedComponent implements OnInit {
     'Salads',
     'Soups',
   ];
+  headerText = 'Saved Recipes';
+
   times = ['0-10 min', '10-30 min', '30-60 min', '60+ min'];
   difficulties = ['Easy', 'Moderate', 'Hard'];
   image_upload: any;
@@ -33,7 +34,11 @@ export class SavedComponent implements OnInit {
     type: '',
     time: '',
     difficulty: '',
+    searchIngredients: false,
+    tags: '',
   };
+
+  tags = ['Nut Free', 'Gluten Free'];
 
   new_recipe = {
     Name: '',
@@ -64,6 +69,8 @@ export class SavedComponent implements OnInit {
     },
   };
 
+  recipesLoading = true;
+
   constructor(
     private commonService: CommonService,
     private userService: UserService,
@@ -77,6 +84,7 @@ export class SavedComponent implements OnInit {
         .getSavedRecipes(this.userService.getUser().id)
         .subscribe(
           (data) => {
+            this.recipesLoading = false;
             this.recipes = data;
             this.getImagesS3();
           },
@@ -89,6 +97,7 @@ export class SavedComponent implements OnInit {
             .getSavedRecipes(this.userService.getUser().id)
             .subscribe(
               (data) => {
+                this.recipesLoading = false;
                 this.recipes = data;
                 this.getImagesS3();
               },
@@ -96,6 +105,12 @@ export class SavedComponent implements OnInit {
             );
         }
       }, 150);
+    }
+  }
+
+  runSearchIfValue() {
+    if (this.search_value || this.filters.keywords.length > 0) {
+      this.search_recipes();
     }
   }
 
@@ -186,7 +201,10 @@ export class SavedComponent implements OnInit {
   //   };
   // }
 
-  pageChanged(event) {}
+  pageChanged(event) {
+    this.recipesLoading = true;
+    this.query_recipes();
+  }
 
   getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -216,7 +234,16 @@ export class SavedComponent implements OnInit {
     this.query_recipes();
   }
 
+  toLogin() {
+    this.router.navigate(['/login/']);
+  }
+
+  scrollTop() {
+    window.scroll(0, 0);
+  }
+
   addFilter(value, category): void {
+    this.recipesLoading = true;
     // const input = event.input;
     // const value = event.value;
     if (category == 'type') {
@@ -246,7 +273,11 @@ export class SavedComponent implements OnInit {
       this.filters.time = '';
     } else if (category == 'difficulty') {
       this.filters.difficulty = '';
+    } else if (category == 'tag') {
+      this.filters.tags = '';
     }
+
+    this.recipesLoading = true;
 
     this.query_recipes();
     // re-run mongo query
@@ -257,6 +288,7 @@ export class SavedComponent implements OnInit {
     this.commonService.getRecipesWithFilters(this.filters).subscribe(
       (data) => {
         this.recipes = data;
+        this.recipesLoading = false;
       },
       (error) => console.error(error)
     );

@@ -7,14 +7,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClipboardService } from 'ngx-clipboard';
 import { recipeObject } from '../../types';
 import { DatePipe } from '@angular/common';
+import { Color } from '../consts/consts';
 
 import {
   MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
+  // MatDialogRef,
+  // MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-new-recipe-component.component';
-import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
+// import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 
 @Component({
   selector: 'app-singlerecipe',
@@ -53,6 +54,9 @@ export class SinglerecipeComponent implements OnInit {
   measure_system = 'us';
 
   newCommentText = '';
+  innerWidth: number;
+  imgSize: string;
+  viewCount: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -64,6 +68,7 @@ export class SinglerecipeComponent implements OnInit {
     public dialog: MatDialog
   ) {}
   ngOnInit(): void {
+    this.innerWidth = window.innerWidth;
     this.user = this.userService.getUser();
     var recipe_id = this.route.snapshot.paramMap.get('recipe');
 
@@ -119,10 +124,40 @@ export class SinglerecipeComponent implements OnInit {
       },
       (error) => console.error(error)
     );
+
+    setTimeout(() => {
+      let pageviewinfo = {};
+      if (this.userService.getUser()) {
+        pageviewinfo = {
+          recipe_id: recipe_id,
+          user_id: this.userService.getUser().id || '',
+        };
+      } else {
+        pageviewinfo = {
+          recipe_id: recipe_id,
+        };
+      }
+
+      this.commonService.pageView(pageviewinfo).subscribe(
+        () => {},
+        (error) => console.error(error)
+      );
+    }, 100);
+
+    this.commonService.getPageViews(recipe_id).subscribe(
+      (data: { views: number }) => {
+        this.viewCount = data.views;
+      },
+      (error) => console.error(error)
+    );
   }
 
   openPrintDialog() {
     window.print();
+  }
+
+  isMobile() {
+    return screen.width <= 480;
   }
 
   openEditRecipeDialog() {
@@ -184,11 +219,32 @@ export class SinglerecipeComponent implements OnInit {
             this._snackBar.open('Changes saved', 'ok', {
               duration: 2000,
             });
+
+            // refresh recipe from db
+            if (this.userAdmin()) {
+              this.commonService.getRecipe(this.recipe_full.id).subscribe(
+                (data: recipeObject) => {
+                  this.recipe_full = data;
+                  this.recipeLoading = false;
+                  this.getImageNamesS3();
+                },
+                (error) => console.error(error)
+              );
+            }
           },
           (error) => console.error(error)
         );
       }
     });
+  }
+  userColor(comment) {
+    return Color[comment.color_key];
+  }
+
+  currentUserColor() {
+    if (this.userService.getUser()) {
+      return Color[this.userService.getUser().color_key];
+    }
   }
 
   toggleMeasureSystem(value) {
@@ -221,10 +277,25 @@ export class SinglerecipeComponent implements OnInit {
     );
   }
 
+  imgError(event, img) {
+    event.target.src = img.backup_url;
+  }
+
   getImagesS3(recipe) {
     let imgs = this.images.filter((x) => x.recipe_id == recipe.id);
     imgs.forEach((img) => {
+      if (this.innerWidth > 1000) {
+        this.imgSize = '';
+      } else {
+        this.imgSize = '-600-';
+      }
       img.url =
+        'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' +
+        recipe.id +
+        this.imgSize +
+        img.filename;
+
+      img.backup_url =
         'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' +
         recipe.id +
         img.filename;
@@ -412,6 +483,7 @@ export class SinglerecipeComponent implements OnInit {
         username: this.userService.getUser().username,
         recipe_id: this.recipe_full.id,
         text: this.newComment,
+        color_key: this.userService.getUser().color_key,
       };
 
       this.recipe_comments.push(commentObj);
@@ -586,6 +658,7 @@ export class SinglerecipeComponent implements OnInit {
       username: this.userService.getUser().username,
       recipe_id: this.recipe_full.id,
       commenttext: this.newCommentText,
+      color_key: this.userService.getUser().color_key,
     };
     this.commonService.commentRecipe(new_comment).subscribe(
       (data) => {
@@ -612,8 +685,16 @@ export class SinglerecipeComponent implements OnInit {
     return this.userService.getUser();
   }
 
-  getUserIcon() {
+  getCurrentUserIcon() {
     let username = this.userService.getUser().username;
+    return username.split(' ').length > 1
+      ? username.split(' ')[0].slice(0, 1).toUpperCase() +
+          username.split(' ')[1].slice(0, 1).toUpperCase()
+      : username.slice(0, 1).toUpperCase();
+  }
+
+  getUserIcon(comment) {
+    let username = comment.username;
     return username.split(' ').length > 1
       ? username.split(' ')[0].slice(0, 1).toUpperCase() +
           username.split(' ')[1].slice(0, 1).toUpperCase()

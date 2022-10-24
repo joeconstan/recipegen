@@ -107,6 +107,20 @@ export class CommonService {
     );
   }
 
+  pageView(pageviewinfo) {
+    return this.http.post(
+      'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/pageviews',
+      pageviewinfo
+    );
+  }
+
+  getPageViews(recipe_id) {
+    return this.http.get(
+      'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/pageviews',
+      { params: { recipe_id: recipe_id } }
+    );
+  }
+
   getLists() {
     return this.http.get(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/lists/'

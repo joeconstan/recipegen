@@ -1,6 +1,10 @@
 <nav class="nav-underline nav-links bg-white box-shadow flex">
   <div class="alignLeft">
-    <img src="../../assets/soup.png" class="soupicon" />
+    <img
+      (click)="navHome()"
+      src="../../assets/soup2.png"
+      class="soupicon clickable"
+    />
     <a
       class="nav-link"
       routerLink=""
@@ -30,7 +34,6 @@
   <div class="alignRight">
     <div ngbDropdown class="nav-item d-inline-block username">
       <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle role="button">
-        <!-- <mat-icon>person</mat-icon> -->
         <img src="../../assets/img/user-regular.svg" class="usericon" />
         <p class="userNametext mobile-hide" *ngIf="getUserFromService()">
           {{ user.username.toUpperCase() }}
@@ -64,7 +67,7 @@
 
     <button
       routerLink="/help"
-      class="nav-link clickable help-img"
+      class="nav-link clickable help-img mobile-hide"
       mat-icon-button
       (click)="openHelp()"
     >

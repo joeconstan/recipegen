@@ -10,12 +10,6 @@
 />
 
 <div>
-  <!-- <mat-spinner
-    color="accent"
-    *ngIf="recipesLoading"
-    class="spinner"
-  ></mat-spinner> -->
-
   <div *ngIf="recipesLoading" id="spinnercontainer">
     <svg viewBox="0 0 100 100" width="50%" height="50%">
       <defs>
@@ -67,8 +61,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col col-sm-6 col-lg-2"></div>
-        <div class="col col-sm-6 col-lg-2">
+        <div class="col-0 col-sm-0 col-md-4 col-lg-2"></div>
+        <div class="col-4 col-sm-3 col-md-4 col-lg-2">
           <div ngbDropdown class="d-inline-block">
             <button
               class="samesize montst"
@@ -90,7 +84,7 @@
             </div>
           </div>
         </div>
-        <div class="col col-sm-6 col-lg-2">
+        <div class="col-4 col-sm-3 col-md-4 col-lg-2">
           <div ngbDropdown class="d-inline-block">
             <button
               class="samesize montst"
@@ -133,7 +127,7 @@
             </div>
           </div> -->
         <!-- </div> -->
-        <div class="col col-sm-6 col-lg-2">
+        <div class="col-4 col-sm-3 col-md-4 col-lg-2">
           <div ngbDropdown class="d-inline-block">
             <button
               class="samesize montst"
@@ -267,7 +261,7 @@
             *ngIf="hasImage(recipe.id)"
             class="card-img-top recipe-img"
             src="{{ getImgDataS3(recipe) }}"
-            onerror="this.src='/assets/img/placeholder.jpeg';"
+            (error)="imgError($event, recipe)"
             alt="image"
           />
           <a class="stretched-link" (click)="viewSingleRecipe(recipe)"></a>
@@ -294,7 +288,6 @@
     (pageChange)="p = $event; pageChanged($event); scrollTop()"
   ></pagination-controls>
 </div>
-
 <div>
   <footer class="footer addRecipeButton">
     <button

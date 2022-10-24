@@ -14,6 +14,7 @@ import { HelpComponent } from './help/help.component';
 import { GrainsComponent } from './w/grains/grains.component';
 import { VeganReferenceComponent } from './vegan-reference/vegan-reference.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 const routes: Routes = [
   { path: '', component: RecipelistComponent },
@@ -32,11 +33,18 @@ const routes: Routes = [
   { path: 'w/grains', component: GrainsComponent },
   { path: 'veganref', component: VeganReferenceComponent },
   { path: '404', component: NotFoundComponent },
+  { path: 'forgot', component: PasswordResetComponent },
 ];
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, RouterModule.forRoot(routes, { useHash: true, relativeLinkResolution: 'legacy' })],
+  imports: [
+    CommonModule,
+    RouterModule.forRoot(routes, {
+      useHash: true,
+      relativeLinkResolution: 'legacy',
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -4,7 +4,7 @@ import { CommonService } from '../common.service';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
-import anime from 'animejs/lib/anime.es.js';
+// import anime from 'animejs/lib/anime.es.js';
 
 @Component({
   selector: 'app-login',
@@ -35,20 +35,20 @@ export class LoginComponent implements OnInit {
       password: ['', Validators.required],
     });
 
-    anime({
-      targets: '.animetarget path',
-      // loop: true,
-      // direction: 'alternate',
-      strokeDashoffset: [anime.setDashoffset, 0],
-      easing: 'easeInOutSine',
-      // backgroundColor: '#FFF',
-      duration: 900,
-      delay: (el, i) => {
-        return i * 300;
-      },
-    });
+    // anime({
+    //   targets: '.animetarget path',
+    //   // loop: true,
+    //   // direction: 'alternate',
+    //   strokeDashoffset: [anime.setDashoffset, 0],
+    //   easing: 'easeInOutSine',
+    //   // backgroundColor: '#FFF',
+    //   duration: 900,
+    //   delay: (el, i) => {
+    //     return i * 300;
+    //   },
+    // });
 
-    const svgText = anime({});
+    // const svgText = anime({});
 
     // this.authService.authState.subscribe((user) => {
     // this.user = {

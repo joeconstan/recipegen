@@ -1,5 +1,10 @@
-.card{
-    width: 35rem;
-    margin: 0 auto;
-    top:5%;
+.card {
+  width: 35rem;
+  margin: 0 auto;
+  top: 5%;
+}
+
+.disabled {
+  background-color: grey;
+  border-color: grey;
 }

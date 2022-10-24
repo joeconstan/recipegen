@@ -43,6 +43,7 @@ import { GrainsComponent } from './w/grains/grains.component';
 import { DialogNewRecipeComponent } from './dialog-new-recipe-component/dialog-new-recipe-component.component';
 import { VeganReferenceComponent } from './vegan-reference/vegan-reference.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
     DialogNewRecipeComponent,
     VeganReferenceComponent,
     NotFoundComponent,
+    PasswordResetComponent,
   ],
   imports: [
     BrowserModule,
