@@ -14,6 +14,7 @@ export class UserService {
       id: user.id,
       username: user.username,
       adminflag: user.adminflag,
+      color_key: user.color_key,
     };
   }
 

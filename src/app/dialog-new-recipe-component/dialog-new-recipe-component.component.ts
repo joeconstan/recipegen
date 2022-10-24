@@ -57,6 +57,9 @@ export class DialogNewRecipeComponent implements OnInit {
     dbinsert: false,
   };
   hasFile = false;
+  loading:boolean = false;
+
+  
   constructor(
     public dialogRef: MatDialogRef<DialogNewRecipeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,

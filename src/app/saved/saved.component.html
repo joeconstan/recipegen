@@ -9,34 +9,64 @@
   rel="stylesheet"
 />
 
-<div class="container mt-3">
+<div>
+  <div *ngIf="recipesLoading" id="spinnercontainer">
+    <svg viewBox="0 0 100 100" width="50%" height="50%">
+      <defs>
+        <filter id="shadow">
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="1.5"
+            flood-color="#fc6767"
+          />
+        </filter>
+      </defs>
+      <circle
+        id="spinner"
+        style="
+          fill: transparent;
+          stroke: #21f3e9;
+          stroke-width: 6px;
+          stroke-linecap: round;
+          filter: url(#shadow);
+        "
+        cx="50"
+        cy="50"
+        r="45"
+      />
+    </svg>
+  </div>
+</div>
+
+<div *ngIf="!recipesLoading" class="container mt-3">
   <br />
   <br />
   <div id="searchFilterButtons">
     <div class="bg-white box-shadow">
       <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"><h4 class="mat-display-1">Saved Recipes</h4></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col">
-          <!-- <a role="button" id="randombutton" (click)="random_recipe()" matTooltip="Random" matTooltipHideDelay="500"><mat-icon>shuffle</mat-icon></a> -->
+        <div class="col-lg-5 col-md-4 col-xl-5 col-sm-3 col-2"></div>
+        <div class="col-lg-5 col-md-5 col-xl-5 col-sm-6 col-8">
+          <h4 class="headerText">{{ headerText }}</h4>
+        </div>
+        <div class="col-lg-2 col-xl-2 col-md-3 col-sm-3 col-2">
+          <!-- <a
+              role="button"
+              id="randombutton"
+              (click)="random_recipe()"
+              matTooltip="Random"
+              matTooltipHideDelay="500"
+              ><mat-icon>shuffle</mat-icon></a
+            > -->
         </div>
       </div>
       <div class="row">
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col"></div>
-        <div class="col">
+        <div class="col col-sm-6 col-lg-2"></div>
+        <div class="col col-sm-6 col-lg-2">
           <div ngbDropdown class="d-inline-block">
             <button
               class="samesize montst"
               mat-stroked-button
-              color="warn"
               id="dropdownBasic1"
               ngbDropdownToggle
             >
@@ -54,12 +84,11 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <div class="col col-sm-6 col-lg-2">
           <div ngbDropdown class="d-inline-block">
             <button
               class="samesize montst"
               mat-stroked-button
-              color="warn"
               id="dropdownBasic2"
               ngbDropdownToggle
             >
@@ -77,33 +106,52 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <!-- <div ngbDropdown class="d-inline-block">
+              <button
+                class="samesize montst"
+                mat-stroked-button
+                id="dropdownBasic3"
+                ngbDropdownToggle
+              >
+                Difficulty
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic3">
+                <button
+                  class="monst"
+                  ngbDropdownItem
+                  *ngFor="let difficulty of difficulties"
+                  (click)="addFilter(difficulty, 'difficulty')"
+                >
+                  {{ difficulty }}
+                </button>
+              </div>
+          </div> -->
+        <!-- </div> -->
+        <div class="col col-sm-6 col-lg-2">
           <div ngbDropdown class="d-inline-block">
             <button
               class="samesize montst"
               mat-stroked-button
-              color="warn"
               id="dropdownBasic3"
               ngbDropdownToggle
             >
-              Difficulty
+              Tags
             </button>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic3">
               <button
                 class="monst"
                 ngbDropdownItem
-                *ngFor="let difficulty of difficulties"
-                (click)="addFilter(difficulty, 'difficulty')"
+                *ngFor="let tag of tags"
+                (click)="addFilter(tag, 'tag')"
               >
-                {{ difficulty }}
+                {{ tag }}
               </button>
             </div>
           </div>
         </div>
-        <div class="col"></div>
-        <div class="col-3">
+        <div class="col-12 col-md-5 col-lg-4">
           <form class="example-form">
-            <mat-form-field color="accent" class="example-full-width">
+            <mat-form-field color="accent" class="example-full-width inline">
               <mat-label>Search Recipes</mat-label>
               <input
                 matInput
@@ -124,6 +172,14 @@
                 <mat-icon>close</mat-icon>
               </button>
             </mat-form-field>
+            <mat-checkbox
+              name="searchIng"
+              ngDefaultControl
+              class="inline"
+              (change)="runSearchIfValue()"
+              [(ngModel)]="filters.searchIngredients"
+              >Search Ingredients</mat-checkbox
+            >
           </form>
         </div>
       </div>
@@ -165,14 +221,19 @@
               {{ filters.difficulty }}
               <mat-icon matChipRemove>cancel</mat-icon>
             </mat-chip>
+            <mat-chip
+              *ngIf="filters.tags != ''"
+              (removed)="removeFilter(filters.type, 'tag')"
+            >
+              {{ filters.tags }}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
           </mat-chip-list>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- <hr> -->
-  <!-- <mat-divider> -->
   <br /><br />
   <div class="row">
     <div
@@ -181,9 +242,8 @@
       "
       class="col-lg-4 mb-4 grid-margin"
     >
-      <div *ngIf="recipe.pending == false">
-        <mat-card class="shadow p-3 mb-5 bg-white rounded">
-          <!-- <mat-card-header class="card-header"> -->
+      <div>
+        <mat-card class="shadow mb-5 bg-white rounded">
           <mat-card-header>
             <mat-card-title
               [ngClass]="{
@@ -194,11 +254,8 @@
             >
               {{ recipe.name }}</mat-card-title
             >
-            <!-- <mat-card-title> {{ (recipe.Name.length>20)? (recipe.Name | slice:0:20)+'..':(recipe.Name) }}</mat-card-title> -->
           </mat-card-header>
-          <!-- <h4 class="card-header centered"> {{ (recipe.Name.length>25)? (recipe.Name | slice:0:25)+'..':(recipe.Name) }}</h4> -->
-          <!-- <img mat-card-image class="card-img-top recipe-img" src="/assets/img/recipes/{{ recipe.Name| alpha }}.jpeg" alt="image"> -->
-          <!-- <img mat-card-image *ngIf="recipe.images && recipe.images[0]" class="card-img-top recipe-img" src="{{'data:image/jpg;base64,' + recipe.images[0].filedata}}" onerror="this.src='/assets/img/placeholder.jpeg';" alt="image"> -->
+
           <img
             mat-card-image
             *ngIf="hasImage(recipe.id)"
@@ -207,81 +264,17 @@
             onerror="this.src='/assets/img/placeholder.jpeg';"
             alt="image"
           />
-
-          <!-- <img class="card-img-top" src="/assets/img/recipes/recipe pics p1-3/{{ recipe.Name.split(' ').join('') | lowercase}}.jpeg" alt="image"> -->
-          <mat-card-content class="bg-custom2">
-            <div class="card-text">
-              <svg
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                class="bi bi-clock"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm8-7A8 8 0 1 1 0 8a8 8 0 0 1 16 0z"
-                />
-                <path
-                  fill-rule="evenodd"
-                  d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"
-                />
-              </svg>
-              <p class="card-text inlined">{{ recipe.timelength }}</p>
-            </div>
-            <div class="card-text">
-              <svg
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                class="bi bi-tag"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M2 2v4.586l7 7L13.586 9l-7-7H2zM1 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2z"
-                />
-                <path
-                  fill-rule="evenodd"
-                  d="M4.5 5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"
-                />
-              </svg>
-              <p class="card-text inlined">{{ recipe.type }}</p>
-            </div>
-            <div class="card-text">
-              <!-- <mat-icon>check_circle_outline</mat-icon> -->
-              <svg
-                width="1em"
-                height="1em"
-                viewBox="0 0 16 16"
-                class="bi bi-exclamation-diamond"
-                fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"
-                />
-                <path
-                  d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
-                />
-              </svg>
-              <p class="card-text inlined">{{ recipe.difficulty }}</p>
-            </div>
-          </mat-card-content>
-          <!-- <div class="card-footer"> -->
-          <!-- <a href="#" class="btn btn-primary stretched-link">Go somewhere</a> -->
           <a class="stretched-link" (click)="viewRecipeModal(recipe)"></a>
-          <!-- </div> -->
         </mat-card>
       </div>
     </div>
   </div>
 
   <pagination-controls
-    class="floatright"
-    (pageChange)="p = $event"
+    class="floatright paginationcontrols"
+    (pageChange)="p = $event; pageChanged($event); scrollTop()"
   ></pagination-controls>
+</div>
+<div>
+  <footer class="footer addRecipeButton"></footer>
 </div>

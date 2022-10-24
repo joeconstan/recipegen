@@ -1,9 +1,10 @@
-@use '~@angular/material' as mat;
+@use "~@angular/material" as mat;
 @import "../theme.scss";
 
 nav {
-  padding-bottom: 12px;
-  padding-top: 3px;
+  padding-bottom: 5px;
+  // padding-top: 3px;
+  max-height: 75px;
 }
 
 nav.flex {
@@ -67,8 +68,9 @@ nav .router-link-active {
 }
 
 .soupicon {
-  height: 120px;
-  width: 120px;
+  height: 50px;
+  width: 50px;
+  margin-left: 5px;
 }
 
 /* remove margin from img if on mobile */

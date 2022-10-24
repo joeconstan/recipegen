@@ -41,7 +41,7 @@
               *ngIf="image.primary_img"
               class="round-image"
               src="{{ image.url }}"
-              alt=""
+              (error)="imgError($event, image)"
             />
           </div>
         </div>
@@ -244,6 +244,7 @@
             </div>
             <div class="floatright marginbottommobile marginright no-print">
               <button
+                *ngIf="!isMobile()"
                 mat-button
                 color="primary"
                 class="floatleft btn-responsive"
@@ -317,10 +318,10 @@
             <span *ngIf="loggedIn()"
               ><button
                 mat-fab
-                color="primary"
+                [ngStyle]="{ 'background-color': currentUserColor() }"
                 class="commentinline usericon nopaddingfab"
               >
-                {{ getUserIcon() }}
+                {{ getCurrentUserIcon() }}
               </button>
             </span>
             <span *ngIf="!loggedIn()">
@@ -331,8 +332,11 @@
             </span>
 
             <mat-form-field class="commentinput flex">
-              <mat-label>Leave a comment</mat-label>
+              <mat-label>{{
+                loggedIn() ? "Leave a comment..." : "Log in to comment"
+              }}</mat-label>
               <input
+                [disabled]="!loggedIn()"
                 matInput
                 [(ngModel)]="newCommentText"
                 placeholder="Leave a comment..."
@@ -340,7 +344,7 @@
             </mat-form-field>
             <button
               (click)="submitComment()"
-              [disabled]="newCommentText.trim() === ''"
+              [disabled]="!loggedIn() || newCommentText.trim() === ''"
               class="submitbutton"
               matSuffix
               mat-stroked-button
@@ -353,25 +357,33 @@
           <!-- <input matInput type="text" placeholder="Write a Comment" /> -->
           <div class="comments" *ngFor="let comment of recipe_comments">
             <div class="comment">
-              <span *ngIf="loggedIn()"
+              <span
                 ><button
                   mat-fab
-                  color="primary"
+                  [ngStyle]="{ 'background-color': userColor(comment) }"
                   class="commentinline usericon nopaddingfab"
                 >
-                  {{ getUserIcon() }}
+                  {{ getUserIcon(comment) }}
                 </button>
               </span>
-              <span *ngIf="!loggedIn()">
+              <!-- <span *ngIf="!loggedIn()">
                 <img
                   src="../../assets/img/user.svg"
                   class="commentinline usericon"
                 />
-              </span>
-              <p class="commentinline">{{ comment.username | titlecase }}</p>
-              <p class="commentdate">{{ formatDate(comment.create_date) }}</p>
-              <p class="commenttext">{{ comment.commenttext }}</p>
+              </span> -->
+              <span class="commentinline">{{
+                comment.username | titlecase
+              }}</span>
+              <span class="commentdate">{{
+                formatDate(comment.create_date)
+              }}</span>
+              <hr />
+              <span class="commenttext">{{ comment.commenttext }}</span>
             </div>
+          </div>
+          <div class="views">
+            <span *ngIf="viewCount">Views: {{ viewCount }}</span>
           </div>
         </mat-card-content>
       </mat-card>

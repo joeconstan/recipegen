@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-
 body {
   background-image: url("../../assets/Rect Light.svg");
   background-repeat: no-repeat;
@@ -263,4 +261,13 @@ mat-card {
 .spinner {
   margin: 0 auto;
   margin-top: 500px;
+}
+
+@media (max-width: 500px) {
+  #spinnercontainer {
+    position: absolute;
+    top: 50%;
+    left: 65%;
+    // transform: translate(-50%, -50%);
+  }
 }

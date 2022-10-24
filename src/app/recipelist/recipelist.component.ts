@@ -64,6 +64,8 @@ export class RecipelistComponent implements OnInit {
   recipesLoading = true;
   limitedResults = false;
   recipes_sort: string;
+  innerWidth: number;
+  imgSize: string;
 
   constructor(
     private commonService: CommonService,
@@ -76,6 +78,8 @@ export class RecipelistComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.innerWidth = window.innerWidth;
+
     // get user's filters,searches,sorts,pagination ONLY if navtrigger is not imperative (imperative = router link clicked)
     if (
       this.navigationService.getTrigger() &&
@@ -203,13 +207,30 @@ export class RecipelistComponent implements OnInit {
       (x) => x.recipe_id == recipe.id && x.primary_img == true
     );
     if (img) {
+      if (this.innerWidth > 1000) {
+        this.imgSize = '';
+      } else {
+        this.imgSize = '-600-';
+      }
+
       return (
         'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' +
         recipe.id +
+        this.imgSize +
         img.filename
       );
     } else {
     }
+  }
+
+  imgError(event, recipe) {
+    let img = this.images.find(
+      (x) => x.recipe_id == recipe.id && x.primary_img == true
+    );
+    event.target.src =
+      'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' +
+      recipe.id +
+      img.filename;
   }
 
   getImageById(recipeid) {

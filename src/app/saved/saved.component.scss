@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
-
 body {
   background-image: url("../../assets/Rect Light.svg");
   background-repeat: no-repeat;
@@ -39,12 +37,18 @@ nav .router-link-active {
   font-family: "Noto Sans JP", sans-serif !important;
 }
 
-.spinner {
-  margin: 0 auto;
-  margin-top: 500px;
+h4,
+.montst {
+  font-family: "Noto Sans JP", sans-serif !important;
 }
 
+// .spinner {
+//   margin: 0 auto;
+//   margin-top: 500px;
+// }
+
 mat-card-header {
+  font-family: "Noto Sans JP", sans-serif !important;
   text-align: center !important;
   font-size: 1.75em;
   min-height: 2.25em;
@@ -64,11 +68,19 @@ mat-card:hover,
 .card:hover {
   cursor: pointer;
 }
+mat-card {
+  padding-bottom: 0px;
+}
 
 .inlined {
   display: inline-block;
   padding-left: 10px;
   padding-top: 10px;
+}
+
+.headerText {
+  font-size: 2.25em;
+  margin: 0 0 64px;
 }
 
 .btnz {
@@ -213,4 +225,44 @@ mat-card:hover,
   .paginationcontrols {
     margin-bottom: 3em;
   }
+}
+
+@keyframes animation {
+  0% {
+    stroke-dasharray: 1 98;
+    stroke-dashoffset: -105;
+  }
+  50% {
+    stroke-dasharray: 80 10;
+    stroke-dashoffset: -160;
+  }
+  100% {
+    stroke-dasharray: 1 98;
+    stroke-dashoffset: -300;
+  }
+}
+
+#spinner {
+  transform-origin: center;
+  animation-name: animation;
+  animation-duration: 1.2s;
+  animation-timing-function: cubic-bezier;
+  animation-iteration-count: infinite;
+}
+
+#spinnercontainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#spinnercontainer {
+  width: 200px;
+  height: 200px;
+}
+
+.spinner {
+  margin: 0 auto;
+  margin-top: 500px;
 }

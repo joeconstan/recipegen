@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { CommonService } from '../common.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,15 +27,41 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+    this.form = new FormGroup({
+      email: new FormControl('', [Validators.required, Validators.email]),
+      username: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+      ]),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
     });
+
+    // this.form = this.formBuilder.group({
+    //   email: ['', [Validators.required, Validators.email]],
+    //   username: ['', Validators.required],
+    //   password: ['', [Validators.required, Validators.minLength(6)]],
+    // });
   }
+
+  onBlurEmail() {}
 
   // convenience getter for easy access to form fields
   get f() {
     return this.form.controls;
+  }
+
+  get email() {
+    return this.form.get('email');
+  }
+  get username() {
+    return this.form.get('username');
+  }
+
+  get password() {
+    return this.form.get('password');
   }
 
   onSubmit() {

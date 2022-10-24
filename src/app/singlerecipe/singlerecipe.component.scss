@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use "~@angular/material" as mat;
 @import "../../theme.scss";
 
 .montst {
@@ -193,11 +193,28 @@ mat-card-header {
 .usericon {
   width: 32px;
   height: 32px;
+  cursor: default;
 }
 
 .editicon {
   width: 32px;
   height: 32px;
+}
+
+.comments {
+  margin-bottom: 20px;
+}
+
+.comment {
+  display: flex;
+  flex-flow: wrap;
+  align-items: center;
+}
+
+.comment hr {
+  width: 100%;
+  border: none;
+  margin: 0px;
 }
 
 .newComment .commentinput {
@@ -224,12 +241,14 @@ mat-card-header {
 }
 
 .commenttext {
-  margin-top: 10px;
+  margin-top: 3px;
   margin-left: 42px;
 }
 
 .commentdate {
-  margin-left: 42px;
+  margin-left: 10px;
+  color: gray;
+  font-size: 0.8em;
 }
 
 .gray {
@@ -485,6 +504,7 @@ mat-card-header.recipeheader {
     font-weight: bold;
     font-size: 1.2em;
     text-align: center;
+    line-height: 1em;
   }
 
   .commentsHeader {
@@ -525,6 +545,8 @@ mat-card-header.recipeheader {
   .recipetitle {
     font-weight: bold;
     font-size: 1.8em;
+    line-height: 1em;
+    text-align: center;
   }
 
   .margintoplg {
@@ -582,4 +604,10 @@ mat-card-header.recipeheader {
 .spinner {
   margin: 0 auto;
   margin-top: 500px;
+}
+
+.views {
+  // margin-top: 20px;
+  font-size: 0.9em;
+  color: rgb(92, 88, 88);
 }
