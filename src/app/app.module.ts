@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { RecipelistComponent } from './recipelist/recipelist.component';
@@ -44,6 +44,7 @@ import { DialogNewRecipeComponent } from './dialog-new-recipe-component/dialog-n
 import { VeganReferenceComponent } from './vegan-reference/vegan-reference.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { CommonService } from './common.service';
 
 @NgModule({
   declarations: [
@@ -109,7 +110,14 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
     MatProgressSpinnerModule,
     MatRadioModule,
   ],
-  providers: [CookieService],
+  providers: [
+    CookieService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CommonService,
+      multi: true,
+    },
+  ],
   entryComponents: [DialogNewRecipeComponent],
   bootstrap: [AppComponent],
 })

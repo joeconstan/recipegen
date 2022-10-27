@@ -4,6 +4,7 @@ import { CommonService } from '../common.service';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
+import { userObject, userObjectWithToken } from 'src/types';
 // import anime from 'animejs/lib/anime.es.js';
 
 @Component({
@@ -17,7 +18,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   loading = false;
   submitted = false;
-  user: any;
+  user: userObject;
   loggedIn: boolean;
   errorMsg: String;
 
@@ -129,17 +130,27 @@ export class LoginComponent implements OnInit {
     this.commonService
       .getUser(this.f.username.value, this.f.password.value)
       .subscribe(
-        (data) => {
+        (data: userObjectWithToken) => {
           if (!data) {
             console.log('user does not exist or wrong pswd');
             this.errorMsg = 'Username or password is incorrect';
           } else {
-            this.userService.setUser(data);
-            localStorage.setItem('user', JSON.stringify(data));
-            // this.userService.getUser() = data[0]
-            this._snackBar.open('Logged in as ' + data['username'], 'ok', {
-              duration: 2000,
-            });
+            this.userService.setUser(data.result);
+            this.user = {
+              id: data.result.id,
+              username: data.result.username,
+              adminflag: data.result.adminflag,
+              color_key: data.result.color_key,
+            };
+
+            localStorage.setItem('usertoken', JSON.stringify(data.token));
+            this._snackBar.open(
+              'Logged in as ' + data.result['username'],
+              'ok',
+              {
+                duration: 2000,
+              }
+            );
             this.router.navigate(['/rb']);
           }
         },
