@@ -22,6 +22,17 @@ export interface recipeObject {
 export interface userObject {
   id: number;
   username: string;
-  password: string;
   adminflag: boolean;
+  password?: string;
+  color_key?: number;
+}
+export interface userObjectWithToken {
+  result: {
+    id: number;
+    username: string;
+    adminflag: boolean;
+    password?: string;
+    color_key?: number;
+  };
+  token: string;
 }

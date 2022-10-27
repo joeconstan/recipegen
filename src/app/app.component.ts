@@ -13,6 +13,7 @@ import { CommonService } from './common.service';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { NavigationService } from './navigation.service';
+import { userObjectWithToken } from 'src/types';
 
 @Component({
   selector: 'app-root',
@@ -60,22 +61,30 @@ export class AppComponent implements OnInit {
     this.tabcolor = this.tabcolor ? undefined : 'accent';
 
     // retrieve the locally stored user
-    let user = JSON.parse(localStorage.getItem('user'));
+    let usertoken = JSON.parse(localStorage.getItem('usertoken'));
 
-    // use local username to retrieve full updated db record
-    if (user) {
-      this.commonService.getUser(user['username']).subscribe(
-        (data) => {
-          if (!data) {
-            // console.log('user does not exist or wrong pswd')
-          } else {
-            this.userService.setUser(data);
-            this.user = data;
-            localStorage.setItem('user', JSON.stringify(data));
-          }
-        },
-        (error) => console.error(error)
-      );
+    // use local usertoken to retrieve full updated db record
+    if (usertoken) {
+      this.commonService
+        .getUser(undefined, undefined, (usertoken = usertoken))
+        .subscribe(
+          (data: userObjectWithToken) => {
+            if (!data) {
+            } else {
+              this.userService.setUser(data.result);
+              this.user = {
+                id: data.result.id,
+                username: data.result.username,
+                adminflag: data.result.adminflag,
+                color_key: data.result.color_key,
+              };
+
+              // localStorage.setItem('user', JSON.stringify(this.user));
+              // localStorage.setItem('usertoken', JSON.stringify(this.user.id));
+            }
+          },
+          (error) => console.error(error)
+        );
     }
 
     this.router.events
@@ -99,7 +108,7 @@ export class AppComponent implements OnInit {
 
   getUser() {
     if (this.userService.getUser()) {
-      return this.userService.getUser() != {};
+      return this.userService.getUser();
     }
     return false;
   }
@@ -116,7 +125,7 @@ export class AppComponent implements OnInit {
   logout() {
     var nouser = {};
     this.userService.setUser(nouser);
-    localStorage.removeItem('user');
+    localStorage.removeItem('usertoken');
     this.router.navigate(['/login']);
   }
 

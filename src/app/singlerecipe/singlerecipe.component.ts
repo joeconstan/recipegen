@@ -15,6 +15,7 @@ import {
   // MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
 import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-new-recipe-component.component';
+import { HttpErrorResponse } from '@angular/common/http';
 // import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 
 @Component({
@@ -605,7 +606,14 @@ export class SinglerecipeComponent implements OnInit {
             (error) => console.error(error)
           );
         },
-        (error) => console.error(error)
+        (error: HttpErrorResponse) => {
+          if (error.status == 413) {
+            this._snackBar.open('Image file too large', '', {
+              duration: 2000,
+            });
+          }
+          console.error(error);
+        }
       );
 
       // },

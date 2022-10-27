@@ -1,12 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpParams,
+  HttpHeaders,
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler,
+  HttpEvent,
+} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CommonService {
+export class CommonService implements HttpInterceptor {
   constructor(private http: HttpClient) {}
+
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    request = request.clone({
+      setHeaders: {
+        'x-api-key': 'sJQjuaxlJ78vrxPFGu1RJ8B6giuqLx8E2qEBMWUi',
+      },
+    });
+    return next.handle(request);
+  }
 
   /* RECIPES */
   newRecipe(recipe) {
@@ -101,9 +121,13 @@ export class CommonService {
   }
 
   getRecipe(recipe) {
+    const httpHeaders: HttpHeaders = new HttpHeaders({
+      'x-api-key': 'sJQjuaxlJ78vrxPFGu1RJ8B6giuqLx8E2qEBMWUi',
+    });
+
     return this.http.get(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe/',
-      { params: { recipe: recipe } }
+      { params: { recipe: recipe }, headers: httpHeaders }
     );
   }
 
@@ -267,10 +291,18 @@ export class CommonService {
     );
   }
 
-  getUser(username: string, password: string = '') {
+  getUser(
+    username: string = '',
+    password: string = '',
+    usertoken: string = ''
+  ) {
     var username = encodeURIComponent(username);
     var pswd = encodeURIComponent(password);
-    var params = new HttpParams().set('username', username).set('pswd', pswd);
+    var usertoken = encodeURIComponent(usertoken);
+    var params = new HttpParams()
+      .set('username', username)
+      .set('pswd', pswd)
+      .set('usertoken', usertoken);
 
     return this.http.get(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/user',
