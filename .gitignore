@@ -55,5 +55,4 @@ mongoconnectionnotes.txt
 layers/*
 recipedoc.template
 recipes.json
-environment.ts
-environment.prod.ts
+environments/*
