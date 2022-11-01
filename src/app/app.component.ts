@@ -126,6 +126,7 @@ export class AppComponent implements OnInit {
     var nouser = {};
     this.userService.setUser(nouser);
     localStorage.removeItem('usertoken');
+    localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
 
