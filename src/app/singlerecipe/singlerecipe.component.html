@@ -190,16 +190,26 @@
           <div *ngIf="recipe_full.blurb" class="flexrow div_blurb">
             <p class="montst-md blurb">{{ recipe_full.blurb }}</p>
           </div>
-          <div class="row div_ingredients">
-            <div class="col-12 col-md-6 lesspadding">
+
+          <div class="row div_ingredients_header">
+            <div class="col-6 col-md-2 lesspadding">
               <label
                 ngbAutofocus
                 for="ingredientsdiv"
                 class="montst-lg margintop"
-                >Ingredients</label
+                >{{
+                  format == "combined" ? "Directions" : "Ingredients"
+                }}</label
               >
             </div>
-            <div class="floatright marginbottommobile marginright no-print">
+
+            <div class="col-6 col-md-3 lesspadding aligncenter clickable">
+              <a class="btn-responsive" (click)="toggleFormat()">
+                {{ format == "combined" ? "View Standard" : "View Combined" }}
+              </a>
+            </div>
+
+            <div class="col-md-5 marginbottommobile no-print">
               <div class="floatleft margintop marginright">Scale</div>
               <button
                 mat-stroked-button
@@ -238,11 +248,14 @@
                 3x
               </button>
             </div>
-            <div class="floatright marginbottommobile">
-              <!-- <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': measure_system == 'us'}" (click)="toggleMeasureSystem('us')">US</button> -->
-              <!-- <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': measure_system == 'metric'}" (click)="toggleMeasureSystem('metric')">metric</button> -->
-            </div>
-            <div class="floatright marginbottommobile marginright no-print">
+
+            <!-- <div class="col-md-1 floatright marginbottommobile"> -->
+            <!-- <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': measure_system == 'us'}" (click)="toggleMeasureSystem('us')">US</button> -->
+            <!-- <button mat-stroked-button color="primary" class="floatleft btn-responsive" [ngClass]="{'selectedScale': measure_system == 'metric'}" (click)="toggleMeasureSystem('metric')">metric</button> -->
+            <!-- </div> -->
+            <div
+              class="col-md-1 floatright marginbottommobile marginright no-print"
+            >
               <button
                 *ngIf="!isMobile()"
                 mat-button
@@ -253,6 +266,22 @@
                 Print
               </button>
             </div>
+          </div>
+
+          <div *ngIf="format == 'standard'" class="row div_ingredients">
+            <!-- <div class="col-12 col-md-6 lesspadding">
+              <div class="">
+                <button
+                  mat-stroked-button
+                  color="primary"
+                  class="floatleft btn-responsive"
+                  [ngClass]=""
+                  (click)="toggleFormat()"
+                >
+                  View Combined
+                </button>
+              </div>
+            </div> -->
 
             <div class="marginleft margintop" *ngIf="recipe_scale == 1">
               <div
@@ -277,12 +306,12 @@
           </div>
 
           <!-- directions -->
-          <div class="row div_directions">
+          <div *ngIf="format == 'standard'" class="row div_directions_header">
             <label for="directionsdiv" class="montst-lg margintop"
               >Directions</label
             >
           </div>
-          <div class="row">
+          <div *ngIf="format == 'standard'" class="row">
             <div>
               <ol class="directions_list" id="directionsdiv">
                 <li
@@ -295,6 +324,23 @@
                   {{ direction }}
                 </li>
               </ol>
+            </div>
+          </div>
+          <div class="marginleft margintop row" *ngIf="format == 'combined'">
+            <div *ngFor="let dirGroup of directionGroups" class="flexcontainer">
+              <div *ngFor="let ingredient of dirGroup['ingredients']">
+                <div>
+                  <p class="montst-sm">{{ ingredient }}</p>
+                </div>
+              </div>
+              <div class="connecter" [ngStyle]="{ height: '50px' }" id="conn1">
+                <div
+                  [ngStyle]="{ height: dirGroupSize(dirGroup['ingredients']) }"
+                ></div>
+              </div>
+              <div class="line floatleft" id="line1">
+                <div>{{ dirGroup["direction"] }}</div>
+              </div>
             </div>
           </div>
         </mat-card-content>

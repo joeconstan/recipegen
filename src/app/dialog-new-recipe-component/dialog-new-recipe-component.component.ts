@@ -3,6 +3,7 @@ import { CommonService } from '../common.service';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+// import { FormControl } from '@angular/forms';
 
 export interface DialogData {
   edit: boolean;
@@ -57,9 +58,9 @@ export class DialogNewRecipeComponent implements OnInit {
     dbinsert: false,
   };
   hasFile = false;
-  loading:boolean = false;
+  loading: boolean = false;
+  // name = new FormControl('');
 
-  
   constructor(
     public dialogRef: MatDialogRef<DialogNewRecipeComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,

@@ -129,6 +129,14 @@ mat-panel-title {
   display: inline;
 }
 
+.aligncenter {
+  align-self: center;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
 mat-accordion,
 mat-expansion-panel {
   width: 100% !important;
@@ -167,6 +175,7 @@ mat-card-subtitle {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 mat-card-header {
@@ -175,10 +184,21 @@ mat-card-header {
   margin-bottom: 3px;
 }
 
+// .formatToggle {
+//   // margin-top: 10px;
+// }
+
 .flex div div {
   display: flex;
   flex-direction: row;
-  justify-content: left;
+  justify-content: center;
+}
+
+.flexcontainer {
+  // display: flex;
+  // flex-direction: column;
+  // flex-wrap: wrap;
+  // justify-content: left;
 }
 
 .comments .commentinline {
@@ -297,11 +317,10 @@ mat-card-header {
   border-bottom: 1px solid #dee2e6;
   padding-bottom: 10px;
   margin-bottom: 3px;
-  border-top: 1px solid #dee2e6;
   padding-top: 10px;
 }
 
-.div_directions {
+.div_directions_header {
   border-top: 1px solid #dee2e6;
   padding-top: 10px;
 }
@@ -478,6 +497,48 @@ mat-card-header.recipeheader {
 .newComment {
   margin-top: 20px !important;
 }
+
+// styling for combined format
+.connecter {
+  width: 30px;
+  position: relative;
+  left: 100px;
+  top: 10px;
+  // left: 100px;
+  // top: 10px;
+  // height: 220px;
+  // float: left;
+}
+
+.line {
+  width: 30px;
+  // height: 200px;
+  // float: left;
+}
+
+.connecter div {
+  border: 1px solid #000;
+  border-left: none;
+  height: 50px;
+  width: 100%;
+  margin: 80px 0 0 100px;
+  position: absolute;
+}
+
+.connecter div:first-child {
+  margin: 2px 0 0 10px;
+}
+
+.line div {
+  // border-top: 1px solid #000;
+  margin: 90px 0 0 20px;
+}
+
+.line div:first-child {
+  // margin-top: 55px;
+}
+
+// end styling for combined format
 
 /* button scaling for mobile */
 

@@ -27,11 +27,11 @@ export class SinglerecipeComponent implements OnInit {
   recipe_full: any;
   newComment;
   recipe_comments;
-  editing = false;
+  // editing = false;
 
-  editing_name = false;
-  editing_ing = false;
-  editing_dir = false;
+  // editing_name = false;
+  // editing_ing = false;
+  // editing_dir = false;
 
   editable_name = false;
   editable_ing = false;
@@ -58,6 +58,8 @@ export class SinglerecipeComponent implements OnInit {
   innerWidth: number;
   imgSize: string;
   viewCount: number;
+  format: string = 'standard';
+  directionGroups = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -121,6 +123,13 @@ export class SinglerecipeComponent implements OnInit {
 
           // storing for use with scaling recipe later
           this.scaled_ingredients = this.recipe_full.ingredients;
+
+          // attempt to calculate ingredient groups (should be stored in the db in a truncated format in the future)
+          this.directionGroups = this.calculateDirectionGroups(
+            this.recipe_full.ingredients,
+            this.recipe_full.directions
+          );
+          console.log('this.directionGroups: ', this.directionGroups);
         }
       },
       (error) => console.error(error)
@@ -153,6 +162,18 @@ export class SinglerecipeComponent implements OnInit {
     );
   }
 
+  calculateDirectionGroups(ingredients, directions) {
+    if (directions.length == 1) {
+      if (directions[0].toLowerCase().includes('all')) {
+        return [{ direction: directions[0], ingredients: ingredients }];
+      }
+    }
+    return [ingredients];
+  }
+
+  dirGroupSize(dirGroup) {
+    return (dirGroup.length * 30).toString() + 'px';
+  }
   openPrintDialog() {
     window.print();
   }
@@ -430,6 +451,15 @@ export class SinglerecipeComponent implements OnInit {
         }
       });
       this.scaled_ingredients = ing_els;
+      this.directionGroups = this.calculateDirectionGroups(
+        this.scaled_ingredients,
+        this.recipe_full.directions
+      );
+    } else {
+      this.directionGroups = this.calculateDirectionGroups(
+        this.recipe_full.ingredients,
+        this.recipe_full.directions
+      );
     }
   }
 
@@ -716,5 +746,14 @@ export class SinglerecipeComponent implements OnInit {
       return formattedDateWithYear;
     }
     return formattedDate;
+  }
+
+  toggleFormat() {
+    if (this.format == 'standard') {
+      this.format = 'combined';
+    } else {
+      this.format = 'standard';
+      // or 'inline'!
+    }
   }
 }

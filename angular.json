@@ -19,7 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/assets"],
-            "styles": ["src/styles.scss", "src/theme.scss", "src/globals.scss"],
+            "styles": ["src/styles.scss", "src/theme.scss"],
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -84,7 +84,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": ["src/assets"],
-            "styles": ["src/styles.scss", "src/theme.scss", "src/globals.scss"],
+            "styles": ["src/styles.scss", "src/theme.scss"],
             "scripts": []
           }
         },
