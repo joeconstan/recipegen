@@ -9,6 +9,7 @@ import {
   HttpEvent,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,7 @@ export class CommonService implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-        'x-api-key': 'sJQjuaxlJ78vrxPFGu1RJ8B6giuqLx8E2qEBMWUi',
+        'x-api-key': environment.apiKey,
       },
     });
     return next.handle(request);
@@ -121,13 +122,9 @@ export class CommonService implements HttpInterceptor {
   }
 
   getRecipe(recipe) {
-    const httpHeaders: HttpHeaders = new HttpHeaders({
-      'x-api-key': 'sJQjuaxlJ78vrxPFGu1RJ8B6giuqLx8E2qEBMWUi',
-    });
-
     return this.http.get(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/recipe/',
-      { params: { recipe: recipe }, headers: httpHeaders }
+      { params: { recipe: recipe } }
     );
   }
 
