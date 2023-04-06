@@ -58,3 +58,4 @@ layers/*
 recipedoc.template
 recipes.json
 src/environments/*
+.vscode/settings.json
