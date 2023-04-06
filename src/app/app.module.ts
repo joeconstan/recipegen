@@ -45,6 +45,8 @@ import { VeganReferenceComponent } from './vegan-reference/vegan-reference.compo
 import { NotFoundComponent } from './not-found/not-found.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { CommonService } from './common.service';
+import { RecipeFormatterPipe } from './recipe-formatter.pipe';
+import { IngredientsFormatterPipe } from './ingredients-formatter.pipe';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,8 @@ import { CommonService } from './common.service';
     VeganReferenceComponent,
     NotFoundComponent,
     PasswordResetComponent,
+    RecipeFormatterPipe,
+    IngredientsFormatterPipe,
   ],
   imports: [
     BrowserModule,

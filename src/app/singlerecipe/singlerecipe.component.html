@@ -78,7 +78,7 @@
         <div *ngIf="userAdmin()" class="no-print">
           <input
             type="file"
-            accept="image/*"
+            accept=".png, .jpg, .jpeg, image/*"
             name="fileupload"
             id="fileupload"
             (change)="readImage($event.target.files)"
@@ -289,7 +289,7 @@
                 id="ingredientsdiv"
               >
                 <div>
-                  <p class="montst-sm">{{ ingredient }}</p>
+                  <p [innerHTML]="ingredient | ingredientsFormatter" class="montst-sm"></p>
                 </div>
               </div>
             </div>
@@ -299,7 +299,7 @@
                 id="ingredientsdiv"
               >
                 <div>
-                  <p class="montst-sm">{{ ingredient }}</p>
+                  <p [innerHTML]="ingredient | ingredientsFormatter" class="montst-sm"></p>
                 </div>
               </div>
             </div>
@@ -321,7 +321,7 @@
                   "
                   class="montst-sm numbered_item"
                 >
-                  {{ direction }}
+                  <p [innerHTML]="direction | recipeFormatter"></p>
                 </li>
               </ol>
             </div>

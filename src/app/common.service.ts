@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpParams,
-  HttpHeaders,
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
