@@ -18,6 +18,14 @@ import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-
 import { HttpErrorResponse } from '@angular/common/http';
 // import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 
+interface Step {
+  step: string;
+}
+
+interface Ingredient {
+  ingredient: string;
+}
+
 @Component({
   selector: 'app-singlerecipe',
   templateUrl: './singlerecipe.component.html',
@@ -183,6 +191,17 @@ export class SinglerecipeComponent implements OnInit {
   }
 
   openEditRecipeDialog() {
+    let objDirections: Step[] = [];
+    this.recipe_full.directions.forEach(direction => {
+      objDirections.push({'step': direction});
+    });
+
+    let objIngredients: Ingredient[] = [];
+    this.recipe_full.ingredients.forEach(ingredient => {
+      objIngredients.push({'ingredient': ingredient});
+    });
+
+
     const dialogRef = this.dialog.open(DialogNewRecipeComponent, {
       width: '600px',
       height: '700px',
@@ -190,8 +209,8 @@ export class SinglerecipeComponent implements OnInit {
       data: {
         edit: true,
         name: this.recipe_full.name,
-        ingredients: this.recipe_full.ingredients,
-        directions: this.recipe_full.directions,
+        ingredients: objIngredients,
+        directions: objDirections,
         pending: this.recipe_full.pending,
         timelength: this.recipe_full.timelength,
         difficulty: this.recipe_full.difficulty,
@@ -219,6 +238,8 @@ export class SinglerecipeComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.recipe_full.Ingredients = [];
       if (result) {
+        result.ingredients = result.ingredients.map(ing=>ing.ingredient)
+        result.directions = result.directions.map(dir=>dir.step)
         // result.Ingredients = this.parseIngredients(result.Ingredients)
         // result.submittedby = this.userService.getUser().username;
         let nutFree = true;

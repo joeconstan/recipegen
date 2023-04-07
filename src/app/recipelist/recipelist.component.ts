@@ -453,6 +453,8 @@ export class RecipelistComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.new_recipe.ingredients = [];
       if (result) {
+        result.ingredients = result.ingredients.map(ing=>ing.ingredient)
+        result.directions = result.directions.map(dir=>dir.step)
         // result.Ingredients = this.parseIngredients(result.Ingredients)
         result.submittedby = this.userService.getUser().username;
         let nutFree = true;

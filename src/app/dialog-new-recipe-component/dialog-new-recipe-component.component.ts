@@ -5,11 +5,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 // import { FormControl } from '@angular/forms';
 
+interface Step {
+  step: string;
+}
+interface Ingredient {
+  ingredient: string;
+}
+
 export interface DialogData {
   edit: boolean;
   name: string;
-  ingredients: string[];
-  directions: string[];
+  ingredients: Ingredient[];
+  directions: Step[];
   type: string[];
   timelength: number;
   timeWarning: boolean;
@@ -72,11 +79,17 @@ export class DialogNewRecipeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.data.ingredients) {
-      this.dialogue_ingredient = this.data.ingredients.join('\n');
+    // if (this.data.ingredients) {
+    //   this.dialogue_ingredient = this.data.ingredients.join('\n');
+    // }
+    if (this.data.ingredients.length==0) {
+      this.data.ingredients.push({'ingredient':''});
     }
-    if (this.data.directions) {
-      this.dialogue_direction = this.data.directions.join('\n');
+    // if (this.data.directions) {
+      // this.dialogue_direction = this.data.directions.join('\n');
+    // }
+    if (this.data.directions.length==0) {
+      this.data.directions.push({'step':''});
     }
     if (this.data.directions) {
       this.dialogue_type = this.data.type;
@@ -86,14 +99,16 @@ export class DialogNewRecipeComponent implements OnInit {
     }
   }
 
-  dialogue_addIngredient() {
-    this.data.ingredients = this.dialogue_ingredient.split(/\r?\n/);
+  dialogue_addIngredient(ing:string,index:number) {
+    // this.data.ingredients = this.dialogue_ingredient.split(/\r?\n/);
+    // console.log(this.data.ingredients)
+    // this.data.ingredients[index] = ing;
     // this.dialogue_ingredient = '';
   }
   dialogue_addDirection() {
     // this.data.Directions.push(this.dialogue_direction)
     // this.dialogue_direction = '';
-    this.data.directions = this.dialogue_direction.split(/\r?\n/);
+    // this.data.directions = this.dialogue_direction.split(/\r?\n/);
   }
 
   checkSteps() {
@@ -184,4 +199,29 @@ export class DialogNewRecipeComponent implements OnInit {
       });
     });
   }
+
+
+  addStep(){
+    this.data.directions.push({'step':''});
+
+  }
+
+  addHeader(){
+
+  }
+
+  addIngredient(){
+    this.data.ingredients.push({'ingredient':''});
+
+  }
+
+  removeDirection(index:number){
+    this.data.directions.splice(index,1);
+  }
+
+  removeIngredient(index:number){
+    // console.log('removing ing in pos: ', index, ' which is: ', this.data.ingredients[index])
+    this.data.ingredients.splice(index,1);
+  }
+
 }

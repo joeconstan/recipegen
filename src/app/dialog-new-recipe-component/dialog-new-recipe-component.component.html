@@ -50,39 +50,51 @@
         <input matInput [(ngModel)]="data.blurb" />
       </mat-form-field>
     </p>
-    <p>
-      <mat-form-field>
-        <mat-label>Ingredients (newline-separated)</mat-label>
-        <textarea
-          matInput
-          rows="3"
-          value=""
-          (change)="dialogue_addIngredient()"
-          name="d_ingredient_field"
-          [(ngModel)]="dialogue_ingredient"
-          required
-        ></textarea>
-      </mat-form-field>
-    </p>
+    <div class="margintop">
+      <span>Ingredients</span>
+      <div *ngFor="let ingredient of data.ingredients;let i = index">
 
-    <p>
+        <mat-form-field>
+          <!-- <mat-label>e.g. 2 cups flour</mat-label> -->
+          <input matInput
+          [name]="'d_ingredient_field_'+i"
+          [(ngModel)]="ingredient.ingredient" required />
+          <button
+          class="clickable floatright"
+          mat-icon-button
+          (click)="removeIngredient(i)"
+          >
+            <mat-icon class="closeIcon">close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <button mat-stroked-button color="primary" (click)="addIngredient()" class="stepbutton">Add Ingredient</button>
+      <button mat-button (click)="addHeader()">Add Header</button>
+    </div>
+
+    <div class="margintop">
+      <span>Directions</span>
+      <div *ngFor="let direction of data.directions;let i = index">
+
       <mat-form-field>
-        <mat-label
-          >Directions - Add one step per line. Press enter to start a new
-          step.</mat-label
-        >
-        <textarea
-          matInput
-          rows="3"
-          value=""
-          (change)="dialogue_addDirection()"
-          name="d_direction_field"
-          [(ngModel)]="dialogue_direction"
-          required
-        ></textarea>
+        <mat-label>Step {{i+1}}</mat-label>
+        <input matInput
+          [name]="'d_direction_field_'+i"
+          [(ngModel)]="direction.step" required />
+          <button
+          class="clickable floatright"
+          mat-icon-button
+          (click)="removeDirection(i)"
+          >
+            <mat-icon class="closeIcon">close</mat-icon>
+          </button>
       </mat-form-field>
-    </p>
-    <p>
+      </div>
+      <button mat-stroked-button color="primary" (click)="addStep()" class="stepbutton">Add Step</button>
+      <button mat-button (click)="addHeader()">Add Header</button>
+    </div>
+    <p class="margintop">
       <mat-form-field>
         <mat-label>Type</mat-label>
         <mat-select

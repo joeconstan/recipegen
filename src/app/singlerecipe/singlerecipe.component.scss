@@ -552,9 +552,11 @@ mat-card-header.recipeheader {
   .round-image {
     width: 200px;
     height: 200px;
-    /* background-size: cover; */
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
+    object-fit: cover;
+    // background-size: contain;
+    // background-repeat: no-repeat;
 
     border-radius: 125px;
     -webkit-border-radius: 125px;
@@ -594,10 +596,9 @@ mat-card-header.recipeheader {
   .round-image {
     width: 250px;
     height: 250px;
-    /* background-size: cover; */
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
-
+    object-fit: cover;
     border-radius: 125px;
     -webkit-border-radius: 125px;
     -moz-border-radius: 125px;
