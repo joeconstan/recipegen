@@ -1,8 +1,15 @@
 .header {
   font-size: large;
-  font-weight: 500;
+  font-weight: 600;
   margin-top: 50px;
   margin-bottom: 20px;
+}
+
+.subheader {
+  font-size: medium;
+  font-weight: 500;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .body {
@@ -22,4 +29,11 @@ td {
   font-weight: 450;
   font-size: 1.1em;
   margin-bottom: 10px;
+}
+
+.tofumarinadeimg{
+  max-width: 300px;
+  max-height: 500px;
+  margin:20px;
+
 }
