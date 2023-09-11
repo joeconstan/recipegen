@@ -7,6 +7,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-new-recipe-component.component';
 import { NavigationService } from '../navigation.service';
 
+// interface Ingredient {
+//   ingredient: string;
+//   isHeader?: boolean;
+// }
+
+
 @Component({
   selector: 'app-recipelist',
   templateUrl: './recipelist.component.html',
@@ -364,7 +370,8 @@ export class RecipelistComponent implements OnInit {
       this.filters.type == '' &&
       this.filters.difficulty == '' &&
       this.filters.keywords.length == 0 &&
-      this.filters.time == ''
+      this.filters.time == '' &&
+      this.recipes_sort == ''
     ) {
       // if no filters set, query normally
       this.limitedResults = false;
@@ -392,8 +399,6 @@ export class RecipelistComponent implements OnInit {
     } else {
       this.query_recipes();
     }
-    // re-run mongo query
-    // need to make a generic query to call then. so like just pass in filters. maybe as a dict. so that it can just check like, oh time was passed as a filter type? then query with time. etc
 
     localStorage.setItem('filters', JSON.stringify(this.filters));
     this.p = 1;
@@ -458,6 +463,7 @@ export class RecipelistComponent implements OnInit {
         // result.Ingredients = this.parseIngredients(result.Ingredients)
         result.submittedby = this.userService.getUser().username;
         let nutFree = true;
+        // result.ingredients.forEach((ing: Ingredient) => {
         result.ingredients.forEach((ing: string) => {
           if (
             ing.toLowerCase().includes('nut') ||
