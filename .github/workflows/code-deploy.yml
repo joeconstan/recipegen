@@ -1,0 +1,32 @@
+name: Code Deploy
+run-name: Deploy changes by ${{ github.actor }}
+on:
+  push:
+    branches:
+    - master
+env:
+  BUCKET_NAME : "therecipedoc.com"
+  AWS_REGION : "us-west-2"
+permissions:
+      id-token: write
+      contents: read
+jobs:
+  S3PackageUpload:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Starting deploy job"
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::330032145469:role/Github-actions-role
+          role-session-name: samplerolesession
+          aws-region: ${{ env.AWS_REGION }}
+        # Upload a file to AWS s3
+      - name:  Copy index.html to s3
+        run: |
+          aws s3 cp ./.gitignore s3://${{ env.BUCKET_NAME }}/
+          
+      - run: echo "Finished deploy job"
