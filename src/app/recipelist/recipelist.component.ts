@@ -6,12 +6,12 @@ import { UserService } from '../user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-new-recipe-component.component';
 import { NavigationService } from '../navigation.service';
+import { Recipe, RatingInfo } from '../consts/consts';
 
 // interface Ingredient {
 //   ingredient: string;
 //   isHeader?: boolean;
 // }
-
 
 @Component({
   selector: 'app-recipelist',
@@ -19,7 +19,7 @@ import { NavigationService } from '../navigation.service';
   styleUrls: ['./recipelist.component.scss'],
 })
 export class RecipelistComponent implements OnInit {
-  public recipes: any;
+  public recipes: Recipe[];
   headerText = 'All Recipes';
   p: number = 1;
   mealtypes = [
@@ -65,7 +65,7 @@ export class RecipelistComponent implements OnInit {
   };
 
   images = [];
-  ratings = [];
+  ratings: RatingInfo[] = [];
 
   recipesLoading = true;
   limitedResults = false;
@@ -132,16 +132,6 @@ export class RecipelistComponent implements OnInit {
       (data) => {
         if (recipeid == '') {
           this.images = data;
-          // this.images.forEach(element => {
-          // });
-          // use this url ^ to see what objects exist and then check the tags to see which recipes they belong to
-          // then construct a url like
-          // https://recipeimagesbucket.s3.us-west-2.amazonaws.com/bird_wp.jpg
-          // to actually view the images
-
-          // just return the result of list objects instead of making a presigned..
-
-          // this.images = data
         } else {
           // if a single recipeid was asked for, then this was an update to a single recipe's imgs. delete those imgs and add any current ones.
           this.images = this.images.filter((img) => img.recipe_id != recipeid);
@@ -154,9 +144,7 @@ export class RecipelistComponent implements OnInit {
 
   getRatings() {
     this.commonService.getRatings().subscribe(
-      (data) => {
-        // data is in form:
-        // [recipe_id, numRatings, rating]
+      (data: RatingInfo[]) => {
         this.ratings = data;
       },
       (error) => console.error(error)
@@ -258,7 +246,6 @@ export class RecipelistComponent implements OnInit {
   }
 
   pageChanged(event) {
-    // this.imagesLoading = true;
     this.recipesLoading = true;
 
     localStorage.setItem('pagination', JSON.stringify(this.p));
@@ -266,25 +253,7 @@ export class RecipelistComponent implements OnInit {
     if (this.limitedResults) {
       this.recipesLoading = false;
     } else {
-      // if (this.recipesByPage.find(x=>x.page == this.p)){
-      //     this.recipes = this.recipesByPage.find(x=>x.page == this.p).recipes
-      //     this.recipesLoading = false;
-      //     // this.getImages(this.recipes.map(x=>x._id))
-      // }
       this.query_recipes();
-      // this.commonService.getRecipes(this.recipes_sort).subscribe(
-      // (data) => {
-      // this.recipes = data;
-      // this.lastEvaluatedKey = data['LastEvaluatedKey']['_id']
-      // this.recipesByPage.push({
-      //   'page': this.p,
-      //   'recipes': this.recipes
-      // })
-      // this.getImages(this.recipes.map(x=>x._id))
-      // this.recipesLoading = false;
-      // },
-      // (error) => console.error(error)
-      // );
     }
   }
 
@@ -297,13 +266,13 @@ export class RecipelistComponent implements OnInit {
     });
   }
 
-  readImage(fileInput: any) {
-    var fileName = fileInput.target.files[0].name;
-    if (fileInput.target.files && fileInput.target.files[0]) {
-      var file = fileInput.target.files[0];
-      this.getBase64(file).then((data) => (this.image_upload = data));
-    }
-  }
+  // readImage(fileInput: any) {
+  //   var fileName = fileInput.target.files[0].name;
+  //   if (fileInput.target.files && fileInput.target.files[0]) {
+  //     var file = fileInput.target.files[0];
+  //     this.getBase64(file).then((data) => (this.image_upload = data));
+  //   }
+  // }
 
   runSearchIfValue() {
     if (this.search_value || this.filters.keywords.length > 0) {
@@ -313,12 +282,6 @@ export class RecipelistComponent implements OnInit {
 
   search_recipes() {
     this.addFilter(this.search_value, 'keywords');
-    // this.commonService.getRecipesbyKeyword(this.search_value).subscribe(data => {
-    // this.recipes = data;
-    // },
-    // error => console.error(error)
-    // )
-    // this.query_recipes()
   }
 
   addFilter(value, category): void {
@@ -365,7 +328,6 @@ export class RecipelistComponent implements OnInit {
     }
 
     this.recipesLoading = true;
-    // this.imagesLoading = true;
     if (
       this.filters.type == '' &&
       this.filters.difficulty == '' &&
@@ -376,26 +338,14 @@ export class RecipelistComponent implements OnInit {
       // if no filters set, query normally
       this.limitedResults = false;
       this.commonService.getRecipes().subscribe(
-        (data) => {
+        (data: any) => {
           // this.recipes = data['Items']
           this.recipes = data;
           this.getImages();
-          // this.recipesByPage.push({
-          //   'page': this.p,
-          //   'recipes': this.recipes,
-          //   'images': []
-          // })
-          // this.lastEvaluatedKey = data['LastEvaluatedKey']['_id']
-          // this.getImages(this.recipes.map(x=>x._id))
           this.recipesLoading = false;
         },
         (error) => console.error(error)
       );
-      // this.commonService.getRecipeCount().subscribe(data => {
-      //     this.recipeCount = data['records'];
-      // },
-      //     error => console.error(error)
-      // )
     } else {
       this.query_recipes();
     }
@@ -409,15 +359,13 @@ export class RecipelistComponent implements OnInit {
     this.commonService
       .getRecipesWithFilters(this.filters, this.recipes_sort)
       .subscribe(
-        (data) => {
+        (data: Recipe[]) => {
           this.recipes = data;
           this.recipesLoading = false;
           if (runImages) {
             this.getImagesS3();
             this.getRatings();
           }
-          // this.recipeCount = this.recipes.length
-          // this.getImages(this.recipes.map(x=>x._id))
         },
         (error) => console.error(error)
       );
@@ -458,8 +406,8 @@ export class RecipelistComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.new_recipe.ingredients = [];
       if (result) {
-        result.ingredients = result.ingredients.map(ing=>ing.ingredient)
-        result.directions = result.directions.map(dir=>dir.step)
+        result.ingredients = result.ingredients.map((ing) => ing.ingredient);
+        result.directions = result.directions.map((dir) => dir.step);
         // result.Ingredients = this.parseIngredients(result.Ingredients)
         result.submittedby = this.userService.getUser().username;
         let nutFree = true;
