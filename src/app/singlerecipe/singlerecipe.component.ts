@@ -5,18 +5,12 @@ import { CommonService } from '../common.service';
 import { UserService } from '../user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ClipboardService } from 'ngx-clipboard';
-import { recipeObject } from '../../types';
 import { DatePipe } from '@angular/common';
-import { Color } from '../consts/consts';
+import { Color, CommentObj, Recipe } from '../consts/consts';
 
-import {
-  MatDialog,
-  // MatDialogRef,
-  // MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogNewRecipeComponent } from '../dialog-new-recipe-component/dialog-new-recipe-component.component';
 import { HttpErrorResponse } from '@angular/common/http';
-// import { MATERIAL_SANITY_CHECKS } from '@angular/material/core';
 
 interface Step {
   step: string;
@@ -32,24 +26,19 @@ interface Ingredient {
   styleUrls: ['./singlerecipe.component.scss'],
 })
 export class SinglerecipeComponent implements OnInit {
-  recipe_full: any;
+  recipe_full: Recipe;
   newComment;
-  recipe_comments;
-  // editing = false;
-
-  // editing_name = false;
-  // editing_ing = false;
-  // editing_dir = false;
+  recipe_comments: CommentObj[];
 
   editable_name = false;
   editable_ing = false;
   editable_dir = false;
   images = [];
-  rating_count;
-  recipe_rating;
+  rating_count: number;
+  recipe_rating: number;
   scaled_ingredients = [];
   saved = [];
-  savedCount;
+  savedCount: number;
   recipe_scale = 1;
   user;
   fileToUpload = {
@@ -84,7 +73,7 @@ export class SinglerecipeComponent implements OnInit {
     var recipe_id = this.route.snapshot.paramMap.get('recipe');
 
     this.commonService.getRecipe(recipe_id).subscribe(
-      (data: recipeObject) => {
+      (data: Recipe) => {
         if ((data.pending || data.deleted) && !this.userAdmin()) {
           // if deleted or pending and user is not admin, redirect to 404
           this.router.navigate(['/404']);
@@ -94,7 +83,7 @@ export class SinglerecipeComponent implements OnInit {
           this.getImageNamesS3();
 
           this.commonService.getRating(this.recipe_full.id).subscribe(
-            (data) => {
+            (data: number[]) => {
               this.rating_count = data[0];
               this.recipe_rating = data[1];
             },
@@ -102,7 +91,7 @@ export class SinglerecipeComponent implements OnInit {
           );
 
           this.commonService.getComments(this.recipe_full.id).subscribe(
-            (data) => {
+            (data: CommentObj[]) => {
               if (data) {
                 this.recipe_comments = data;
               } else {
@@ -113,7 +102,7 @@ export class SinglerecipeComponent implements OnInit {
           );
 
           this.commonService.getSavedCount(this.recipe_full.id).subscribe(
-            (data) => {
+            (data: number) => {
               this.savedCount = data;
             },
             (error) => console.log(error)
@@ -137,7 +126,7 @@ export class SinglerecipeComponent implements OnInit {
             this.recipe_full.ingredients,
             this.recipe_full.directions
           );
-          console.log('this.directionGroups: ', this.directionGroups);
+          // console.log('this.directionGroups: ', this.directionGroups);
         }
       },
       (error) => console.error(error)
@@ -192,15 +181,14 @@ export class SinglerecipeComponent implements OnInit {
 
   openEditRecipeDialog() {
     let objDirections: Step[] = [];
-    this.recipe_full.directions.forEach(direction => {
-      objDirections.push({'step': direction});
+    this.recipe_full.directions.forEach((direction) => {
+      objDirections.push({ step: direction });
     });
 
     let objIngredients: Ingredient[] = [];
-    this.recipe_full.ingredients.forEach(ingredient => {
-      objIngredients.push({'ingredient': ingredient});
+    this.recipe_full.ingredients.forEach((ingredient) => {
+      objIngredients.push({ ingredient: ingredient });
     });
-
 
     const dialogRef = this.dialog.open(DialogNewRecipeComponent, {
       width: '600px',
@@ -236,10 +224,10 @@ export class SinglerecipeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.recipe_full.Ingredients = [];
+      this.recipe_full.ingredients = [];
       if (result) {
-        result.ingredients = result.ingredients.map(ing=>ing.ingredient)
-        result.directions = result.directions.map(dir=>dir.step)
+        result.ingredients = result.ingredients.map((ing) => ing.ingredient);
+        result.directions = result.directions.map((dir) => dir.step);
         // result.Ingredients = this.parseIngredients(result.Ingredients)
         // result.submittedby = this.userService.getUser().username;
         let nutFree = true;
@@ -256,7 +244,6 @@ export class SinglerecipeComponent implements OnInit {
         if (nutFree) {
           result.tags.push('Nut Free');
         }
-        console.log({ result });
         this.commonService.newRecipe(result).subscribe(
           (data) => {
             this._snackBar.open('Changes saved', 'ok', {
@@ -266,7 +253,7 @@ export class SinglerecipeComponent implements OnInit {
             // refresh recipe from db
             if (this.userAdmin()) {
               this.commonService.getRecipe(this.recipe_full.id).subscribe(
-                (data: recipeObject) => {
+                (data: Recipe) => {
                   this.recipe_full = data;
                   this.recipeLoading = false;
                   this.getImageNamesS3();
@@ -312,7 +299,7 @@ export class SinglerecipeComponent implements OnInit {
   }
 
   getImageNamesS3() {
-    this.commonService.getImagesS3(this.recipe_full.id).subscribe(
+    this.commonService.getImagesS3(this.recipe_full.id.toString()).subscribe(
       (data) => {
         this.images = data;
       },
@@ -534,7 +521,7 @@ export class SinglerecipeComponent implements OnInit {
         user_id: this.userService.getUser().id,
         username: this.userService.getUser().username,
         recipe_id: this.recipe_full.id,
-        text: this.newComment,
+        commenttext: this.newComment,
         color_key: this.userService.getUser().color_key,
       };
 
@@ -542,9 +529,7 @@ export class SinglerecipeComponent implements OnInit {
       this.newComment = '';
 
       this.commonService.commentRecipe(commentObj).subscribe(
-        (data) => {
-          // console.log(data)
-        },
+        (data) => {},
         (error) => console.error(error)
       );
     }
@@ -558,12 +543,7 @@ export class SinglerecipeComponent implements OnInit {
     }
 
     var user = this.userService.getUser();
-    // if (!user.saved){
-    //   user.saved = [];
-    // }
     this.saved.push(this.recipe_full.id);
-
-    // this.userService.setUser(user)
 
     this.commonService.saveRecipe(user.id, this.recipe_full.id).subscribe(
       (data) => {
@@ -650,7 +630,7 @@ export class SinglerecipeComponent implements OnInit {
           });
           // reload the recipe so the image shows up
           this.commonService.getRecipe(this.recipe_full.id).subscribe(
-            (data) => {
+            (data: Recipe) => {
               this.recipe_full = data;
               this.refreshImages();
             },
@@ -666,16 +646,11 @@ export class SinglerecipeComponent implements OnInit {
           console.error(error);
         }
       );
-
-      // },
-      // error => console.error(error)
-      // )
-      // });
     });
   }
 
   refreshImages() {
-    this.commonService.getImages(this.recipe_full.id).subscribe(
+    this.commonService.getImages(this.recipe_full.id.toString()).subscribe(
       (data) => {
         this.images = data;
       },
@@ -711,7 +686,6 @@ export class SinglerecipeComponent implements OnInit {
   }
 
   submitComment() {
-    console.log(this.newCommentText);
     let new_comment = {
       user_id: this.userService.getUser().id,
       username: this.userService.getUser().username,

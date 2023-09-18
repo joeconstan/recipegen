@@ -9,6 +9,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
+import { CommentObj, RatingInfo } from './consts/consts';
 
 @Injectable({
   providedIn: 'root',
@@ -58,8 +59,8 @@ export class CommonService implements HttpInterceptor {
     );
   }
 
-  getSavedCount(recipe_id) {
-    return this.http.get(
+  getSavedCount(recipe_id: number): Observable<number> {
+    return this.http.get<number>(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/saved-count',
       { params: { recipe_id: recipe_id } }
     );
@@ -190,7 +191,7 @@ export class CommonService implements HttpInterceptor {
     );
   }
 
-  deleteRecipe(recipeid) {
+  deleteRecipe(recipeid: number) {
     return this.http.post(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/pending-recipes',
       recipeid
@@ -198,16 +199,16 @@ export class CommonService implements HttpInterceptor {
   }
 
   /* COMMENTS */
-  commentRecipe(comment) {
+  commentRecipe(comment: CommentObj) {
     return this.http.post(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/comments',
       comment
     );
   }
 
-  getComments(recipeid) {
+  getComments(recipeid: number): Observable<CommentObj[]> {
     var params = new HttpParams().set('recipeid', recipeid);
-    return this.http.get(
+    return this.http.get<CommentObj[]>(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/comments',
       { params }
     );
@@ -221,8 +222,8 @@ export class CommonService implements HttpInterceptor {
     );
   }
 
-  getRatings(): Observable<any> {
-    return this.http.get(
+  getRatings(): Observable<RatingInfo[]> {
+    return this.http.get<RatingInfo[]>(
       'https://3blap58k04.execute-api.us-west-2.amazonaws.com/prod/ratings'
     );
   }
