@@ -208,7 +208,8 @@ export class RecipelistComponent implements OnInit {
       }
 
       return (
-        'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' +
+        // 'https://recipeimagesbucket.s3.us-west-2.amazonaws.com/' +
+        'https://dgj7g8gpy2eza.cloudfront.net/' +
         recipe.id +
         this.imgSize +
         img.filename

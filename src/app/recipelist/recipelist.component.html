@@ -238,7 +238,7 @@
   <div class="row">
     <div
       *ngFor="
-        let recipe of recipes | paginate: { itemsPerPage: 9, currentPage: p }
+        let recipe of recipes | paginate : { itemsPerPage: 9, currentPage: p }
       "
       class="col-lg-4 mb-4 grid-margin"
     >
@@ -261,6 +261,7 @@
             *ngIf="hasImage(recipe.id)"
             class="card-img-top recipe-img"
             src="{{ getImgDataS3(recipe) }}"
+            fetchpriority="high"
             (error)="imgError($event, recipe)"
             alt="image"
           />

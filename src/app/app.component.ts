@@ -2,12 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { ThemePalette } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import {
   Router,
   ActivatedRoute,
   RouterEvent,
   NavigationStart,
 } from '@angular/router';
+import { DialogNewRecipeComponent } from './dialog-new-recipe-component/dialog-new-recipe-component.component';
 import { UserService } from './user.service';
 import { CommonService } from './common.service';
 import { Subject } from 'rxjs';
@@ -28,8 +32,26 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private commonService: CommonService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {}
+
+  new_recipe = {
+    name: '',
+    ingredients: [],
+    directions: [],
+    type: '',
+    timelength: 0,
+    difficulty: '',
+    pending: Boolean,
+    submittedby: '',
+    author: '',
+    rating: 0,
+    tags: [],
+    yield: '',
+    blurb: '',
+  };
 
   active = 1;
   private readonly destroy$ = new Subject<boolean>();
@@ -128,6 +150,79 @@ export class AppComponent implements OnInit {
     localStorage.removeItem('usertoken');
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
+  }
+
+  loggedIn() {
+    return this.userService.getUser();
+  }
+
+  toLogin() {
+    this.router.navigate(['/login/']);
+  }
+
+  openNewRecipeDialog() {
+    // show new-recipe-form
+    const dialogRef = this.dialog.open(DialogNewRecipeComponent, {
+      width: '600px',
+      height: 'auto',
+      autoFocus: false,
+      data: {
+        edit: false,
+        name: this.new_recipe.name,
+        ingredients: this.new_recipe.ingredients,
+        directions: this.new_recipe.directions,
+        pending: true,
+        timelength: this.new_recipe.timelength,
+        difficulty: this.new_recipe.difficulty,
+        type: this.new_recipe.type,
+        author: this.new_recipe.author,
+        rating: 0,
+        tags: [],
+        yield: this.new_recipe.yield,
+        blurb: this.new_recipe.blurb,
+        submittedby: this.new_recipe.submittedby,
+        fileToUpload: {
+          recipeid: '',
+          filedata: null,
+          filename: '',
+          primary: true,
+          dbinsert: false,
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.new_recipe.ingredients = [];
+      if (result) {
+        result.ingredients = result.ingredients.map((ing) => ing.ingredient);
+        result.directions = result.directions.map((dir) => dir.step);
+        // result.Ingredients = this.parseIngredients(result.Ingredients)
+        result.submittedby = this.userService.getUser().username;
+        let nutFree = true;
+        // result.ingredients.forEach((ing: Ingredient) => {
+        result.ingredients.forEach((ing: string) => {
+          if (
+            ing.toLowerCase().includes('nut') ||
+            ing.toLowerCase().includes('cashew') ||
+            ing.toLowerCase().includes('almond') ||
+            ing.toLowerCase().includes('pecan')
+          ) {
+            nutFree = false;
+          }
+        });
+        if (nutFree) {
+          result.tags.push('Nut Free');
+        }
+        this.commonService.newRecipe(result).subscribe(
+          (data) => {
+            this._snackBar.open('Recipe Suggestion Submitted!', 'ok', {
+              duration: 2000,
+            });
+          },
+          (error) => console.error(error)
+        );
+      }
+    });
   }
 
   navHome() {
